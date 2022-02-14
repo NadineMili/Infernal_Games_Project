@@ -1,20 +1,71 @@
-<!DOCTYPE html>
+{% extends 'backBase.html.twig' %}
 
-<title>Hello AdminNewsletterController!</title>
+{% block title %}Hello Admin!{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    <div class="main-panel">
+        <div class="content-wrapper">
+            <div class="page-header">
+                <h3 class="page-title"> Newsletters </h3>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a class="btn btn-success" href="{{ asset('/admin/newsletter/new') }}">+ Write a new newsletter</a></li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="col-lg-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped ">
+                                <thead>
+                                <tr>
+                                    <th> Picture </th>
+                                    <th> ID </th>
+                                    <th> Title </th>
+                                    <th> Author </th>
+                                    <th> Date </th>
+                                    <th> Sent </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <!-- ***** Fourat Note **** -->
+                                <!-- Bech t7il for lina t3abi el table -->
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/Dev/Wamp64/www/Infernal_Games_Project-master/src/Controller/AdminNewsletterController.php'|file_link(0) }}">src/Controller/AdminNewsletterController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/Dev/Wamp64/www/Infernal_Games_Project-master/templates/admin_newsletter/index.html.twig'|file_link(0) }}">templates/admin_newsletter/index.html.twig</a></code></li>
-    </ul>
-</div>
+                                {% for newsletter in newsletters %}
+                                <tr onclick="">
+                                    <td class="py-1">
+                                        <!-- ***** Fourat Note **** -->
+                                        <!-- ***** assert('Games/'~game.id) -->
+                                        <img src="{{ asset('back/images/faces-clipart/pic-1.png') }}" alt="image" />
+                                    </td>
+                                    <td> {{ newsletter.id }}</td>
+                                    <td> {{ newsletter.title }}</td>
+                                    <td> {{ newsletter.author }}</td>
+                                    <td> {{ newsletter.date|date('Y-m-d') }}</td>
+                                    {% if (newsletter.sent) %}
+                                        <td><i class="mdi mdi-check-all"></i></td>
+                                    {% else %}
+                                        <td><i class="mdi mdi-close"></i></td>
+                                    {% endif %}
+                                    <td> <a class="" href="{{ path('admin_newsletter_edit', {'id':newsletter.id}) }}">
+                                            <i class="mdi mdi-pencil"></i>
+                                        </a></td>
+
+                                    <td> <a class="" href="{{ asset('admin/games/{{ newsletter.id }}') }}">
+                                            <i class="mdi mdi-delete-forever"></i>
+                                        </a></td>
+                                </tr>
+                                {% endfor %}
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
 {% endblock %}

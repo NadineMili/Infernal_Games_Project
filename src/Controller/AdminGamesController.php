@@ -31,7 +31,7 @@ class AdminGamesController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="admin_games_edit", methods={"GET", "POST"})
+     * @Route("/edit/{id}", name="admin_games_edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, EntityManagerInterface $entityManager): Response
     {
