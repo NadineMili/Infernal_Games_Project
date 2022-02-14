@@ -45,7 +45,7 @@ class User implements UserInterface
     private $address;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="date", nullable=true)
      */
     private $banPeriod;
 
@@ -149,12 +149,12 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getBanPeriod(): ?int
+    public function getBanPeriod(): ?\DateTime
     {
         return $this->banPeriod;
     }
 
-    public function setBanPeriod(?int $banPeriod): self
+    public function setBanPeriod(?\DateTime $banPeriod): self
     {
         $this->banPeriod = $banPeriod;
 
