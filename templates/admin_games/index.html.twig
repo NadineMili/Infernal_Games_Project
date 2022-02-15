@@ -1,0 +1,64 @@
+{% extends 'backBase.html.twig' %}
+
+{% block title %}Hello Admin!{% endblock %}
+
+{% block body %}
+
+    <div class="main-panel">
+        <div class="content-wrapper">
+            <div class="page-header">
+                <h3 class="page-title"> Games </h3>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a class="btn btn-success" href="{{ asset('/admin/games/newGame') }}">+ Add a game</a></li>
+                    </ol>
+                </nav>
+            </div>
+                <div class="col-lg-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped ">
+                                    <thead>
+                                    <tr>
+                                        <th> Picture </th>
+                                        <th> ID </th>
+                                        <th> Name </th>
+                                        <th> Description </th>
+                                        <th> Price </th>
+                                        <th> Trailer Url </th>
+                                        <th> Category </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for game in games %}
+                                    <tr onclick="">
+                                        <td class="py-1">
+
+                                            <img src="{{ asset('back/images/faces-clipart/pic-1.png') }}" alt="image" />
+                                        </td>
+                                        <th> {{ game.id }} </th>
+                                        <td> {{ game.name }} </td>
+                                        <td> {{ game.description }} </td>
+                                        <td> {{ game.price }} </td>
+                                        <td> {{ game.trailerUrl }} </td>
+                                        <td> {{ game.category }} </td>
+                                        <td> <a class="" href="{{ path('admin_games_edit',{'id': game.id}) }}">
+                                                <i class="mdi mdi-pencil"></i>
+                                            </a></td>
+
+                                        <td> <a class="" href="{{ path('admin_games_delete',{'id':game.id})}}">
+                                                <i class="mdi mdi-delete-forever"></i>
+                                            </a></td>
+                                    </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+    </div>
+{% endblock %}
