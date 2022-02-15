@@ -11,22 +11,33 @@
             <div class="col-12 grid-margin stretch-card">
                 <div class="card">
                     <div class="card-body">
-                        <form class="forms-sample">
+                {{ form_start(form, {'attr':{'novalidate':'novalidate'}}) }}
                             <div class="form-group">
                                 <label for="productName">Name</label>
-                                <input type="text" class="form-control" id="productName" placeholder="Name">
+                                {{ form_widget(form.name,{'attr':{'class':'form-control', 'placeholder':'Name'}}) }}
+                                <div class="text-danger">{{ form_errors(form.name) }}</div>
+
                             </div>
                             <div class="form-group">
                                 <label for="productDescription">Description</label>
-                                <textarea class="form-control" id="productDescription" rows="4" placeholder="Description"></textarea>
+                                {{ form_widget(form.description,{'attr':{'class':'form-control', 'placeholder':'Description'}}) }}
+                                 <div class="text-danger">{{ form_errors(form.description) }}</div>
+
+
                             </div>
                             <div class="form-group">
                                 <label for="productPrice">Price</label>
-                                <input class="form-control" id="productPrice" rows="4" type="number" placeholder="Price">
+                                {{ form_widget(form.price,{'attr':{'class':'form-control', 'placeholder':'Price'}}) }}
+                               <div class="text-danger">{{ form_errors(form.price) }}</div>
+
+
                             </div>
                             <div class="form-group">
                                 <label for="productQuantity">Quantity</label>
-                                <input class="form-control" id="productQuantity" rows="4" type="number" placeholder="Quantity">
+                               {{ form_widget(form.quantity,{'attr':{'class':'form-control', 'placeholder':'Quantity'}}) }}
+                               <div class="text-danger">{{ form_errors(form.quantity) }}</div>
+
+
                             </div>
                             <div class="form-group">
                                 <label>Product Picture</label>
@@ -40,15 +51,21 @@
                             </div>
                             <div class="form-group">
                                 <label for="productBrand">Brand</label>
-                                <input class="form-control" id="productBrand" rows="4" placeholder="Brand">
+                             {{ form_widget(form.brand,{'attr':{'class':'form-control', 'placeholder':'Brand'}}) }}
+                                <div class="text-danger">{{ form_errors(form.brand) }}</div>
+
+
                             </div>
                             <div class="form-group">
                                 <label for="productCategory">Category</label>
-                                <input class="form-control" id="productCategory" rows="4" placeholder="Category">
+                                {{ form_widget(form.category,{'attr':{'class':'form-control', 'placeholder':'Category'}}) }}
+                                 <div class="text-danger">{{ form_errors(form.category) }}</div>
+
+
                             </div>
                             <button type="submit" class="btn btn-primary mr-2">Submit</button>
-                            <button class="btn btn-dark">Cancel</button>
-                        </form>
+                            <a href="{{asset('/admin/products')}}" class="btn btn-dark">Cancel</a>
+                        {{form_end(form)}}
                     </div>
                 </div>
             </div>

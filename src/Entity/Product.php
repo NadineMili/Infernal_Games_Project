@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\ProductRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * @ORM\Entity(repositoryClass=ProductRepository::class)
@@ -19,31 +21,37 @@ class Product
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Nom Produit is required")
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\NotBlank(message="description is required")
      */
     private $description;
 
     /**
      * @ORM\Column(type="float")
+     * @Assert\NotBlank(message="prix is required")
      */
     private $price;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\NotBlank(message="brand is required")
      */
     private $brand;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="category is required")
      */
     private $category;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank(message="quantity is required")
      */
     private $quantity;
 

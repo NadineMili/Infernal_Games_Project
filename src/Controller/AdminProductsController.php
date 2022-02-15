@@ -7,6 +7,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+
+use App\Entity\Product;
+use App\Repository\ProductRepository;
+use App\Form\ProductFormType;
 
 class AdminProductsController extends AbstractController
     /**
@@ -16,35 +21,77 @@ class AdminProductsController extends AbstractController
     /**
      * @Route("/", name="admin_products")
      */
-    public function index(): Response
+    public function index(ProductRepository $repo): Response
     {
-        return $this->render('admin_products/index.html.twig', [
-            'controller_name' => 'AdminProductsController',
+        $products = $repo->findAll();
+
+        return $this->render('admin_products/index.html.twig',[
+            "products" =>$products,
         ]);
     }
 
     /**
      * @Route("/new", name="admin_products_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        return $this->render('admin_products/new.html.twig');
+
+   
+    public function addProduct(Request $request ): Response{
+        $product= new Product();
+           $form = $this->createForm(ProductFormType::class,$product);
+           $form->handleRequest($request);
+
+           if($form->isSubmitted() && $form->isValid())
+           {
+               $entityManager = $this->getDoctrine()->getManager();
+               $entityManager->persist($product);
+               $entityManager->flush();
+               return $this->redirectToRoute("admin_products");
+
+           }
+
+           return $this->render("admin_products/new.html.twig",[
+               'product' =>$product,
+               'form' => $form->createView()
+           ]);
     }
 
     /**
-     * @Route("/edit/{id}", name="admin_products__edit", methods={"GET", "POST"})
+     * @Route("/edit/{id}", name="admin_products_edit", methods={"GET", "POST"})
      */
-    public function edit(Request $request, EntityManagerInterface $entityManager): Response
+    public function edit(ProductRepository $repo,Request $request, EntityManagerInterface $entityManager,int $id): Response
     {
-        return $this->render('admin_products/edit.html.twig');
+        $product = $repo->find($id);
+        $form = $this->createForm(ProductFormType::class,$product);
+        $form->handleRequest($request);
+       
+    
+        if($form->isSubmitted() && $form->isValid())
+            {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->flush();
+                return $this->redirectToRoute("admin_products");
+        
+            }
+        
+        return $this->render("admin_products/new.html.twig", [
+            'product' =>$product,
+               'form' => $form->createView()
+        ]);
     }
 
     /**
-     * @Route("/{id}", name="admin_products__delete", methods={"POST"})
+     * @Route("/delete/{id}", name="admin_products_delete")
      */
-    public function delete(Request $request, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, EntityManagerInterface $entityManager, $id , ProductRepository $repo): Response
     {
 
-        return $this->redirectToRoute('admin_products', [], Response::HTTP_SEE_OTHER);
+        $product = $repo->find($id);
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($product);
+        $entityManager->flush();
+     
+        return $this->redirectToRoute("admin_products");
     }
+
+     
 }

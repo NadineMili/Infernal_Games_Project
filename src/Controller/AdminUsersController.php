@@ -25,7 +25,7 @@ class AdminUsersController extends AbstractController
 
 
     /**
-     * @Route("/new", name="admin_games_new", methods={"GET", "POST"})
+     * @Route("/new", name="admin_users_new", methods={"GET", "POST"})
      */
     public function new(Request $request, EntityManagerInterface $entityManager): Response{
         return $this->render('admin_games/new.html.twig');

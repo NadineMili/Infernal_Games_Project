@@ -61,7 +61,7 @@
 			<ul class="game-filter">
 
 				<!-- ******** FOURAT NOTE ******** -->
-				<!-- Lehné rodhom yetnadhmou b2awel7arf min ism el game -->
+				<!-- Lehné rodhom yetnadhmou b2awel 7arf min ism el game :33 -->
 				<li><a href="">A</a></li>
 				<li><a href="">B</a></li>
 				<li><a href="">C</a></li>
@@ -92,71 +92,22 @@
 
 			<!-- ******** FOURAT NOTE ******** -->
 			<div class="row">
+				<!-- ******** Games list ******** -->
 				<div class="col-xl-7 col-lg-8 col-md-7">
 					<div class="row">
+						<!-- ******** FOURAT NOTE ******** -->
+						<!-- ******** ligné for game in games ******** -->
+						{% for game in games %}
 						<div class="col-lg-4 col-md-6">
 							<div class="game-item">
-								<img src="img/games/1.jpg" alt="#">
-								<h5>Zombie Appocalipse 2</h5>
-								<a href="game-single.html" class="read-more">Read More  <img src="img/icons/double-arrow.png" alt="#"/></a>
+								<!-- ******** Taswiret elgame ******** -->
+								<img src="{{ asset('Games/'~game.name~'.png') }}" alt="#">
+								<h5>{{ game.name }}</h5>
+								<!-- ******** href  ******** -->
+								<a href="{{ path('view_game',{'id':game.id}) }}" class="read-more">Read More  <img src="{{ asset('front/img/icons/double-arrow.png') }}" alt="#"/></a>
 							</div>
 						</div>
-						<div class="col-lg-4 col-md-6">
-							<div class="game-item">
-								<img src="img/games/2.jpg" alt="#">
-								<h5>Dooms Day</h5>
-								<a href="game-single.html" class="read-more">Read More  <img src="img/icons/double-arrow.png" alt="#"/></a>
-							</div>
-						</div>
-						<div class="col-lg-4 col-md-6">
-							<div class="game-item">
-								<img src="img/games/3.jpg" alt="#">
-								<h5>The Huricane</h5>
-								<a href="game-single.html" class="read-more">Read More  <img src="img/icons/double-arrow.png" alt="#"/></a>
-							</div>
-						</div>
-						<div class="col-lg-4 col-md-6">
-							<div class="game-item">
-								<img src="img/games/4.jpg" alt="#">
-								<h5>Star Wars</h5>
-								<a href="game-single.html" class="read-more">Read More  <img src="img/icons/double-arrow.png" alt="#"/></a>
-							</div>
-						</div>
-						<div class="col-lg-4 col-md-6">
-							<div class="game-item">
-								<img src="img/games/5.jpg" alt="#">
-								<h5>Candy land</h5>
-								<a href="game-single.html" class="read-more">Read More  <img src="img/icons/double-arrow.png" alt="#"/></a>
-							</div>
-						</div>
-						<div class="col-lg-4 col-md-6">
-							<div class="game-item">
-								<img src="img/games/6.jpg" alt="#">
-								<h5>E.T.</h5>
-								<a href="game-single.html" class="read-more">Read More  <img src="img/icons/double-arrow.png" alt="#"/></a>
-							</div>
-						</div>
-						<div class="col-lg-4 col-md-6">
-							<div class="game-item">
-								<img src="img/games/7.jpg" alt="#">
-								<h5>Zombie Appocalipse 2</h5>
-								<a href="game-single.html" class="read-more">Read More  <img src="img/icons/double-arrow.png" alt="#"/></a>
-							</div>
-						</div>
-						<div class="col-lg-4 col-md-6">
-							<div class="game-item">
-								<img src="img/games/8.jpg" alt="#">
-								<h5>Dooms Day</h5>
-								<a href="game-single.html" class="read-more">Read More  <img src="img/icons/double-arrow.png" alt="#"/></a>
-							</div>
-						</div>
-						<div class="col-lg-4 col-md-6">
-							<div class="game-item">
-								<img src="img/games/9.jpg" alt="#">
-								<h5>The Huricane</h5>
-								<a href="game-single.html" class="read-more">Read More  <img src="img/icons/double-arrow.png" alt="#"/></a>
-							</div>
-						</div>
+						{% endfor %}
 					</div>
 					<div class="site-pagination">
 						<a href="#" class="active">01.</a>
@@ -164,6 +115,9 @@
 						<a href="#">03.</a>
 					</div>
 				</div>
+
+				<!-- ******** FOURAT NOTE ******** -->
+				<!-- ******** Recherche par category lehné ******** -->
 				<div class="col-xl-3 col-lg-4 col-md-5 sidebar game-page-sideber">
 					<div id="stickySidebar">
 						<div class="widget-item">
