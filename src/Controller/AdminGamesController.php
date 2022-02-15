@@ -28,7 +28,7 @@ class AdminGamesController extends AbstractController
     }
 
     /**
-     * @Route("/newGame", name="admin_games_new", , methods={"GET", "POST"})
+     * @Route("/newGame", name="admin_games_new", methods={"GET", "POST"})
      */
     public function new(Request $request, EntityManagerInterface $em) : Response
     {
@@ -38,7 +38,7 @@ class AdminGamesController extends AbstractController
         if ($form -> isSubmitted() && $form -> isValid()) {
             $em->persist($game);
             $em->flush();
-            return $this->redirectToRoute('admin_games', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('admin_games');
         }
         return $this->render('admin_games/new.html.twig', [
             'form' => $form -> createView()
