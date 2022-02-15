@@ -33,21 +33,21 @@
 </head>
 <body>
 <!-- Page Preloder -->
-{#
+
 <div id="preloder">
-    <div class="loader"></div>
+    <img src="{{ asset ('/img/infernalLogo.png') }}" alt="" class="loader" style="width: 90px; height: 90px">
 </div>
-#}
+
 
 <!-- Header section -->
 <header class="header-section">
     <div class="header-warp">
         <div class="header-social d-flex justify-content-end">
             <p>Follow us:</p>
-            <a href="#"><i class="fa fa-facebook"></i></a>
-            <a href="#"><i class="fa fa-twitter"></i></a>
-            <a href="#"><i class="fa fa-instagram"></i></a>
-            <a href="#"><i class="fa fa-twitch"></i></a>
+            <a target="_blank" href="#"><i class="fa fa-facebook"></i></a>
+            <a target="_blank" href="#"><i class="fa fa-twitter"></i></a>
+            <a target="_blank" href="{{ asset ('https://www.instagram.com/infernalgames/')}}"><i class="fa fa-instagram"></i></a>
+            <a target="_blank" href="#"><i class="fa fa-twitch"></i></a>
         </div>
         <div class="header-bar-warp d-flex">
             <!-- site logo -->
@@ -68,9 +68,14 @@
                             <li><a href="game-single.html">Game Singel</a></li>
                         </ul>
                     </li>
-                    <li><a href="review.html">Reviews</a></li>
+                    <li><a href="review.html">Shop</a></li>
                     <li><a href="blog.html">News</a></li>
-                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="contact.html">More</a>
+                        <ul class="sub-menu">
+                            <li><a href="game-single.html">About Us</a></li>
+                            <li><a href="game-single.html">Contact Us</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </nav>
         </div>
@@ -88,7 +93,7 @@
         <h2>Subscribe to our newsletter</h2>
         <form class="newsletter-form">
             <input type="text" placeholder="ENTER YOUR E-MAIL">
-            <button class="site-btn">subscribe  <img src="img/icons/double-arrow.png" alt="#"/></button>
+            <button class="site-btn">subscribe  <img src="{{ asset('front/img/icons/double-arrow.png') }}" alt="#"/></button>
         </form>
     </div>
 </section>
@@ -98,27 +103,20 @@
 <footer class="footer-section">
     <div class="container">
         <div class="footer-left-pic">
-            <img src="{{ asset ('front/img/footer-left-pic.png') }}" alt="">
+            <img width="450px" height="300px"  src="{{ asset ('front/img/footer-left-pic.png') }}" alt="">
         </div>
         <div class="footer-right-pic">
-            <img width="255px" height="350px" src="{{ asset ('front/img/footer-right-pic.png') }}" alt="">
+            <img width="200px" height="295px" src="{{ asset ('front/img/footer-right-pic.png') }}" alt="">
         </div>
         <a href="#" class="footer-logo">
             <img src="{{ asset ('front/./img/logo.png') }}" alt="">
         </a>
-        <ul class="main-menu footer-menu">
-            <li><a href="">Home</a></li>
-            <li><a href="">Games</a></li>
-            <li><a href="">Reviews</a></li>
-            <li><a href="">News</a></li>
-            <li><a href="">Contact</a></li>
-        </ul>
+
         <div class="footer-social d-flex justify-content-center">
-            <a href="#"><i class="fa fa-pinterest"></i></a>
-            <a href="#"><i class="fa fa-facebook"></i></a>
-            <a href="#"><i class="fa fa-twitter"></i></a>
-            <a href="#"><i class="fa fa-dribbble"></i></a>
-            <a href="#"><i class="fa fa-behance"></i></a>
+            <a target="_blank" href="#"><i class="fa fa-facebook"></i></a>
+            <a target="_blank" href="#"><i class="fa fa-twitter"></i></a>
+            <a target="_blank" href="{{ asset ('https://www.instagram.com/infernalgames/')}}"><i class="fa fa-instagram"></i></a>
+            <a target="_blank" href="#"><i class="fa fa-twitch"></i></a>
         </div>
         <div class="copyright"><a href="">Colorlib</a> 2018 @ All rights reserved</div>
     </div>
