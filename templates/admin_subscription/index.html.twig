@@ -1,0 +1,64 @@
+{% extends 'backBase.html.twig' %}
+
+{% block title %}Hello Admin!{% endblock %}
+
+{% block body %}
+
+    <div class="main-panel">
+        <div class="content-wrapper">
+            <div class="page-header">
+                <h3 class="page-title"> Subscribers </h3>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class=""><a class="btn btn-info" href="{{ asset('/admin/newsletter/new') }}">Manage plans</a></li>
+                        <li class="ml-2"><a class="btn btn-light" href="{{ asset('/admin/subscription') }}">Subscribers</a></li>
+                        <li class="ml-2"><a class="btn btn-success" href="{{ asset('/admin/newsletter/new') }}">+ Write a new newsletter</a></li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="col-lg-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped ">
+                                <thead>
+                                <tr>
+                                    <th> Picture </th>
+                                    <th> Subscription ID </th>
+                                    <th> Username </th>
+                                    <th> Plan </th>
+                                    <th> Expiry </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <!-- ***** Fourat Note **** -->
+                                <!-- Bech t7il for lina t3abi el table -->
+
+                                {% for sub in subscriptions %}
+                                    <tr onclick="">
+                                        <td class="py-1">
+                                            <!-- ***** Fourat Note **** -->
+                                            <!-- ***** assert('Games/'~game.id) -->
+                                            <img src="{{ asset('back/images/faces-clipart/pic-1.png') }}" alt="image" />
+                                        </td>
+                                        <td> {{ sub.id }}</td>
+                                        <td> {{ sub.plan }}</td>
+                                        <td> {{ sub.user }}</td>
+                                        {% if (sub.status) %}
+                                            <td><label class="badge badge-success">Jawha behi</label></td>
+                                        {% else %}
+                                            <td><label class="badge badge-danger">Expired</label></td>
+                                        {% endif %}
+                                    </tr>
+                                {% endfor %}
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

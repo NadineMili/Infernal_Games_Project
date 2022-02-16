@@ -1,0 +1,156 @@
+{% extends 'frontBase.html.twig' %}
+
+{% block title %}- Games{% endblock %}
+
+{% block body %}
+
+
+
+
+	<!-- Page top section -->
+	<section class="page-top-section set-bg" data-setbg="{{ asset('front/img/page-top-bg/1.jpg') }}">
+		<div class="page-info">
+			<h2>Games</h2>
+			<div class="site-breadcrumb">
+				<a href="{{ asset('/') }}">Home</a>  /
+				<span>Games</span>
+			</div>
+		</div>
+	</section>
+	<!-- Page top end-->
+
+
+
+
+	<!-- Games section -->
+	<section class="games-section">
+		<div class="container">
+			<ul class="game-filter">
+
+				<!-- ******** FOURAT NOTE ******** -->
+				<!-- Lehné rodhom yetnadhmou b2awel 7arf min ism el game :33 -->
+				<li><a href="">A</a></li>
+				<li><a href="">B</a></li>
+				<li><a href="">C</a></li>
+				<li><a href="">D</a></li>
+				<li><a href="">E</a></li>
+				<li><a href="">F</a></li>
+				<li><a href="">G</a></li>
+				<li><a href="">H</a></li>
+				<li><a href="">I</a></li>
+				<li><a href="">J</a></li>
+				<li><a href="">K</a></li>
+				<li><a href="">L</a></li>
+				<li><a href="">M</a></li>
+				<li><a href="">N</a></li>
+				<li><a href="">O</a></li>
+				<li><a href="">P</a></li>
+				<li><a href="">Q</a></li>
+				<li><a href="">R</a></li>
+				<li><a href="">S</a></li>
+				<li><a href="">T</a></li>
+				<li><a href="">U</a></li>
+				<li><a href="">V</a></li>
+				<li><a href="">W</a></li>
+				<li><a href="">X</a></li>
+				<li><a href="">Y</a></li>
+				<li><a href="">Z</a></li>
+			</ul>
+
+			<!-- ******** FOURAT NOTE ******** -->
+			<div class="row">
+				<!-- ******** Games list ******** -->
+				<div class="col-xl-7 col-lg-8 col-md-7">
+					<div class="row">
+						<!-- ******** FOURAT NOTE ******** -->
+						<!-- ******** ligné for game in games ******** -->
+						{% for game in games %}
+						<div class="col-lg-4 col-md-6">
+							<div class="game-item">
+								<!-- ******** Taswiret elgame ******** -->
+								<img src="{{ asset('Games/'~game.id~'.png') }}" alt="#" style="height: 200px">
+								<h5>{{ game.name }}</h5>
+								<!-- ******** href  ******** -->
+								<a href="{{ path('view_game',{'id':game.id}) }}" class="read-more">Read More  <img src="{{ asset('front/img/icons/double-arrow.png') }}" alt="#"/></a>
+							</div>
+						</div>
+						{% endfor %}
+					</div>
+					<div class="site-pagination">
+						<a href="#" class="active">01.</a>
+						<a href="#">02.</a>
+						<a href="#">03.</a>
+					</div>
+				</div>
+
+				<!-- ******** FOURAT NOTE ******** -->
+				<!-- ******** Recherche par category lehné ******** -->
+				<div class="col-xl-3 col-lg-4 col-md-5 sidebar game-page-sideber">
+					<div id="stickySidebar">
+						<div class="widget-item">
+							<div class="categories-widget">
+								<h4 class="widget-title">categories</h4>
+								<ul>
+									<li><a href="">Games</a></li>
+									<li><a href="">Gaming Tips & Tricks</a></li>
+									<li><a href="">Online Games</a></li>
+									<li><a href="">Team Games</a></li>
+									<li><a href="">Community</a></li>
+									<li><a href="">Uncategorized</a></li>
+								</ul>
+							</div>
+						</div>
+						<div class="widget-item">
+							<div class="categories-widget">
+								<h4 class="widget-title">platform</h4>
+								<ul>
+									<li><a href="">Xbox</a></li>
+									<li><a href="">X box 360</a></li>
+									<li><a href="">Play Station</a></li>
+									<li><a href="">Play Station VR</a></li>
+									<li><a href="">Nintendo Wii</a></li>
+									<li><a href="">Nintendo Wii U</a></li>
+								</ul>
+							</div>
+						</div>
+						<div class="widget-item">
+							<div class="categories-widget">
+								<h4 class="widget-title">Genre</h4>
+								<ul>
+									<li><a href="">Online</a></li>
+									<li><a href="">Adventure</a></li>
+									<li><a href="">S.F.</a></li>
+									<li><a href="">Strategy</a></li>
+									<li><a href="">Racing</a></li>
+									<li><a href="">Shooter</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- Games end-->
+
+
+	<!-- Featured section -->
+	<section class="featured-section">
+		<div class="featured-bg set-bg" data-setbg="{{ asset('front/img/featured-bg.jpg') }}"></div>
+		<div class="featured-box">
+			<div class="text-box">
+				<div class="top-meta">11.11.18  /  in <a href="">Games</a></div>
+				<h3>The game you’ve been waiting  for is out now</h3>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliquamet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Vestibulum posuere porttitor justo id pellentesque. Proin id lacus feugiat, posuere erat sit amet, commodo ipsum. Donec pellentesque vestibulum metus...</p>
+				<a href="#" class="read-more">Read More <img src="img/icons/double-arrow.png" alt="#"/></a>
+			</div>
+		</div>
+	</section>
+	<!-- Featured section end-->
+
+
+
+
+
+
+{% endblock %}
