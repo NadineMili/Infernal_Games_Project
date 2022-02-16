@@ -18,41 +18,62 @@ class Subscription
     private $id;
 
     /**
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="boolean")
      */
-    private $price;
+    private $status;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\ManyToOne(targetEntity=SubscriptionPlan::class, inversedBy="subscriptions")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $duration;
+    private $plan;
+
+    /**
+     * @ORM\OneToOne(targetEntity=User::class, inversedBy="subscription", cascade={"persist", "remove"})
+     */
+    private $user;
+
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getPrice(): ?float
+    public function getStatus(): ?bool
     {
-        return $this->price;
+        return $this->status;
     }
 
-    public function setPrice(float $price): self
+    public function setStatus(bool $status): self
     {
-        $this->price = $price;
+        $this->status = $status;
 
         return $this;
     }
 
-    public function getDuration(): ?\DateTime
+    public function getPlan(): ?SubscriptionPlan
     {
-        return $this->duration;
+        return $this->plan;
     }
 
-    public function setDuration(\DateTime $duration): self
+    public function setPlan(?SubscriptionPlan $plan): self
     {
-        $this->duration = $duration;
+        $this->plan = $plan;
 
         return $this;
     }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+
 }

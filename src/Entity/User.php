@@ -49,10 +49,11 @@ class User implements UserInterface
      */
     private $banPeriod;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
+    /**
+     * @ORM\OneToOne(targetEntity=Subscription::class, mappedBy="user", cascade={"persist", "remove"})
+     */
+    private $subscription;
+
 
     /**
      * A visual identifier that represents this user.
@@ -160,4 +161,31 @@ class User implements UserInterface
 
         return $this;
     }
+
+    public function getSubscription(): ?Subscription
+    {
+        return $this->subscription;
+    }
+
+    public function setSubscription(?Subscription $subscription): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($subscription === null && $this->subscription !== null) {
+            $this->subscription->setUser(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($subscription !== null && $subscription->getUser() !== $this) {
+            $subscription->setUser($this);
+        }
+
+        $this->subscription = $subscription;
+
+        return $this;
+    }
+
+    public function __toString(){
+        return $this->username;
+    }
+
 }

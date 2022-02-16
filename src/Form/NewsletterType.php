@@ -16,6 +16,7 @@ class NewsletterType extends AbstractType
             ->add('date')
             ->add('sent')
             ->add('author')
+            ->add('plan')
         ;
     }
 
