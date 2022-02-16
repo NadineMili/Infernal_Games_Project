@@ -41,6 +41,7 @@ class ShopController extends AbstractController
 
         //Search 3al current_user
 
+
         return $this->render('shop/cart.html.twig',
             [
                 //Traja3 cart
