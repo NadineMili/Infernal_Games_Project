@@ -12,22 +12,22 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/admin/blogs")
+ * @Route("/blog/controllerr")
  */
-class BlogController extends AbstractController
+class BlogControllerrController extends AbstractController
 {
     /**
-     * @Route("/", name="admin_blogs", methods={"GET"})
+     * @Route("/", name="blog_controllerr_index", methods={"GET"})
      */
     public function index(BlogRepository $blogRepository): Response
     {
-        return $this->render('admin_blogs/index.html.twig', [
-            'blogs' => $blogRepository->findAll()
+        return $this->render('blog_controllerr/index.html.twig', [
+            'blogs' => $blogRepository->findAll(),
         ]);
     }
 
     /**
-     * @Route("/new", name="admin_blogs_new", methods={"GET", "POST"})
+     * @Route("/new", name="blog_controllerr_new", methods={"GET", "POST"})
      */
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -39,27 +39,27 @@ class BlogController extends AbstractController
             $entityManager->persist($blog);
             $entityManager->flush();
 
-            return $this->redirectToRoute('admin_blogs', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('blog_controllerr_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('admin_blogs/new.html.twig', [
+        return $this->render('blog_controllerr/new.html.twig', [
             'blog' => $blog,
             'form' => $form->createView(),
         ]);
     }
 
     /**
-     * @Route("/{id}", name="admin_blogs_show", methods={"GET"})
+     * @Route("/{id}", name="blog_controllerr_show", methods={"GET"})
      */
     public function show(Blog $blog): Response
     {
-        return $this->render('admin_blogs/show.html.twig', [
+        return $this->render('blog_controllerr/show.html.twig', [
             'blog' => $blog,
         ]);
     }
 
     /**
-     * @Route("/edit/{id}", name="admin_blogs_edit", methods={"GET", "POST"})
+     * @Route("/{id}/edit", name="blog_controllerr_edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, Blog $blog, EntityManagerInterface $entityManager): Response
     {
@@ -69,17 +69,17 @@ class BlogController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('admin_blogs_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('blog_controllerr_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('admin_blogs/edit.html.twig', [
+        return $this->render('blog_controllerr/edit.html.twig', [
             'blog' => $blog,
             'form' => $form->createView(),
         ]);
     }
 
     /**
-     * @Route("/delete/{id}", name="admin_blogs_delete", methods={"POST"})
+     * @Route("/{id}", name="blog_controllerr_delete", methods={"POST"})
      */
     public function delete(Request $request, Blog $blog, EntityManagerInterface $entityManager): Response
     {
@@ -88,6 +88,6 @@ class BlogController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('admin_blogs_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('blog_controllerr_index', [], Response::HTTP_SEE_OTHER);
     }
 }

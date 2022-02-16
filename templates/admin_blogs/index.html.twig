@@ -7,10 +7,10 @@
     <div class="main-panel">
         <div class="content-wrapper">
             <div class="page-header">
-                <h3 class="page-title"> Games </h3>
+                <h3 class="page-title"> <h1> <p style="color:purple;">   Blogs  </p> </h1></h3>
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a class="btn btn-success" href="{{ asset('/admin/games/newGame') }}">+ Add a game</a></li>
+                        <li class="breadcrumb-item"><a class="btn btn-success" href="{{ asset('/admin/blogs/new') }}">+ Add a blog</a></li>
                     </ol>
                 </nav>
             </div>
@@ -21,33 +21,23 @@
                             <table class="table table-striped ">
                                 <thead>
                                 <tr>
-                                    <th> Picture </th>
-                                    <th> ID </th>
-                                    <th> Name </th>
-                                    <th> Description </th>
-                                    <th> Price </th>
-                                    <th> Trailer Url </th>
-                                    <th> Category </th>
+                                    <th> Title </th>
+                                    <th> Content </th>
+                                  
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {% for game in games %}
+                                {% for blog in blogs %}
                                     <tr onclick="">
-                                        <td class="py-1">
-
-                                            <img src="{{ asset('back/images/faces-clipart/pic-1.png') }}" alt="image" />
-                                        </td>
-                                        <th> {{ game.id }} </th>
-                                        <td> {{ game.name }} </td>
-                                        <td> {{ game.description }} </td>
-                                        <td> {{ game.price }} </td>
-                                        <td> {{ game.trailerUrl }} </td>
-                                        <td> {{ game.category }} </td>
-                                        <td> <a class="" href="{{ path('admin_games_edit',{'id': game.id}) }}">
+                                       
+                                        <th> {{ blog.id }} </th>
+                                        <td> {{ blog.title }} </td>
+                                       
+                                        <td> <a class="" href="{{ path('admin_blogs_new',{'id': blog.id}) }}">
                                                 <i class="mdi mdi-pencil"></i>
                                             </a></td>
 
-                                        <td> <a class="" href="{{ path('admin_games_delete',{'id':game.id})}}">
+                                        <td> <a class="" href="{{ path('admin_blogs_delete',{'id':blog.id})}}">
                                                 <i class="mdi mdi-delete-forever"></i>
                                             </a></td>
                                     </tr>

@@ -2,10 +2,6 @@
 
 {% block title %}Hello Admin!{% endblock %}
 
-{% block js %}
-
-{% endblock %}
-
 {% block body %}
 
     <div class="main-panel">
@@ -14,9 +10,7 @@
                 <h3 class="page-title"> Newsletters </h3>
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class=""><a class="btn btn-info" href="{{ asset('/admin/newsletter/new') }}">Manage plans</a></li>
-                        <li class="ml-2"><a class="btn btn-light" href="{{ asset('/admin/subscription') }}">Subscribers</a></li>
-                        <li class="ml-2"><a class="btn btn-success" href="{{ asset('/admin/newsletter/new') }}">+ Write a new newsletter</a></li>
+                        <li class="breadcrumb-item"><a class="btn btn-success" href="{{ asset('/admin/newsletter/new') }}">+ Write a new newsletter</a></li>
                     </ol>
                 </nav>
             </div>
@@ -51,26 +45,19 @@
                                     <td> {{ newsletter.author }}</td>
                                     <td> {{ newsletter.date|date('Y-m-d') }}</td>
                                     {% if (newsletter.sent) %}
-                                        <td><label class="badge badge-success">Sent</label></td>
+                                        <td><i class="mdi mdi-check-all"></i></td>
                                     {% else %}
-                                        <td><label class="badge badge-warning">Pending</label></td>
+                                        <td><i class="mdi mdi-close"></i></td>
                                     {% endif %}
                                     <td> <a class="" href="{{ path('admin_newsletter_edit', {'id':newsletter.id}) }}">
-                                            <i class="mdi mdi-pencil mdi-18px"></i>
+                                            <i class="mdi mdi-pencil"></i>
                                         </a></td>
 
-
-                                    <td> <a href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="mdi mdi-delete text-danger mdi-18px"></i>
-
-                                        </a>
-                                    <div class="dropdown-menu">
-                                        <h6 class="dropdown-header">Are you sure to delete this newsletter?</h6>
-                                        <a class="dropdown-item text-danger" href="{{ path('admin_newsletter_delete', {'id':newsletter.id}) }}">Delete</a>
-                                    </div></td>
+                                    <td> <a class="" href="{{ asset('admin/games/{{ newsletter.id }}') }}">
+                                            <i class="mdi mdi-delete-forever"></i>
+                                        </a></td>
                                 </tr>
                                 {% endfor %}
-
 
                                 </tbody>
                             </table>

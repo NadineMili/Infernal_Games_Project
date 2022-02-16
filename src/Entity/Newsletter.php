@@ -48,12 +48,6 @@ class Newsletter
      */
     private $sent;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=SubscriptionPlan::class, inversedBy="newsletters")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $plan;
-
     public function getId(): ?int
     {
         return $this->id;
@@ -118,17 +112,4 @@ class Newsletter
 
         return $this;
     }
-
-    public function getPlan(): ?SubscriptionPlan
-    {
-        return $this->plan;
-    }
-
-    public function setPlan(?SubscriptionPlan $plan): self
-    {
-        $this->plan = $plan;
-
-        return $this;
-    }
-
 }
