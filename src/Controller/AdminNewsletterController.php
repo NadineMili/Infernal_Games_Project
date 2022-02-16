@@ -73,7 +73,7 @@ class AdminNewsletterController extends AbstractController
     /**
      * @Route("/edit/{id}", name="admin_newsletter_edit", methods={"GET", "POST"})
      */
-    public function edit(Request $request, EntityManagerInterface $entityManager, $id, NewsletterRepository $newsletterRepository): Response
+    public function edit(Request $request, MailerInterface $mailer, EntityManagerInterface $entityManager, $id, NewsletterRepository $newsletterRepository, SubscriptionRepository $subscriptionRepository): Response
     {
         $newsletter= $newsletterRepository->find($id);
         $author= $newsletter-> getAuthor();
@@ -90,6 +90,13 @@ class AdminNewsletterController extends AbstractController
             $newsletter->setDate($date);
             $entityManager->persist($newsletter);
             $entityManager->flush();
+            $sub= $subscriptionRepository->findBy([
+                'status'=>1
+            ]);
+            for($i=0;$i<count($sub);$i++){
+                $rec= $sub[$i]->getUser()->getEmail();
+                $this->emailNewsLetter($mailer, $newsletter,$rec);
+            }
             return $this->redirectToRoute('admin_newsletter', [], Response::HTTP_SEE_OTHER);
         }
         return $this->render('admin_newsletter/new.html.twig',[

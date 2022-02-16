@@ -1,0 +1,70 @@
+{% extends 'frontBase.html.twig' %}
+
+{% block title %}- Shop{% endblock %}
+
+{% block body %}
+
+<!-- Page top section -->
+<section class="page-top-section set-bg" data-setbg="{{ asset('front/img/page-top-bg/2.jpg') }}">
+    <div class="page-info">
+        <h2>Your cart</h2>
+        <div class="site-breadcrumb">
+            <a href="">Home</a>  /
+            <span>Reviews</span>
+        </div>
+    </div>
+</section>
+<!-- Page top end-->
+
+
+<!-- Review section -->
+<section class="review-section">
+    <div class="container">
+        <div class="review-item">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="review-pic">
+                        <img src="{{ asset('front/img/review/1.jpg') }}" alt="Taswiret el product elli fil cart">
+                    </div>
+                </div>
+
+                <!-- For linna 3al product elli fil cart -->
+
+                <div class="row">
+                    <div class="col-xl-5 col-lg-8 col-md-7 game-single-content">
+                        <h2 class="gs-title"> product.name</h2>
+                        <h4></h4>
+                        <div class="col"><button class="site-btn">Add 1<img src="{{ asset('front/img/icons/add.png') }}" style="height: 16px; width: 16px"alt="#"/></button></div>
+
+                    </div>
+                    <div class="col-xl-3 col-lg-4 col-md-5 sidebar game-page-sideber">
+                        <div id="stickySidebar">
+                            <div class="widget-item">
+                                <div class="rating-widget">
+                                    <h4 class="widget-title">Total price</h4>
+                                    <div class="rating">
+                                        <h5><span>product.price</span></h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Lehné Ads -->
+                            <div class="widget-item">
+                                <div class="testimonials-widget">
+                                    <h4 class="widget-title">Total price</h4>
+                                    <div class="testim-text">
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolo re magna aliqua. Quis ipsum suspend isse ultrices.</p>
+                                        <h6><span>James Smith,</span>Gamer</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+        </div>
+
+    </div>
+</section>
+<!-- Review section end-->
+
+{% endblock %}

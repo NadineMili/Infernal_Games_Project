@@ -33,7 +33,7 @@
                     <div class="row">
                     <div class="col"> <input type="text" placeholder="Search"></div>
                     <div class="col"><button class="site-btn"><img src="{{ asset('front/img/icons/double-arrow.png') }}" alt="#"/></button></div>
-                        <div class="col"><button class="site-btn">Check your cart <img src="{{ asset('front/img/icons/shopping-cart.png') }}" alt="#" style="height: 16px; width: 16px"/></button></div>
+                        <div class="col"><a href="{{ asset('/shop/cart') }}" class="site-btn">Check your cart <img src="{{ asset('front/img/icons/shopping-cart.png') }}" alt="#" style="height: 16px; width: 16px"/></a></div>
                     </div>
                 </form>
 
@@ -45,7 +45,7 @@
                 <div class="col-xl-7 col-lg-8 col-md-7">
                     <div class="row">
                         <!-- ******** FOURAT NOTE ******** -->
-                        <!-- ******** ligné for game in games ******** -->
+                        <!-- ******** lihné for game in games ******** -->%}
                         {% for product in products %}
                             <div class="col-lg-4 col-md-6">
                                 <div class="game-item">

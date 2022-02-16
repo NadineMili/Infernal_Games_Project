@@ -33,4 +33,17 @@ class ShopController extends AbstractController
         return $this->render('shop/product.html.twig',
             ['product'=>$product]);
     }
+
+    /**
+     * @Route("/cart", name="view_product")
+     */
+    public function viewCart(){
+
+        //Search 3al current_user
+
+        return $this->render('shop/cart.html.twig',
+            [
+                //Traja3 cart
+            ]);
+    }
 }
