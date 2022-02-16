@@ -22,4 +22,8 @@ class AdminSubscriptionController extends AbstractController
         ]);
     }
 
+    public function subPlans(){
+
+    }
+
 }
