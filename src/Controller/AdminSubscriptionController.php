@@ -21,4 +21,5 @@ class AdminSubscriptionController extends AbstractController
             'subscriptions' => $subscriptionRepository->findAll(),
         ]);
     }
+
 }
