@@ -98,7 +98,6 @@ class AdminNewsletterController extends AbstractController
 
     }
 
-
     /**
      * @Route("/delete/{id}", name="admin_newsletter_delete")
      */
