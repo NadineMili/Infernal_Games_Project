@@ -43,7 +43,7 @@
                                         <td> {{ game.price }} </td>
                                         <td> {{ game.trailerUrl }} </td>
                                         <td> {{ game.category }} </td>
-                                        <td> <a class="" href="{{ path(':wq',{'id': game.id}) }}">
+                                        <td> <a class="" href="{{ path('admin_games_edit',{'id': game.id}) }}">
                                                 <i class="mdi mdi-pencil"></i>
                                             </a></td>
 
@@ -62,4 +62,3 @@
 
     </div>
 {% endblock %}
-:wq
