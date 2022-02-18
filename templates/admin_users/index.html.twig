@@ -25,26 +25,22 @@
                                         <th> ID </th>
                                         <th> Username </th>
                                         <th> Email </th>
-                                        <th> Role </th>
                                         <th> Address </th>
-                                        <th> Ban Period </th>
                                     </tr>
                                     </thead>
                                     {% for user in users %}
 
                                     <tbody>
-                                    <!-- ***** Fourat Note **** -->
-                                    <!-- Bech t7il for lina t3abi el table -->
+
                                     <tr onclick="">
                                         <td class="py-1">
-                                            <!-- ***** Fourat Note **** -->
-                                            <!-- ***** assert('Profiles/'~user.id) -->
+
                                             <img src="{{ asset('back/images/faces-clipart/pic-1.png') }}" alt="image" />
                                         </td>
                                         <th> {{user.id}} </th>
                                         <td> {{user.username}} </td>
                                         <td> {{user.email}} </td>
-                                        <td> {{user.roles}} </td>
+
                                         <td> {{user.address}} </td>
                                         <td> <a class="" href="{{ path('admin_users_edit', {'id' : user.id})}}">
                                                 <i class="mdi mdi-pencil"></i>

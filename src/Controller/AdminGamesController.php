@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -50,8 +51,8 @@ class AdminGamesController extends AbstractController
      */
     public function edit(GameRepository $repository,$id, Request $request, EntityManagerInterface $em): Response
     {
-        $games = $repository ->find($id);
-        $form = $this -> createForm(GamesType::class, $games);
+        $game = $repository ->find($id);
+        $form = $this -> createForm(GamesType::class, $game);
         $form -> handleRequest($request);
         if ($form -> isSubmitted() && $form -> isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -68,9 +69,9 @@ class AdminGamesController extends AbstractController
      */
     public function delete($id,Request $request, GameRepository $repository, EntityManagerInterface $em): Response
     {
-        $games = $repository->find($id);
+        $game = $repository->find($id);
         $em=$this->getDoctrine()->getManager();
-        $em->remove($games);
+        $em->remove($game);
         $em->flush();
         return $this->redirectToRoute('admin_games', [], Response::HTTP_SEE_OTHER);
     }
