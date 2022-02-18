@@ -9,9 +9,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class AdminBlogController extends AbstractController
-    /**
-     * @Route("/admin/blogs")
-     */
+/**
+ * @Route("/admin/blogs")
+ */
 {
     /**
      * @Route("/", name="admin_blogs")
@@ -26,7 +26,8 @@ class AdminBlogController extends AbstractController
     /**
      * @Route("/new", name="admin_blogs_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, EntityManagerInterface $entityManager): Response{
+    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    {
         return $this->render('admin_blogs/new.html.twig');
     }
 
@@ -39,7 +40,7 @@ class AdminBlogController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="admin_blogs_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="admin_blogs_delete", methods={"GET","POST"})
      */
     public function delete(Request $request, EntityManagerInterface $entityManager): Response
     {

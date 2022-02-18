@@ -1,0 +1,15 @@
+{% extends 'backBase.html.twig' %}
+{% block body %}
+
+<!DOCTYPE html>
+
+<title>Edit Blog</title>
+
+    <h1>Edit Blog</h1>
+
+    {{ include('admin_blogs/form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('admin_blogs') }}">back to list</a>
+
+    {{ include('admin_blogs/delete.html.twig') }}
+{% endblock %}
