@@ -10,7 +10,6 @@
                 <h3 class="page-title"> Subscribers </h3>
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class=""><a class="btn btn-info" href="{{ asset('/admin/newsletter/new') }}">Manage plans</a></li>
                         <li class="ml-2"><a class="btn btn-light" href="{{ asset('/admin/newsletter') }}">Newsletters</a></li>
                         <li class="ml-2"><a class="btn btn-success" href="{{ asset('/admin/newsletter/new') }}">+ Write a new newsletter</a></li>
                     </ol>
@@ -26,7 +25,6 @@
                                     <th> Picture </th>
                                     <th> Subscription ID </th>
                                     <th> Username </th>
-                                    <th> Plan </th>
                                     <th> Expiry </th>
                                 </tr>
                                 </thead>
@@ -42,7 +40,6 @@
                                             <img src="{{ asset('back/images/faces-clipart/pic-1.png') }}" alt="image" />
                                         </td>
                                         <td> {{ sub.id }}</td>
-                                        <td> {{ sub.plan }}</td>
                                         <td> {{ sub.user }}</td>
                                         {% if (sub.status) %}
                                             <td><label class="badge badge-success">Jawha behi</label></td>

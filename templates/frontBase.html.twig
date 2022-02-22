@@ -9,8 +9,11 @@
     <!-- Favicon -->
     <link href="{{ asset('img/infernalLogo.ico') }}" rel="shortcut icon"/>
 
+    <!-- VideoJs -->
+    <link href="{{ asset('https://vjs.zencdn.net/7.6.6/video-js.css') }}" rel="stylesheet" />
+
     <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto:400,400i,500,500i,700,700i,900,900i" rel="stylesheet">
+    <link href="{{ asset('https://fonts.googleapis.com/css?family=Roboto:400,400i,500,500i,700,700i,900,900i') }}" rel="stylesheet">
 
 
     <!-- Stylesheets -->
@@ -69,6 +72,7 @@
                         </ul>
                     </li>
                     <li><a href="{{ asset('/shop') }}">Shop</a></li>
+                    <li><a href="{{ asset('/streams') }}">Streams</a></li>
                     <li><a href="{{ asset('/blogs') }}">Blogs</a></li>
                     <li><a href="contact.html">More</a>
                         <ul class="sub-menu">
@@ -132,6 +136,11 @@
 <script src="{{ asset ('front/js/jquery.sticky-sidebar.min.js') }}"></script>
 <script src="{{ asset ('front/js/jquery.magnific-popup.min.js') }}"></script>
 <script src="{{ asset ('front/js/main.js') }}"></script>
+
+<!-- VideoJs -->
+<script src="{{ asset('https://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js') }}"></script>
+<script src="{{ asset('https://vjs.zencdn.net/7.6.6/video.js') }}"></script>
+<script>videojs.options.flash.swf = "video-js.swf";</script>
 
 </body>
 </html>

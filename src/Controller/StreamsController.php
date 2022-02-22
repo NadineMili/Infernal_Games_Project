@@ -7,14 +7,27 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class StreamsController extends AbstractController
+    /**
+     * @Route("/streams")
+     */
 {
     /**
-     * @Route("/streams", name="streams")
+     * @Route("/", name="streams")
      */
     public function index(): Response
     {
         return $this->render('streams/index.html.twig', [
             'controller_name' => 'StreamsController',
+        ]);
+    }
+
+    /**
+     * @Route("/stream", name="stream")
+     */
+    public function watchStream(): Response
+    {
+        return $this->render('streams/stream.html.twig', [
+
         ]);
     }
 }

@@ -14,7 +14,6 @@
                 <h3 class="page-title"> Newsletters </h3>
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class=""><a class="btn btn-info" href="{{ asset('/admin/newsletter/new') }}">Manage plans</a></li>
                         <li class="ml-2"><a class="btn btn-light" href="{{ asset('/admin/subscription') }}">Subscribers</a></li>
                         <li class="ml-2"><a class="btn btn-success" href="{{ asset('/admin/newsletter/new') }}">+ Write a new newsletter</a></li>
                     </ol>
@@ -28,7 +27,6 @@
                                 <thead>
                                 <tr>
                                     <th> Picture </th>
-                                    <th> ID </th>
                                     <th> Title </th>
                                     <th> Author </th>
                                     <th> Date </th>
@@ -44,20 +42,23 @@
                                     <td class="py-1">
                                         <!-- ***** Fourat Note **** -->
                                         <!-- ***** assert('Games/'~game.id) -->
-                                        <img src="{{ asset('back/images/faces-clipart/pic-1.png') }}" alt="image" />
+                                        <img src="{{ asset('back/images/faces-clipart/pic-'~random(['1','2','3','4','8'])~'.png') }}" alt="image" />
                                     </td>
-                                    <td> {{ newsletter.id }}</td>
                                     <td> {{ newsletter.title }}</td>
                                     <td> {{ newsletter.author }}</td>
                                     <td> {{ newsletter.date|date('Y-m-d') }}</td>
                                     {% if (newsletter.sent) %}
                                         <td><label class="badge badge-success">Sent</label></td>
+                                        <td> <a class="" href="{{ path('admin_newsletter_edit', {'id':newsletter.id}) }}" title="Edit" >
+                                                <i class="mdi mdi-magnify mdi-18px"></i>
+                                            </a></td>
                                     {% else %}
                                         <td><label class="badge badge-warning">Pending</label></td>
+                                        <td> <a class="" href="{{ path('admin_newsletter_edit', {'id':newsletter.id}) }}" title="Inspect">
+                                                <i class="mdi mdi-pencil mdi-18px"></i>
+                                            </a></td>
                                     {% endif %}
-                                    <td> <a class="" href="{{ path('admin_newsletter_edit', {'id':newsletter.id}) }}">
-                                            <i class="mdi mdi-pencil mdi-18px"></i>
-                                        </a></td>
+
 
 
                                     <td> <a href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

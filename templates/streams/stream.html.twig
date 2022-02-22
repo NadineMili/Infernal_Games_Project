@@ -1,0 +1,55 @@
+{% extends 'frontBase.html.twig' %}
+
+{% block title %}Stream{% endblock %}
+{% block body %}
+    <link href="{{ asset('css/stream.css') }}" rel="stylesheet" />
+
+    <!-- Page top section -->
+    <section class="page-top-section set-bg" data-setbg="{{ asset('front/img/page-top-bg/1.jpg') }}">
+        <div class="page-info">
+            <h2>Streams</h2>
+            <div class="site-breadcrumb">
+                <a href="">Home</a>  /
+                <span>Stream</span>
+            </div>
+        </div>
+    </section>
+    <!-- Page top end-->
+
+
+    <!-- Games section -->
+    <section class="games-single-page">
+        <div class="container">
+            <div class="game-single-preview">
+                <video id="vid1" width="600px" height="300px" class="video-js vjs-matrix" controls="true" poster="{{ asset('front/img/promo-bg.jpg') }}">
+                    <source
+                            src="{{ asset('Streams/stream1/index.m3u8') }}"
+                            type="application/x-mpegURL">
+                </video>
+                <button class="btn btn-success" onclick="playIt()">Play</button>
+            </div>
+            <div class="row">
+                <div class="col-xl-9 col-lg-8 col-md-7 game-single-content">
+                    <h2 class="gs-title">stream.title</h2>
+                    <h4>About the game</h4>
+                    <p>Stream.description</p>
+                    <h4>Trailer</h4>
+
+                    <div class="geme-social-share pt-5 d-flex">
+                        <p>Share:</p>
+                        <a href="#"><i class="fa fa-instagram"></i></a>
+                        <a href="#"><i class="fa fa-facebook"></i></a>
+                        <a href="#"><i class="fa fa-twitter"></i></a>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Games end-->
+<script>function playIt(){
+        var player= videojs('vid1');
+        player.play();
+    }</script>
+
+{% endblock %}
