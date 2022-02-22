@@ -83,4 +83,18 @@ class AdminGamesController extends AbstractController
         $em->flush();
         return $this->redirectToRoute('admin_games', [], Response::HTTP_SEE_OTHER);
     }
+
+    /**
+     * @Route ("/search" ,name="search")
+     */
+    function search (GameRepository $repository, Request $request) {
+        $data = $request -> get('search');
+        $game = $repository ->findBy( ['name'=> $data]);
+        return $this -> render('admin_games/index.html.twig' ,[
+                'games' => $game
+            ]
+        );
+
+
+    }
 }
