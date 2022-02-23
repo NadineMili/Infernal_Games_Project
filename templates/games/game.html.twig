@@ -63,12 +63,10 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
-
                 </div>
-
             </div>
+
             <section class="newsletter-section">
                 <div class="container">
                     {{ form_start(form, {'attr':{'novalidate':'novalidate'}}) }}
@@ -81,8 +79,18 @@
                 </div>
             </section>
         </div>
+        <tbody>
         {% for c in comments %}
-            <h2 class="gs-title">{{ c.text }}</h2>
+
+
+            <h2>{{ c.text }}</h2>
+
+        <div class="newsletter-form">
+            <button class="site-btn" href="{{ path('comment_edit',{'id': c.id}) }}">Edit
+                <img src="{{ asset ('front/img/icons/double-arrow.png') }}" alt="#"/></button>
+            <button class="site-btn" href="{{ path('comment_delete',{'id': c.id}) }}">Delete
+                <img src="{{ asset ('front/img/icons/double-arrow.png') }}" alt="#"/></button>
+        </div>
         {%  endfor %}
     </section>
     <!-- Games end-->

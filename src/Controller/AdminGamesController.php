@@ -80,7 +80,7 @@ class AdminGamesController extends AbstractController
         $em=$this->getDoctrine()->getManager();
         $em->remove($games);
         $em->flush();
-        return $this->redirectToRoute('admin_games', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('admin_games');
     }
 
     /**

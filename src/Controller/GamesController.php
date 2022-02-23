@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Game;
 use App\Entity\GameComment;
 use App\Form\CommentType;
+use App\Form\GamesType;
+use App\Repository\GameCommentRepository;
 use App\Repository\GameRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -47,6 +49,33 @@ class GamesController extends AbstractController
             ['game'=>$game , 'comments' => $comments, 'form' => $form -> createView()] );
     }
 
+    /**
+     * @Route("/view/{id}", name="comment_edit", methods={"GET", "POST"})
+     */
+    public function edit(GameCommentRepository $repository,$id, Request $request, EntityManagerInterface $em): Response
+    {
+        $comments = $repository ->find($id);
+        $form = $this -> createForm(CommentType::class, $comments);
+        $form -> handleRequest($request);
+        if ($form -> isSubmitted() && $form -> isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+            return $this ->redirectToRoute('view_game');
+        }
+        return $this->render('games/game.html.twig', [
+            'form' => $form -> createView()
+        ]);
+    }
 
-
+    /**
+     * @Route("/view/{id}", name="comment_delete")
+     */
+    public function delete($id,Request $request, GameCommentRepository $repository, EntityManagerInterface $em): Response
+    {
+        $comments = $repository->find($id);
+        $em=$this->getDoctrine()->getManager();
+        $em->remove($comments);
+        $em->flush();
+        return $this->redirectToRoute('view_game');
+    }
 }
