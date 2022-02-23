@@ -37,6 +37,7 @@
                         <a href="#"><i class="fa fa-behance"></i></a>
                     </div>
                 </div>
+
                 <div class="col-xl-3 col-lg-4 col-md-5 sidebar game-page-sideber">
                     <div id="stickySidebar">
                         <div class="widget-item">
@@ -51,6 +52,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <!-- Lehné Ads -->
                         <div class="widget-item">
                             <div class="testimonials-widget">
@@ -61,12 +63,30 @@
                                 </div>
                             </div>
                         </div>
+
                     </div>
+
                 </div>
+
             </div>
+            <section class="newsletter-section">
+                <div class="container">
+                    {{ form_start(form, {'attr':{'novalidate':'novalidate'}}) }}
+                    <h2>Create your comment</h2>
+                    <div class="newsletter-form">
+                        {{ form_widget(form.text,{'attr':{'class':'form-control', 'placeholder':'ENJOY WITH YOUR WORDS'}}) }}
+                        <button class="site-btn">Add  <img src="{{ asset ('front/img/icons/double-arrow.png') }}" alt="#"/></button>
+                    </div>
+                    {{ form_end(form) }}
+                </div>
+            </section>
         </div>
+        {% for c in comments %}
+            <h2 class="gs-title">{{ c.text }}</h2>
+        {%  endfor %}
     </section>
     <!-- Games end-->
+
 
 
 {% endblock %}

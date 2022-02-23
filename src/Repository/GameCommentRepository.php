@@ -20,7 +20,7 @@ class GameCommentRepository extends ServiceEntityRepository
     }
 
     // /**
-    //  * @return GameComment[] Returns an array of GameComment objects
+    //  * @return Games[] Returns an array of Games objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class GameCommentRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?GameComment
+    public function findOneBySomeField($value): ?Games
     {
         return $this->createQueryBuilder('g')
             ->andWhere('g.exampleField = :val')

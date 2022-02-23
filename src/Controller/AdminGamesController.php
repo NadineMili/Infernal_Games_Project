@@ -38,7 +38,6 @@ class AdminGamesController extends AbstractController
         if ($form -> isSubmitted() && $form -> isValid()) {
             $image= $form['picture']->getData();
             $newImageName= $game->getName().'.'.$image->guessExtension();
-
             $image->move(
                 $this->getParameter('GamesPictures'),
                 $newImageName
