@@ -21,6 +21,7 @@
                             <table class="table table-striped ">
                                 <thead>
                                 <tr>
+                                    <th> ID </th>
                                     <th> Title </th>
                                     <th> Content </th>
                                   
@@ -32,6 +33,7 @@
                                        
                                         <th> {{ blog.id }} </th>
                                         <td> {{ blog.title }} </td>
+                                        <td> {{ blog.content }} </td>
                                        
                                         <td> <a class="" href="{{ path('admin_blogs_edit',{'id': blog.id}) }}">
                                                 <i class="mdi mdi-pencil"></i>

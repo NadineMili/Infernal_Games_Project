@@ -22,6 +22,13 @@
                     {{ form_widget(form.content,{'attr':{'class':'form-control', 'placeholder':'Content'}}) }}
                     <div class="text-danger">{{ form_errors(form.content) }}</div>
                 </div>
+                <div class="form-group">
+                    <label>Blog Image</label>
+                    {{ form_widget(form.image,{'attr':{'class':'form-control file-upload-info file-upload-browse btn btn-primary', 'placeholder':'Upload'}}) }}
+                    <div class="input-group col-12">
+                    </div>
+                </div>
+
                 
                 <button type="submit" class="btn btn-primary mr-2">Submit</button>
                 <button class="btn btn-dark">Cancel</button>

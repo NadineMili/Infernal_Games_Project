@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class BlogController extends AbstractController
 {
     /**
-     * @Route("/", name="admin_blogs", methods={"GET"})
+     * @Route("/", name="admin_blogsssss", methods={"GET"})
      */
     public function index(BlogRepository $blogRepository): Response
     {
@@ -27,7 +27,7 @@ class BlogController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="admin_blogs_new", methods={"GET", "POST"})
+     * @Route("/new", name="admin_blogs_newwww", methods={"GET", "POST"})
      */
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -49,7 +49,7 @@ class BlogController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="admin_blogs_show", methods={"GET"})
+     * @Route("/{id}", name="admin_blogs_shozzw", methods={"GET"})
      */
     public function show(Blog $blog): Response
     {
@@ -59,7 +59,7 @@ class BlogController extends AbstractController
     }
 
     /**
-     * @Route("/edit/{id}", name="admin_blogs_edit", methods={"GET", "POST"})
+     * @Route("/edit/{id}", name="admin_blogs_edittt", methods={"GET", "POST"})
      */
     public function edit(Request $request, Blog $blog, EntityManagerInterface $entityManager): Response
     {
@@ -69,7 +69,7 @@ class BlogController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('admin_blogs_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('admin_blogs', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('admin_blogs/edit.html.twig', [
@@ -79,7 +79,7 @@ class BlogController extends AbstractController
     }
 
     /**
-     * @Route("/delete/{id}", name="admin_blogs_delete", methods={"GET", "POST"})
+     * @Route("/delete/{id}", name="admin_blogs_deleteeeee", methods={"GET", "POST"})
      */
     public function delete(Request $request, Blog $blog, EntityManagerInterface $entityManager): Response
     {
