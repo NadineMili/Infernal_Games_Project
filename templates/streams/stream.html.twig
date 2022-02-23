@@ -2,6 +2,17 @@
 
 {% block title %}Stream{% endblock %}
 {% block body %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var player = videojs('player');
+            player.play();
+        }, false);
+        function reconnect() {
+            var player = videojs('player');
+            player.reset();
+            player.src("{{ asset('Streams/'~stream.accessData.streamKey~'/index.m3u8') }}");
+        }
+    </script>
     <link href="{{ asset('css/stream.css') }}" rel="stylesheet" />
 
     <!-- Page top section -->
@@ -21,20 +32,19 @@
     <section class="games-single-page">
         <div class="container">
             <div class="game-single-preview">
-                <video id="vid1" width="600px" height="300px" class="video-js vjs-matrix" controls="true" poster="{{ asset('front/img/promo-bg.jpg') }}">
+                <video id="player" width="600px" height="300px" class="video-js vjs-matrix" controls="true" poster="{{ asset('front/img/promo-bg.jpg') }}">
                     <source
-                            src="{{ asset('Streams/stream1/index.m3u8') }}"
+                            src="{{ asset('Streams/'~stream.accessData.streamKey~'/index.m3u8') }}"
                             type="application/x-mpegURL">
                 </video>
-                <button class="btn btn-success" onclick="playIt()">Play</button>
+
+                <button class="btn btn-success" onclick="reconnect()">Reconnect</button>
             </div>
             <div class="row">
                 <div class="col-xl-9 col-lg-8 col-md-7 game-single-content">
-                    <h2 class="gs-title">stream.title</h2>
-                    <h4>About the game</h4>
-                    <p>Stream.description</p>
-                    <h4>Trailer</h4>
-
+                    <h2 class="gs-title">{{ stream.title }}</h2>
+                    <h4>What it is about:</h4>
+                    <p>{{ stream.description }}</p>
                     <div class="geme-social-share pt-5 d-flex">
                         <p>Share:</p>
                         <a href="#"><i class="fa fa-instagram"></i></a>
@@ -47,9 +57,5 @@
         </div>
     </section>
     <!-- Games end-->
-<script>function playIt(){
-        var player= videojs('vid1');
-        player.play();
-    }</script>
 
 {% endblock %}

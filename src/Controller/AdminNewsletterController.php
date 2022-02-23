@@ -50,19 +50,20 @@ class AdminNewsletterController extends AbstractController
             $date= new \DateTime('now');
             $newsletter->setDate($date);
 
+            $entityManager->persist($newsletter);
+            $entityManager->flush();
+
             if($newsletter->getSent()){
                 $sub= $subscriptionRepository->findBy([
                     'status'=>1
                 ]);
-
-                $entityManager->persist($newsletter);
-                $entityManager->flush();
                 for($i=0;$i<count($sub);$i++){
                     $rec= $sub[$i]->getUser()->getEmail();
                     $this->emailNewsLetter($mailer, $newsletter,$rec);
                 }
             }
-            return $this->redirectToRoute('admin_newsletter', [], Response::HTTP_SEE_OTHER);
+
+            return $this->redirectToRoute('admin_newsletter');
         }
         return $this->render('admin_newsletter/new.html.twig',[
             'newsletter'=> $newsletter,
@@ -123,7 +124,11 @@ class AdminNewsletterController extends AbstractController
             ->to($rec)
             ->subject( $newsletter->getTitle())
             ->html('
-                            <h1>{$newsletter->getTitle()}</h1>
+                            <h1>
+                            <?php 
+                            echo ($newsletter->getTitle())  
+                            ?>
+                            </h1>
                             <p>{$newsletter->getContent()}</p>
                             <footer>{$newsletter->getAuthor()}</footer>
                     ');

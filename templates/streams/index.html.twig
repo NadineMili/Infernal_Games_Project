@@ -25,22 +25,41 @@
     <!-- Games section -->
     <section class="games-section">
         <div class="container">
+            <div class="row">
+                <div class="col">
+                    <ul class="blog-filter">
+                        <!-- K3ayba for -->
+
+                        <li><a href="#">Shooters</a></li>
+
+                        <!-- endfor -->
+                    </ul>
+                </div>
+
+                <div class="col">
+                    <a class="align-top site-btn" href="{{ asset('/streams/new') }}">Start your own stream!</a>
+                </div>
+
+            </div>
+
 
             <!-- ******** FOURAT NOTE ******** -->
-            <div class="row">
+            <div class="row blog-item">
                 <!-- ******** Games list ******** -->
-                <div class="col-xl-7 col-lg-8 col-md-7">
+                <div class="col-xl-9 col-lg-8 col-md-7">
                     <div class="row">
                         <!-- ******** FOURAT NOTE ******** -->
                         <!-- ******** ligné for game in games ******** -->
+                        {% for stream in streams %}
                             <div class="col-lg-4 col-md-6">
                                 <div class="game-item">
                                     <!-- ******** Taswiret elgame ******** -->
-                                    <h5>stream.name</h5>
+                                    <h5>{{ stream.title }}</h5>
                                     <!-- ******** href  ******** -->
-                                    <a href="{{ path('stream')}}" class="read-more">Watch now!  <img src="{{ asset('front/img/icons/double-arrow.png') }}" alt="#"/></a>
+                                    <a href="{{ path('watch_stream', {'id':stream.id}) }}" class="read-more">Watch now!  <img src="{{ asset('front/img/icons/double-arrow.png') }}" alt="#"/></a>
                                 </div>
                             </div>
+                        {% endfor %}
                     </div>
                     <div class="site-pagination">
                         <a href="#" class="active">01.</a>
