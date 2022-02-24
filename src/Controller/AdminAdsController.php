@@ -37,6 +37,21 @@ class AdminAdsController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $image = $form['image']->getData();
+            $image_ext = $image->guessExtension();
+            $newImageName= $ad->getNom().'.'.$image_ext;
+            $image->move(
+                $this->getParameter('AdsPictures'),
+                $newImageName
+            );
+            $ad->setImage($newImageName);
+
+            $upload_type = "image";
+            if ($image_ext== "mp4") {
+                $upload_type = "video";
+            }
+            $ad->setReflinkType($upload_type);
             
             $entityManager->persist($ad);
             $entityManager->flush();
@@ -69,6 +84,24 @@ class AdminAdsController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $image = $form['image']->getData();
+            if ($image) {
+                $image_ext = $image->guessExtension();
+                $newImageName= $ad->getNom().'.'.$image_ext;
+                $image->move(
+                    $this->getParameter('AdsPictures'),
+                    $newImageName
+                );
+                $ad->setImage($newImageName);
+
+                $upload_type = "image";
+                if ($image_ext == "mp4") {
+                    $upload_type = "video";
+                }
+                $ad->setReflinkType($upload_type);
+            }
+
+            $entityManager->persist($ad);
             $entityManager->flush();
 
             return $this->redirectToRoute('admin_ads', [], Response::HTTP_SEE_OTHER);

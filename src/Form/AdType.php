@@ -7,6 +7,7 @@ use Doctrine\DBAL\Types\BigIntType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class AdType extends AbstractType
 {
@@ -18,8 +19,10 @@ class AdType extends AbstractType
             ->add('description')
             ->add('etat')
             ->add('reflink')
-            ->add('reflinktype')
             ->add('sponsor')
+            ->add('image', FileType::class, [
+                'mapped'=>false
+            ])
         ;
     }
 
