@@ -22,19 +22,19 @@ class Ad
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotNull(message="Title can't be empty")
+     * @Assert\NotNull(message="Nom can't be empty")
      */ 
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotNull(message="Title can't be empty")
+     * @Assert\NotNull(message="Type can't be empty")
      */
     private $type;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Assert\NotNull(message="Title can't be empty")
+     * @Assert\NotNull(message="Description can't be empty")
      */
     private $description;
 
@@ -45,6 +45,7 @@ class Ad
 
     /**
      * @ORM\Column(type="string", length=255)
+    * @Assert\NotNull(message="Referral Link can't be empty")
      */
     private $reflink;
 
