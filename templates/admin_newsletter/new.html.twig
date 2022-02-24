@@ -32,7 +32,7 @@
                         {{ form_widget(form.sent, {'attr':{'class':'form-check-input'}}) }} Send</label>
                     </div>
                     <button type="submit" class="btn btn-primary mr-2">Submit</button>
-                    <a class="btn btn-dark">Cancel</a>
+                <a class="btn btn-dark" href="{{ asset('/admin/newsletter') }}">Cancel</a>
             </div>
             {% do form.date.setRendered() %}
             {% do form.author.setRendered() %}

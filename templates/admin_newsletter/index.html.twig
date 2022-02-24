@@ -49,7 +49,7 @@
                                     <td> {{ newsletter.date|date('Y-m-d') }}</td>
                                     {% if (newsletter.sent) %}
                                         <td><label class="badge badge-success">Sent</label></td>
-                                        <td> <a class="" href="{{ path('admin_newsletter_edit', {'id':newsletter.id}) }}" title="Edit" >
+                                        <td> <a class="" href="{{ path('admin_newsletter_read', {'id':newsletter.id}) }}" title="Edit" >
                                                 <i class="mdi mdi-magnify mdi-18px"></i>
                                             </a></td>
                                     {% else %}

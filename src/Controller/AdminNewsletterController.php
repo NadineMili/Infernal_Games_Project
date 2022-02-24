@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints\Date;
 
@@ -72,6 +73,16 @@ class AdminNewsletterController extends AbstractController
     }
 
     /**
+     * @Route("/read/{id}", name="admin_newsletter_read", methods={"GET"})
+     */
+    public function read($id, NewsletterRepository $newsletterRepository){
+        return $this->render('admin_newsletter/read.html.twig', [
+            'newsletter'=>  $newsletterRepository->find($id)
+            ]);
+    }
+
+
+    /**
      * @Route("/edit/{id}", name="admin_newsletter_edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, MailerInterface $mailer, EntityManagerInterface $entityManager, $id, NewsletterRepository $newsletterRepository, SubscriptionRepository $subscriptionRepository): Response
@@ -119,20 +130,13 @@ class AdminNewsletterController extends AbstractController
 
     public function emailNewsLetter(MailerInterface $mailer, Newsletter $newsletter, $rec){
 
-        $email = (new Email())
+
+        $email = (new TemplatedEmail())
             ->from('infernalgames2022@gmail.com')
             ->to($rec)
             ->subject( $newsletter->getTitle())
-            ->html('
-                            <h1>
-                            <?php 
-                            echo ($newsletter->getTitle())  
-                            ?>
-                            </h1>
-                            <p>{$newsletter->getContent()}</p>
-                            <footer>{$newsletter->getAuthor()}</footer>
-                    ');
-        $l= (MailerInterface::class);
+            ->htmlTemplate('newsletter\index.html.twig')
+            ->context([ 'newsletter'=>$newsletter]);
 
         $mailer->send($email);
         return $this->redirectToRoute('admin_newsletter');
