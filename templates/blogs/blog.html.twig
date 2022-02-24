@@ -19,13 +19,13 @@
     <section class="games-single-page">
         <div class="container">
             <div class="game-single-preview">
-                <img src="{{ asset('front/img/blog-big/3.jpg') }}" alt="" style="width: 1145px;height: 485px">
+                <img src="{{ asset('Blogs/'~blog.image) }}" alt="" style="width: 1145px;height: 485px">
             </div>
             <div class="row">
                 <div class="col-xl-9 col-lg-8 col-md-7 game-single-content">
-                    <h2 class="gs-title">blog.title</h2>
-                    <h4>About the game</h4>
-                    <p>blog.content</p>
+                    <h2 class="gs-title">{{ blog.title }}</h2>
+                    <h4></h4>
+                    <p>{{ blog.content }}</p>
                     <div class="geme-social-share pt-5 d-flex">
                         <p>Share:</p>
                         <a href="#"><i class="fa fa-pinterest"></i></a>
@@ -37,28 +37,17 @@
                 </div>
                 <div class="col-xl-3 col-lg-4 col-md-5 sidebar game-page-sideber">
                     <div id="stickySidebar">
-                        <div class="widget-item">
-                            <div class="rating-widget">
-                                <h4 class="widget-title">Rating</h4>
-                                <div class="rating">
-                                    {% if true is not null %}
-                                        <h5><span>blog.rating</span> / 5</h5>
-                                    {% else %}
-                                        <h5><span>TBD</span></h5>
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </div>
                         <!-- Lehné Ads -->
-                        <div class="widget-item">
+                        <a href="{{ asset(ads[0].reflink) }}" target="_blank"><img src="{{ asset('Ads/'~ads[0].image) }}" width="200px"></a>
+                        <!--<div class="widget-item">
                             <div class="testimonials-widget">
-                                <h4 class="widget-title">Ads</h4>
+                                <h4 class="widget-title">{{ ads[0].nom }}</h4>
                                 <div class="testim-text">
                                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolo re magna aliqua. Quis ipsum suspend isse ultrices.</p>
                                     <h6><span>James Smith,</span>Gamer</h6>
                                 </div>
                             </div>
-                        </div>
+                        </div>-->
                     </div>
                 </div>
             </div>
@@ -70,7 +59,7 @@
             <!-- Taswirt eluser -->
             <div class="game-author-pic set-bg" data-setbg="{{ asset('front/img/author.jpg') }}"></div>
             <div class="game-author-info">
-                <h4>Written by: blog.author</h4>
+                <h4>Written by: {{ blog.author }}</h4>
             </div>
         </div>
     </section>
