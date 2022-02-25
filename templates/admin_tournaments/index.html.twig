@@ -1,0 +1,75 @@
+{% extends 'backBase.html.twig' %}
+
+{% block title %}Hello Admin!{% endblock %}
+
+{% block body %}
+
+    <div class="main-panel">
+        <div class="content-wrapper">
+                    <ul class="navbar-nav w-100">
+                <li class="nav-item w-100">
+                    <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search" method="post" action="{{ path('search') }}">
+                        <input type="text" name = "search"  class="form-control" placeholder="Search Tournament">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><input class="btn btn-success" type="submit"  value="search"></li>
+                        </ol>
+                    </form>
+                </li>
+            </ul>
+            <div class="page-header">
+                <h3 class="page-title"> Games </h3>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a class="btn btn-success" href="{{ asset('/admin/tournaments/new') }}">+ Add a tournament</a></li>
+                    </ol>
+                </nav>
+            </div>
+                <div class="col-lg-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped ">
+                                    <thead>
+                                    <tr>
+                                        <th> Picture </th>
+                                        <th> ID </th>
+                                        <th> Name </th>
+                                        <th> Description </th>
+                                        <th> Game  </th>
+                                        <th> prize </th>
+                                        <th> countTeams </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                 {% for tournament in tournaments %}
+                                    <tr onclick="">
+                                        <td class="py-1">
+                                        
+                                            <img src="{{ asset('back/images/faces-clipart/pic-1.png') }}" alt="image" />
+                                        </td>
+                                        <th> {{tournament.id}} </th>
+                                        <td> {{tournament.name}} </td>
+                                        <td> {{tournament.Description}} </td>
+                                        <td> {{tournament.game}} </td>    
+                                        <td> {{tournament.Prize}} </td>
+                                        <td> {{tournament.countTeams}} </td>
+
+                                                          <td> <a class="" href="{{ path('admin_tournaments_edit',{'id': tournament.id}) }}">
+                                                <i class="mdi mdi-pencil"></i>
+                                            </a></td>
+
+                                            <td> <a class="" href="{{ path('admin_tournaments_delete',{'id':tournament.id})}}">
+                                                <i class="mdi mdi-delete-forever"></i>
+                                            </a></td>
+                                    </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+    </div>
+{% endblock %}

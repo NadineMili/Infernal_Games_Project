@@ -1,0 +1,63 @@
+{% extends 'backBase.html.twig' %}
+
+{% block body %}
+
+    <div class="main-panel">
+        <div class="content-wrapper">
+            <div class="page-header">
+                <h3 class="page-title"> Tournaments </h3>
+
+                <li class="breadcrumb-item active" aria-current="page">New blog</li>
+            </div>
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+               {{ form_start(form) }}
+                 
+                        
+                    <div class="form-group">
+                        <label for="blogName">Name</label>
+                         {{form_widget(form.Name,{'attr':{'class' : 'form-control' , 'placeholder' : 'name'}})}}
+                        <div class="text-danger">{{form_errors(form.Name) }} </div>
+                        
+                    </div>
+                    <div class="form-group">
+                        <label for="blogDescription">Description</label>
+                        {{form_widget(form.Description,{'attr':{'class' : 'form-control' , 'placeholder' : 'description'}})}}
+                        <div class="text-danger">{{form_errors(form.Description) }} </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="blogGame">Game</label>
+                         {{form_widget(form.Game,{'attr':{'class' : 'form-control' , 'placeholder' : 'choose your game'}})}}
+                        <div class="text-danger">{{form_errors(form.Game) }} </div>
+                    </div>
+                     <div class="form-group">
+                        <label for="blogTeamCount">teams count</label>
+                        {{ form_widget(form.countTeams,{'attr':{'class':'form-control', 'placeholder':'countTeams'}}) }}
+                        <div class="text-danger">{{form_errors(form.countTeams) }} </div>
+                    </div>
+                     
+                     <div class="form-group">
+                        <label for="blogPrize"> Prize </label>
+                        {{form_widget(form.prize,{'attr':{'class' : 'form-control' , 'placeholder' : 'DT'}})}}
+                        <div class="text-danger">{{form_errors(form.prize) }} </div>
+                    </div>
+                                        <div class="form-group">
+                        <label>tournament poster</label>
+                        <input type="file" name="img[]" class="file-upload-default">
+                        <div class="input-group col-xs-12">
+                            <input type="text" class="form-control file-upload-info" disabled placeholder="Upload Image">
+                            <span class="input-group-append">
+                            <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                          </span>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                    <button class="btn btn-dark">Cancel</button>
+
+                {{form_end(form)}}
+            </div>
+        </div>
+    </div>
+{% endblock %}
