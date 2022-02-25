@@ -36,6 +36,7 @@ class Product
     /**
      * @ORM\Column(type="float")
      * @Assert\NotBlank(message="prix is required")
+     * @Assert\Positive(message="Can't be negative")
      */
     private $price;
 
@@ -54,6 +55,7 @@ class Product
     /**
      * @ORM\Column(type="integer")
      * @Assert\NotBlank(message="quantity is required")
+     * @Assert\Positive(message="Can't be negative")
      */
     private $quantity;
 
