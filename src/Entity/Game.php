@@ -35,6 +35,7 @@ class Game
     /**
      * @ORM\Column(type="float")
      * @Assert\NotBlank(message="Price is required")
+     * @Assert\Positive
      */
     private $price;
 

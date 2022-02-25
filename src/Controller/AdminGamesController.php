@@ -73,6 +73,7 @@ class AdminGamesController extends AbstractController
 
     /**
      * @Route("/delete/{id}", name="admin_games_delete")
+     *
      */
     public function delete($id,Request $request, GameRepository $repository, EntityManagerInterface $em): Response
     {
