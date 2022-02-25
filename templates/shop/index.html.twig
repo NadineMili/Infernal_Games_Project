@@ -10,12 +10,12 @@
     <!-- Page top section -->
     <section class="page-top-section set-bg" data-setbg="{{ asset('front/img/page-top-bg/1.jpg') }}">
         <div class="page-info">
-            <h2>Games</h2>
+            <h2>Products</h2>
             <div class="site-breadcrumb">
-                <a href="{{ asset('/') }}">Home</a>  /
-                <span>Games</span>
+                <a href="{{ asset('/') }}">Home</a>  
+                <span>products</span>
             </div>
-        </div>
+        </div> 
     </section>
     <!-- Page top end-->
 
@@ -27,33 +27,42 @@
         <div class="container">
             <div class="game-filter">
 
-                <!-- ******** FOURAT NOTE ******** -->
+                <!-- ******** Yosra NOTE ******** -->
                 <!-- Recherche lehne a3mlou-->
-                <form class="contact-form">
+                <form class="contact-form" method="post" action="{{ path('search')}}">
                     <div class="row">
-                    <div class="col"> <input type="text" placeholder="Search"></div>
-                    <div class="col"><button class="site-btn"><img src="{{ asset('front/img/icons/double-arrow.png') }}" alt="#"/></button></div>
+                    <div class="col"> <input type="text" name="search" placeholder="Search"></div>
+                    <div class="col"><img src="{{ asset('front/img/icons/double-arrow.png') }}" alt="#"/>
+                        <li class="breadcrumb-item"><button class="btn btn-success" type="submit"  value="search">Search </button></li>
+                    </ol>
+                </div>
                         <div class="col"><a href="{{ asset('/shop/cart') }}" class="site-btn">Check your cart <img src="{{ asset('front/img/icons/shopping-cart.png') }}" alt="#" style="height: 16px; width: 16px"/></a></div>
                     </div>
                 </form>
 
             </div>
 
-            <!-- ******** FOURAT NOTE ******** -->
+            <!-- ******** Yosra NOTE ******** -->
             <div class="row">
-                <!-- ******** Games list ******** -->
+                <!-- ******** Products list ******** -->
                 <div class="col-xl-7 col-lg-8 col-md-7">
                     <div class="row">
-                        <!-- ******** FOURAT NOTE ******** -->
-                        <!-- ******** lihné for game in games ******** -->%}
+                        <!-- ********Yosra NOTE ******** -->
+                      
                         {% for product in products %}
                             <div class="col-lg-4 col-md-6">
                                 <div class="game-item">
                                     <!-- ******** Taswiret elgame ******** -->
-                                    <img src="{{ asset('Products/'~product.id~'.png') }}" alt="#" style="height: 200px">
+                                    <img src="{{ asset('Products/'~product.picture) }}" alt="#" style="height: 200px">
                                     <h5>{{ product.name }}</h5>
+                                    <h5>{{product.price}}</h5>
+                                    <a href="{{path("shop_add" ,{'id': product.id})}}"  class="btn btn-success">
+                                        <i class="bi bi-cart-plus"></i>
+                                        Ajouter au Panier
+                                    </a>
                                     <!-- ******** href  ******** -->
-                                    <a href="{{ path('view_product',{'id':product.id}) }}" class="read-more">Check it out  <img src="{{ asset('front/img/icons/double-arrow.png') }}" alt="#"/></a>
+                                    <a href="{{ path('view_product',{'id':product.id}) }}" class="read-more">Check it out 
+                                     <img src="{{ asset('front/img/icons/double-arrow.png') }}" alt="#"/></a>
                                 </div>
                             </div>
                         {% endfor %}
@@ -65,7 +74,7 @@
                     </div>
                 </div>
 
-                <!-- ******** FOURAT NOTE ******** -->
+                <!-- ******** Yosra NOTE ******** -->
                 <!-- ******** Recherche par category lehné ******** -->
                 <div class="col-xl-3 col-lg-4 col-md-5 sidebar game-page-sideber">
                     <div id="stickySidebar">
@@ -73,12 +82,12 @@
                             <div class="categories-widget">
                                 <h4 class="widget-title">categories</h4>
                                 <ul>
-                                    <li><a href="">Games</a></li>
-                                    <li><a href="">Gaming Tips & Tricks</a></li>
-                                    <li><a href="">Online Games</a></li>
-                                    <li><a href="">Team Games</a></li>
-                                    <li><a href="">Community</a></li>
-                                    <li><a href="">Uncategorized</a></li>
+                                    <li><a href="">Laptop</a></li>
+                                    <li><a href=""> Pc Gamer</a></li>
+                                    <li><a href="">Jeux De Console</a></li>
+                                    <li><a href="">Equipements de jeux</a></li>
+                                    <li><a href="">Accessoires</a></li>
+                                    
                                 </ul>
                             </div>
                         </div>

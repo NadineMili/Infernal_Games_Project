@@ -1,82 +1,66 @@
 {% extends 'frontBase.html.twig' %}
 
-{% block title %}- Shop{% endblock %}
+{% block title %}hello Shop controller{% endblock %}
 
 {% block body %}
 
-<!-- Page top section -->
 <section class="page-top-section set-bg" data-setbg="{{ asset('front/img/page-top-bg/2.jpg') }}">
     <div class="page-info">
         <h2>Your cart</h2>
         <div class="site-breadcrumb">
-            <a href="">Home</a>  /
+            <a href="">Home</a>  
             <span>Reviews</span>
+
         </div>
+      
+            
+             
+          
+        
     </div>
 </section>
-<!-- Page top end-->
+{%if items | length > 0%}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Produit</th>
+                <th>Prix</th>
+                <th>Quantité</th>
+                <th>Total</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+               <tr>
+                   <td>{{item.product.name}}</td>
+                   <td>{{item.product.price}}</td>
+                   <td>{{item.quantity}}</td>
+                   <td>{{item.product.price * item.quantity}}</td>
+                   <td>
+                       <a href="{{ path('shop_remove' , {'id' : item.product.id})}}" class="btn btn-danger btn-sm">
 
+                    <i class="fas fa-trash"></i>
+                       </a>
+                   </td>
+               </tr>
+               {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan=""3 class="text-right"> Total :  </td>
+                <td>{{ total }}</td>
+                
+            </tr>
+        </tfoot>
+    </table>
+    {% else %}
+      <p> Surprise , C'est vide !</p>
 
-<!-- Review section -->
-<section class="review-section">
-    <div class="container">
-        <div class="row">
-
-            <div class="review-section col-xl-9 col-lg-11 col-md-7">
-
-                <!-- For linna 3al product elli fil cart -->
-                <div class="row">
-                <div class="col-2">
-                    <div class="review-pic">
-                        <img src="{{ asset('front/img/review/1.jpg') }}" alt="Taswiret el product elli fil cart"  style="height: 100px; width: 100px">
-                    </div>
-                </div>
-                <div class="col-5 col-lg-8 col-md-7 review-content text-box text-white">
-                    <h7 class="gs-title"> product.name</h7>
-                    <div class="rating">
-                        <h5><i>Total price</i><span>1000 </span> DT</h5>
-                    </div>
-                    <ul class="blog-filter">
-                        <li><a href="#">Add 1 <img src="{{ asset('front/img/icons/add.png') }}" style="height: 16px; width: 16px"alt="#"/></a></li>
-                    </ul>
-                </div>
-            </div>
-                <div class="row">
-                <div class="col-2">
-                    <div class="review-pic">
-                        <img src="{{ asset('front/img/review/1.jpg') }}" alt="Taswiret el product elli fil cart"  style="height: 100px; width: 100px">
-                    </div>
-                </div>
-                <div class="col-5 col-lg-8 col-md-7 review-content text-box text-white">
-                    <h7 class="gs-title"> product.name</h7>
-                    <div class="rating">
-                        <h5><i>Total price</i><span>produit.priceTotal </span> DT</h5>
-                    </div>
-                    <ul class="blog-filter">
-                        <li><a href="#">Add 1<img src="{{ asset('front/img/icons/add.png') }}" style="height: 16px; width: 16px"alt="#"/></a></li>
-                    </ul>
-                </div>
-            </div>
-
-                <!-- Total -->
-            </div>
-            <div class="col-xl-3 col-lg-4 col-md-5 sidebar game-page-sideber">
-                <div id="stickySidebar">
-                    <div class="widget-item">
-                        <div class="categories-widget">
-                            <h4 class="widget-title">Total</h4>
-                            <div class="rating-widget">
-                                <div class="rating">
-                                    <h5><span>Total </span> DT</h5>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    {% endif %}
+    <div>
+        <a class="btn btn-success" href="{{ path("command_add") }}">Valider Panier</a>
     </div>
-</section>
-<!-- Review section end-->
 
 {% endblock %}
+  

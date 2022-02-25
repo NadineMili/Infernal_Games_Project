@@ -42,6 +42,13 @@ class AdminProductsController extends AbstractController
 
            if($form->isSubmitted() && $form->isValid())
            {
+            $picture = $form['picture']->getData();
+            $newPictureName = $product->getName().'.'.$picture->getExtension();
+            $picture->move(
+                $this->getParameter('PicturesProducts'),
+                $newPictureName
+            );
+            $product->setPicture($newPictureName);
                $entityManager = $this->getDoctrine()->getManager();
                $entityManager->persist($product);
                $entityManager->flush();
@@ -67,6 +74,13 @@ class AdminProductsController extends AbstractController
     
         if($form->isSubmitted() && $form->isValid())
             {
+                $picture = $form['picture']->getData();
+                $newPictureName = $product->getName().'.'.$picture->getExtension();
+                $picture->move(
+                    $this->getParameter('PicturesProducts'),
+                    $newPictureName
+                );
+                $product->setPicture($newPictureName);
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->flush();
                 return $this->redirectToRoute("admin_products");
@@ -93,5 +107,16 @@ class AdminProductsController extends AbstractController
         return $this->redirectToRoute("admin_products");
     }
 
+    /**
+     * @Route ("/search" ,name="search")
+     */
+    function search (ProductRepository $repository, Request $request) {
+        $data = $request -> get('search');
+        $product = $repository ->findBy( ['name'=> $data]);
+        return $this -> render('admin_products/index.html.twig' ,[
+                'products' => $product
+            ]
+        );
      
+}
 }
