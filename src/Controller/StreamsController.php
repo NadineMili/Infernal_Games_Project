@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Stream;
 use App\Entity\StreamCategory;
+use App\Entity\StreamComment;
 use App\Entity\StreamRating;
+use App\Entity\User;
 use App\Form\StreamType;
 use App\Repository\AdRepository;
 use App\Repository\GameRepository;
@@ -14,9 +16,11 @@ use App\Repository\StreamRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class StreamsController extends AbstractController
     /**
@@ -43,13 +47,44 @@ class StreamsController extends AbstractController
     }
 
     /**
+     * @Route("/streamCommentsAjax/{id}", name="streamCommentsAjax")
+     */
+    public function streamCommentsAjax($id, Request $req, NormalizerInterface $normalizer){
+
+        $comments= $this->getDoctrine()->getRepository(StreamComment::class)->findBy(['stream'=>$id]);
+        $jsonData=$normalizer->normalize($comments, 'json', ['groups'=>'comments:read']);
+        $jsonData[0]['user']= $comments[0]->getUser()->getUsername();
+        $jsonData[0]['stream']= $comments[0]->getStream()->getId();
+        return new Response(json_encode($jsonData));
+    }
+
+    /**
+     * @Route("/streamCommentsAjax/new", name="streamCommentsAjaxNew")
+     */
+    public function addStreamCommentsAjax( Request $req, NormalizerInterface $normalizer){
+        $em= $this->getDoctrine()->getManager();
+        $comment= new StreamComment();
+        dd($req);
+
+
+        $comments= $this->getDoctrine()->getRepository(StreamComment::class)->findBy(['stream'=>$id]);
+        $jsonData=$normalizer->normalize($comments, 'json', ['groups'=>'comments:read']);
+        $jsonData[0]['user']= $comments[0]->getUser()->getUsername();
+        $jsonData[0]['stream']= $comments[0]->getStream()->getId();
+        return new Response(json_encode($jsonData));
+    }
+
+
+    /**
      * @Route("/watch/{id}", name="watch_stream")
      */
-    public function watchStream($id)
+    public function watchStream($id, Request $req)
     {
-        $stream= $this->getDoctrine()->getRepository(Stream::class)->findById($id);
+        $users= $this->getDoctrine()->getRepository(User::class)->findAll();
+        $stream= $this->getDoctrine()->getRepository(Stream::class)->find($id);
         return $this->render('streams/stream.html.twig', [
-            'stream'=>$stream[0]
+            'stream'=>$stream,
+            'users'=>$users
         ]);
     }
 

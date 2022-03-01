@@ -2,6 +2,8 @@
 
 {% block title %}Stream{% endblock %}
 {% block body %}
+
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var player = videojs('player');
@@ -13,6 +15,38 @@
             player.src("{{ asset('Streams/'~stream.accessData.streamKey~'/index.m3u8') }}");
         }
     </script>
+    <script src="{{ asset('http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js') }}"></script>
+    <script>
+        $(document).ready(function(){
+            $('#chatButton').on('click', function(event){
+                var user= $('#chatUser option:selected').val();
+                console.log($(this))
+
+                $.ajax({
+                    url: '/streams/streamCommentsAjax/new'+$(this).data('id'),
+                    type: 'POST',
+
+                    dataType: 'json',
+                    async: true,
+
+                    success: function(data, status){
+
+                        for (i=0;i<data.length; i++){
+                            comment= data[i];
+                            var row= $('<tr> <td class="text-danger" id="user"></td> <td class="text-light" id="text"></td> </tr>');
+                            $('#user', row).html(comment['user']);
+                            $('#text', row).html(comment['text']);
+                            $('#commentsArea').append(row);
+                        }
+                    },
+                    error : function(xhr, textStatus, errorThrown) {
+                        console.log(errorThrown);
+                    }
+                })
+            })
+        })
+    </script>
+
     <link href="{{ asset('css/stream.css') }}" rel="stylesheet" />
 
     <!-- Page top section -->
@@ -31,16 +65,41 @@
     <!-- Games section -->
     <section class="games-single-page">
         <div class="container">
-            <div class="game-single-preview">
-                <video id="player" width="600px" height="300px" class="video-js vjs-matrix" controls="true" poster="{{ asset('front/img/promo-bg.jpg') }}">
-                    <source
-                            src="{{ asset('Streams/'~stream.accessData.streamKey~'/index.m3u8') }}"
-                            type="application/x-mpegURL">
-                </video>
+            <div class="row">
+                <div class="col">
+                    <div class="game-single-preview">
+                        <video id="player" width="600px" height="300px" class="video-js vjs-matrix" controls="true" poster="{{ asset('front/img/promo-bg.jpg') }}">
+                            <source
+                                    src="{{ asset('Streams/'~stream.accessData.streamKey~'/index.m3u8') }}"
+                                    type="application/x-mpegURL">
+                        </video>
+                        <button class="btn btn-success" onclick="reconnect()">Reconnect</button>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="categories-widget" style="height: 500px">
 
-                <button class="btn btn-success" onclick="reconnect()">Reconnect</button>
+                        <div class="col">
+                            <div class="row">
+                                {%  include 'streams/comments.html.twig' %}
+                            </div>
+                            <div class="row align-self-end">
+                                    <select id="chatUser">
+                                        {% for user in users %}
+                                            <option value="{{ user }}">{{ user.username }}</option>
+                                        {% endfor %}
+                                    </select>
+
+                                    <input type="text" id="chatText">
+                                    <a id="chatButton" href="#" class="btn btn-info">Ehe</a>
+
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
             </div>
-
             <div class="row">
                 <div class="col-xl-9 col-lg-8 col-md-7 game-single-content">
                     <h2 class="gs-title">{{ stream.title }}</h2>

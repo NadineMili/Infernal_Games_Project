@@ -56,6 +56,16 @@ class User implements UserInterface
      */
     private $subscription;
 
+    /**
+     * @ORM\OneToMany(targetEntity=StreamComment::class, mappedBy="user")
+     */
+    private $streamComments;
+
+    public function __construct()
+    {
+        $this->streamComments = new ArrayCollection();
+    }
+
 
     /**
      * A visual identifier that represents this user.
@@ -188,6 +198,36 @@ class User implements UserInterface
 
     public function __toString(){
         return $this->username;
+    }
+
+    /**
+     * @return Collection|StreamComment[]
+     */
+    public function getStreamComments(): Collection
+    {
+        return $this->streamComments;
+    }
+
+    public function addStreamComment(StreamComment $streamComment): self
+    {
+        if (!$this->streamComments->contains($streamComment)) {
+            $this->streamComments[] = $streamComment;
+            $streamComment->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStreamComment(StreamComment $streamComment): self
+    {
+        if ($this->streamComments->removeElement($streamComment)) {
+            // set the owning side to null (unless already changed)
+            if ($streamComment->getUser() === $this) {
+                $streamComment->setUser(null);
+            }
+        }
+
+        return $this;
     }
 
 

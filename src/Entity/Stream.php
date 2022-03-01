@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\StreamRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -51,6 +53,16 @@ class Stream
      * @ORM\Column(type="boolean")
      */
     private $state;
+
+    /**
+     * @ORM\OneToMany(targetEntity=StreamComment::class, mappedBy="stream")
+     */
+    private $streamComments;
+
+    public function __construct()
+    {
+        $this->streamComments = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -125,6 +137,36 @@ class Stream
     public function setState(bool $state): self
     {
         $this->state = $state;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|StreamComment[]
+     */
+    public function getStreamComments(): Collection
+    {
+        return $this->streamComments;
+    }
+
+    public function addStreamComment(StreamComment $streamComment): self
+    {
+        if (!$this->streamComments->contains($streamComment)) {
+            $this->streamComments[] = $streamComment;
+            $streamComment->setStream($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStreamComment(StreamComment $streamComment): self
+    {
+        if ($this->streamComments->removeElement($streamComment)) {
+            // set the owning side to null (unless already changed)
+            if ($streamComment->getStream() === $this) {
+                $streamComment->setStream(null);
+            }
+        }
 
         return $this;
     }
