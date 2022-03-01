@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Stream;
+use App\Entity\StreamCategory;
 use App\Form\StreamType;
 use App\Repository\StreamDataRepository;
 use App\Repository\StreamRatingRepository;
@@ -25,9 +26,11 @@ class StreamsController extends AbstractController
     public function index(StreamRepository $srep): Response
     {
         $streams= $srep->findByStatus();
+        $categories= $this->getDoctrine()->getRepository(StreamCategory::class)->findAll();
         return $this->render('streams/index.html.twig', [
             'controller_name' => 'StreamsController',
-            'streams'=>$streams
+            'streams'=>$streams,
+            'categories'=>$categories
         ]);
     }
 

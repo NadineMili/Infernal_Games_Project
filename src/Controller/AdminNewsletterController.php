@@ -131,11 +131,12 @@ class AdminNewsletterController extends AbstractController
     public function emailNewsLetter(MailerInterface $mailer, Newsletter $newsletter, $rec){
 
 
+        //src="{{ email.image('@newsletterImages/img/infernalLogo.png') }}"
         $email = (new TemplatedEmail())
             ->from('infernalgames2022@gmail.com')
             ->to($rec)
             ->subject( $newsletter->getTitle())
-            ->htmlTemplate('newsletter\index.html.twig')
+            ->htmlTemplate('newsletter\template2.html.twig')
             ->context([ 'newsletter'=>$newsletter]);
 
         $mailer->send($email);

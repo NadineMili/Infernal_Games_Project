@@ -38,7 +38,8 @@
                 <div class="col-xl-3 col-lg-4 col-md-5 sidebar game-page-sideber">
                     <div id="stickySidebar">
                         <!-- Lehné Ads -->
-                        <a href="{{ asset(ads[0].reflink) }}" target="_blank"><img src="{{ asset('Ads/'~ads[0].image) }}" width="200px"></a>
+                        {% set ad= random(0, ads|length) %}
+                        <a href="{{ asset(ads[ad].reflink) }}" target="_blank"><img src="{{ asset('Ads/'~ads[ad].image) }}" width="200px"></a>
                         <!--<div class="widget-item">
                             <div class="testimonials-widget">
                                 <h4 class="widget-title">{{ ads[0].nom }}</h4>

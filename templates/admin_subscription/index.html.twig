@@ -25,7 +25,7 @@
                                     <th> Picture </th>
                                     <th> Subscription ID </th>
                                     <th> Username </th>
-                                    <th> Expiry </th>
+                                    <th> State </th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -42,7 +42,7 @@
                                         <td> {{ sub.id }}</td>
                                         <td> {{ sub.user }}</td>
                                         {% if (sub.status) %}
-                                            <td><label class="badge badge-success">Jawha behi</label></td>
+                                            <td><label class="badge badge-success">Subscribed</label></td>
                                         {% else %}
                                             <td><label class="badge badge-danger">Expired</label></td>
                                         {% endif %}

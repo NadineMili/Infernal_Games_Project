@@ -29,9 +29,9 @@
                 <div class="col">
                     <ul class="blog-filter">
                         <!-- K3ayba for -->
-
-                        <li><a href="#">Shooters</a></li>
-
+                        {% for category in categories %}
+                        <li><a href="#">{{ category.label }}</a></li>
+                        {%  endfor %}
                         <!-- endfor -->
                     </ul>
                 </div>
@@ -61,11 +61,7 @@
                             </div>
                         {% endfor %}
                     </div>
-                    <div class="site-pagination">
-                        <a href="#" class="active">01.</a>
-                        <a href="#">02.</a>
-                        <a href="#">03.</a>
-                    </div>
+
                 </div>
 
                 <!-- ******** FOURAT NOTE ******** -->
