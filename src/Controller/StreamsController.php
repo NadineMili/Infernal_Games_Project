@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Stream;
 use App\Entity\StreamCategory;
+use App\Entity\StreamRating;
 use App\Form\StreamType;
+use App\Repository\AdRepository;
 use App\Repository\StreamDataRepository;
 use App\Repository\StreamRatingRepository;
 use App\Repository\StreamRepository;
@@ -23,14 +25,17 @@ class StreamsController extends AbstractController
     /**
      * @Route("/", name="streams")
      */
-    public function index(StreamRepository $srep): Response
+    public function index(StreamRepository $srep, AdRepository $adRepository): Response
     {
-        $streams= $srep->findByStatus();
+        $streams= $srep->findByState();
         $categories= $this->getDoctrine()->getRepository(StreamCategory::class)->findAll();
+        $ratings= $this->getDoctrine()->getRepository(StreamRating::class)->findAll();
         return $this->render('streams/index.html.twig', [
             'controller_name' => 'StreamsController',
             'streams'=>$streams,
-            'categories'=>$categories
+            'categories'=>$categories,
+            'ratings'=>$ratings,
+            'ads'=> $adRepository->findBy(['etat'=>true])
         ]);
     }
 
@@ -60,10 +65,11 @@ class StreamsController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()){
             $stream->setAccessData($streamData);
+            $stream->setState(1);
             $em->persist($stream);
             $em->flush();
 
-            $streamData->setStatus(true);
+
             $em->persist($streamData);
             $em->flush();
             return $this->redirectToRoute('streams');

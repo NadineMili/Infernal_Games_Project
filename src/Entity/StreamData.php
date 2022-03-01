@@ -31,11 +31,6 @@ class StreamData
     private $streamKey;
 
     /**
-     * @ORM\Column(type="boolean")
-     */
-    private $status;
-
-    /**
      * @ORM\OneToMany(targetEntity=Stream::class, mappedBy="accessData")
      */
     private $streams;
@@ -70,18 +65,6 @@ class StreamData
     public function setStreamKey(string $streamKey): self
     {
         $this->streamKey = $streamKey;
-
-        return $this;
-    }
-
-    public function getStatus(): ?bool
-    {
-        return $this->status;
-    }
-
-    public function setStatus(bool $status): self
-    {
-        $this->status = $status;
 
         return $this;
     }

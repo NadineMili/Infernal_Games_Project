@@ -47,6 +47,11 @@ class Stream
      */
     private $accessData;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $state;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -108,6 +113,18 @@ class Stream
     public function setAccessData(?StreamData $accessData): self
     {
         $this->accessData = $accessData;
+
+        return $this;
+    }
+
+    public function getState(): ?bool
+    {
+        return $this->state;
+    }
+
+    public function setState(bool $state): self
+    {
+        $this->state = $state;
 
         return $this;
     }

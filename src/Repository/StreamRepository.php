@@ -19,14 +19,14 @@ class StreamRepository extends ServiceEntityRepository
         parent::__construct($registry, Stream::class);
     }
 
-    public function findByStatus()
+    public function findByState()
     {
         $em= $this->getEntityManager();
 
         $query = $this->createQueryBuilder('s')
             ->addSelect('sd') // to make Doctrine actually use the join
             ->leftJoin('s.accessData', 'sd')
-            ->where('sd.status = 1')
+            ->where('s.state = 1')
             ->getQuery();
 
         return $query->getResult();
