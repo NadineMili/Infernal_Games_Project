@@ -7,6 +7,7 @@ use App\Entity\StreamCategory;
 use App\Entity\StreamRating;
 use App\Form\StreamType;
 use App\Repository\AdRepository;
+use App\Repository\GameRepository;
 use App\Repository\StreamDataRepository;
 use App\Repository\StreamRatingRepository;
 use App\Repository\StreamRepository;
@@ -25,8 +26,9 @@ class StreamsController extends AbstractController
     /**
      * @Route("/", name="streams")
      */
-    public function index(StreamRepository $srep, AdRepository $adRepository): Response
+    public function index(StreamRepository $srep, AdRepository $adRepository, GameRepository $gameRepository): Response
     {
+        $game= $gameRepository->findHighestRated();
         $streams= $srep->findByState();
         $categories= $this->getDoctrine()->getRepository(StreamCategory::class)->findAll();
         $ratings= $this->getDoctrine()->getRepository(StreamRating::class)->findAll();
@@ -35,7 +37,8 @@ class StreamsController extends AbstractController
             'streams'=>$streams,
             'categories'=>$categories,
             'ratings'=>$ratings,
-            'ads'=> $adRepository->findBy(['etat'=>true])
+            'ads'=> $adRepository->findBy(['etat'=>true]),
+            'game'=>$game[0][0]
         ]);
     }
 

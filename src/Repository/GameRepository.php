@@ -19,6 +19,15 @@ class GameRepository extends ServiceEntityRepository
         parent::__construct($registry, Game::class);
     }
 
+    public function findHighestRated(){
+
+        $query = $this->createQueryBuilder('g')
+            ->select('g, MAX(g.rating) AS bestGame') // to make Doctrine actually use the join
+            ->getQuery();
+
+        return $query->getResult();
+
+    }
     // /**
     //  * @return Game[] Returns an array of Game objects
     //  */
