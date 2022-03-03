@@ -23,7 +23,7 @@
         function resetTest(){
             var player = videojs('testStream');
             player.reset();
-            player.src("{{ asset('Streams/stream1/index.m3u8') }}");
+            player.src("{{ asset('http://127.0.0.1:8050/hls/stream1/index.m3u8') }}");
 
         }
 
@@ -121,7 +121,7 @@
         <div class="game-single-preview mt-4">
             <video id="testStream" width="600px" height="300px" class="video-js vjs-matrix" controls="true" poster="{{ asset('front/img/promo-bg.jpg') }}">
                 <source
-                        src="{{ asset('Streams/Fourat1/index.m3u8') }}"
+                        src="{{ asset('http://127.0.0.1:8050/hls/Fourat1/index.m3u8') }}"
                         type="application/x-mpegURL">
             </video>
 
