@@ -13,6 +13,7 @@ use App\Repository\GameRepository;
 use App\Repository\StreamDataRepository;
 use App\Repository\StreamRatingRepository;
 use App\Repository\StreamRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -47,33 +48,65 @@ class StreamsController extends AbstractController
     }
 
     /**
-     * @Route("/streamCommentsAjax/{id}", name="streamCommentsAjax")
+     * @Route("/searchByRating", name="searchByRating")
      */
-    public function streamCommentsAjax($id, Request $req, NormalizerInterface $normalizer){
-
-        $comments= $this->getDoctrine()->getRepository(StreamComment::class)->findBy(['stream'=>$id]);
-        $jsonData=$normalizer->normalize($comments, 'json', ['groups'=>'comments:read']);
-        $jsonData[0]['user']= $comments[0]->getUser()->getUsername();
-        $jsonData[0]['stream']= $comments[0]->getStream()->getId();
+    public function searchByRating(Request $request, StreamRepository $srep,  NormalizerInterface $normalizer): Response
+    {
+        $streams= $srep->findByStateRating( $request->get('ratingId') );
+        $jsonData= $normalizer->normalize($streams, 'json', ['groups'=>'streams:read']);
         return new Response(json_encode($jsonData));
     }
 
     /**
-     * @Route("/streamCommentsAjax/new", name="streamCommentsAjaxNew")
+     * @Route("/searchByCategory", name="searchByCategory")
      */
-    public function addStreamCommentsAjax( Request $req, NormalizerInterface $normalizer){
-        $em= $this->getDoctrine()->getManager();
-        $comment= new StreamComment();
-        dd($req);
-
-
-        $comments= $this->getDoctrine()->getRepository(StreamComment::class)->findBy(['stream'=>$id]);
-        $jsonData=$normalizer->normalize($comments, 'json', ['groups'=>'comments:read']);
-        $jsonData[0]['user']= $comments[0]->getUser()->getUsername();
-        $jsonData[0]['stream']= $comments[0]->getStream()->getId();
+    public function searchByCategory(Request $request, StreamRepository $srep,  NormalizerInterface $normalizer): Response
+    {
+        $streams= $srep->findByStateCategory( $request->get('categoryId') );
+        $jsonData= $normalizer->normalize($streams, 'json', ['groups'=>'streams:read']);
         return new Response(json_encode($jsonData));
     }
 
+    /**
+     * @Route("/streamCommentsAjax/{id}", name="streamCommentsAjax")
+     */
+    public function streamCommentsAjax($id, Request $req, NormalizerInterface $normalizer){
+        $comments= $this->getDoctrine()->getRepository(StreamComment::class)->findBy(['stream'=>$id]);
+        $jsonData=$normalizer->normalize($comments, 'json', ['groups'=>'comments:read']);
+
+        $i=0;
+        foreach ($comments as $comment){
+            $jsonData[$i++]['user']= $comment->getUser()->getUsername();
+        }
+        return new Response(json_encode($jsonData));
+    }
+
+    /**
+     * @Route("/addStreamCommentsAjax/new", name="streamCommentsAjaxNew")
+     */
+    public function addStreamCommentsAjax( Request $req, UserRepository $userRepository, StreamRepository $streamRepository, NormalizerInterface $normalizer){
+
+        //dd($id);
+        $em= $this->getDoctrine()->getManager();
+
+        $user= $userRepository->find($req->get('user'));
+        //$user= $userRepository->find(2);
+        $stream= $streamRepository->find($req->get('stream'));
+
+
+        $text= $req->get('text');
+
+        $comment= new StreamComment();
+        $comment->setUser($user);
+        $comment->setStream($stream);
+        $comment->setText($text);
+        $comment->setTimeStamp(new \DateTime('now'));
+
+        $em->persist($comment);
+        $em->flush();
+        $jsonData=$normalizer->normalize($comment, 'json', ['groups'=>'comments:read']);
+        return new Response(json_encode($jsonData));
+    }
 
     /**
      * @Route("/watch/{id}", name="watch_stream")
@@ -110,7 +143,8 @@ class StreamsController extends AbstractController
 
             $em->persist($streamData);
             $em->flush();
-            return $this->redirectToRoute('streams');
+
+            return $this->redirectToRoute('streamManager',['id'=>$stream->getId()]);
         }
 
         return $this->render('streams/new.html.twig', [
@@ -118,5 +152,27 @@ class StreamsController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/streamManager/{id}", name="streamManager")
+     */
+    public function streamManager($id, Request $req)
+    {
+        $stream= $this->getDoctrine()->getRepository(Stream::class)->find($id);
+        return $this->render('streams/streamManager.html.twig', [
+            'stream'=>$stream
+        ]);
+    }
 
+    /**
+     * @Route("/disconnectStream/{id}", name="disconnectStream")
+     */
+    public function disconnectStream($id, Request $req)
+    {
+        $stream= $this->getDoctrine()->getRepository(Stream::class)->find($id);
+        $stream->setState(false);
+        $em= $this->getDoctrine()->getManager();
+        $em->persist($stream);
+        $em->flush();
+        return $this->redirectToRoute('streams');
+    }
 }

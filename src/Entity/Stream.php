@@ -8,6 +8,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
+use Symfony\Component\Serializer\Annotation\Groups;
+
 /**
  * @ORM\Entity(repositoryClass=StreamRepository::class)
  */
@@ -17,40 +19,47 @@ class Stream
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("streams:read")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=60)
      * @Assert\NotBlank(message="Title can't be blank!")
+     * @Groups("streams:read")
      */
     private $title;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Describe your stream!")
+     * @Groups("streams:read")
      */
     private $description;
 
     /**
      * @ORM\ManyToOne(targetEntity=StreamRating::class, inversedBy="streams")
      * @Assert\NotBlank(message="Maturity rating is required!")
+     * @Groups("streams:read")
      */
     private $rating;
 
     /**
      * @ORM\ManyToOne(targetEntity=StreamCategory::class, inversedBy="streams")
      * @Assert\NotBlank(message="What is your stream about?")
+     * @Groups("streams:read")
      */
     private $category;
 
     /**
      * @ORM\ManyToOne(targetEntity=StreamData::class, inversedBy="streams")
+     * @Groups("streams:read")
      */
     private $accessData;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups("streams:read")
      */
     private $state;
 
@@ -171,5 +180,9 @@ class Stream
         return $this;
     }
 
+    public function __toString()
+    {
+        return $this->title;
+    }
 
 }

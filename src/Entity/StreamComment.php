@@ -21,7 +21,6 @@ class StreamComment
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="streamComments")
-     * @ORM\JoinColumn(nullable=false)
      * @Groups("comments:read")
      */
     private $user;

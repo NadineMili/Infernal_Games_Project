@@ -67,6 +67,11 @@ class User implements UserInterface
     }
 
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
     /**
      * A visual identifier that represents this user.
      *

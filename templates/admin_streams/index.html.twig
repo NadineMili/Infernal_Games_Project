@@ -31,6 +31,7 @@
                                     <th> Streamer </th>
                                     <th> Rating </th>
                                     <th> Category </th>
+                                    <th> State </th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -45,21 +46,29 @@
                                             <img src="{{ asset('back/images/faces-clipart/pic-'~random(['1','2','3','4','8'])~'.png') }}" alt="image" />
                                         </td>
                                         <td> {{ stream.title }}</td>
-                                        <td> {{ stream.streamer }}</td>
-                                        <td><label class="badge badge-warning">Pending</label></td>
-                                        <td> <a class="" href="{{ path('admin_newsletter_edit', {'id':stream.id}) }}" title="Inspect">
-                                                    <i class="mdi mdi-pencil mdi-18px"></i>
-                                            </a></td>
+                                        <td> {{ stream.accessData.streamer }}</td>
+                                        <td> {{ stream.rating }}</td>
+                                        <td> {{ stream.category }}</td>
+                                        {% if stream.state %}
+                                            <td><a target="_blank" href="{{ path('watch_stream',{'id':stream.id}) }}"><label class="badge badge-danger">Live</label></a></td>
+                                            <td> <a href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="mdi mdi-lan-disconnect text-danger mdi-18px"></i>
+                                                </a>
+                                                <div class="dropdown-menu">
+                                                    <h6 class="dropdown-header">Are you sure to disconnect this stream??</h6>
+                                                    <a class="dropdown-item text-danger" href="{{ path('admin_newsletter_delete', {'id':stream.id}) }}">Delete</a>
+                                                </div></td>
+                                        {% else %}
+                                            <td><label class="badge badge-success">Done</label></td>
+                                            <td> <a href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="mdi mdi-delete text-danger mdi-18px"></i>
+                                                </a>
+                                                <div class="dropdown-menu">
+                                                    <h6 class="dropdown-header">Are you sure to remove this stream??</h6>
+                                                    <a class="dropdown-item text-danger" href="{{ path('admin_streams_delete', {'id':stream.id}) }}">Delete</a>
+                                                </div></td>
+                                        {% endif %}
 
-
-                                        <td> <a href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <i class="mdi mdi-delete text-danger mdi-18px"></i>
-
-                                            </a>
-                                            <div class="dropdown-menu">
-                                                <h6 class="dropdown-header">Are you sure to remove this stream??</h6>
-                                                <a class="dropdown-item text-danger" href="{{ path('admin_newsletter_delete', {'id':newsletter.id}) }}">Delete</a>
-                                            </div></td>
                                     </tr>
                                 {% endfor %}
 

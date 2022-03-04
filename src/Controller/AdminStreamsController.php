@@ -31,8 +31,6 @@ class AdminStreamsController extends AbstractController
         ]);
     }
 
-
-
     //Categories
     /**
      * @Route("/categories", name="admin_streams_categories")
@@ -161,5 +159,16 @@ class AdminStreamsController extends AbstractController
         $entityManager->remove($rating);
         $entityManager->flush();
         return $this->redirectToRoute('admin_streams_ratings', [], Response::HTTP_SEE_OTHER);
+    }
+
+    /**
+     * @Route("/delete/{id}", name="admin_streams_delete")
+     */
+    public function deleteStream(Request $request, EntityManagerInterface $entityManager,$id, StreamRepository $rep): Response
+    {
+        $stream= $rep->find($id);
+        $entityManager->remove($stream);
+        $entityManager->flush();
+        return $this->redirectToRoute('admin_streams', [], Response::HTTP_SEE_OTHER);
     }
 }

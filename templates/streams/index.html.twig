@@ -4,16 +4,100 @@
 
 {% block body %}
 
+<script>
+    function searchByRating(ratingId){
+            $.ajax({
+                url: '/streams/searchByRating',
+                type: 'POST',
+                data:{
+                    "ratingId": ratingId
+                },
+                dataType: 'json',
+                async: true,
 
+                success: function(data, status){
+
+                    if(data.length>0){
+                        $('#streamsArea').empty();
+
+                        for (i=0; i<data.length; i++){
+                            stream= data[i];
+                            var row= $('<div class="col-lg-4 col-md-6">'+
+                                '<div class="game-item">'+
+                                    '<h5>'+ stream['title'] +'</h5>'+
+                                '<a href="{{ path('watch_stream', {'id': 2}) }}" class="read-more">Watch now!  <img src="{{ asset('front/img/icons/double-arrow.png') }}" alt="#"/></a>'+
+                                '</div>'+
+                            '</div>');
+                            $('#streamsArea').append(row)
+
+                        }
+                    }else{
+                        var div=$('<div class="col-lg-4 col-md-6">'+
+                            '<div class="game-item">'+
+                            '<p>No live streams for this rating :/</p>'+
+                        '</div>'+
+                    '</div>')
+                        $('#streamsArea').empty().append(div)
+                    }
+                },
+                error : function(xhr, textStatus, errorThrown) {
+                    console.log(errorThrown);
+                }
+            })
+
+    }
+
+    function searchByCategory(categoryId){
+        $.ajax({
+            url: '/streams/searchByCategory',
+            type: 'POST',
+            data:{
+                "categoryId": categoryId
+            },
+            dataType: 'json',
+            async: true,
+
+            success: function(data, status){
+
+                if(data.length>0){
+                    $('#streamsArea').empty();
+
+                    for (i=0; i<data.length; i++){
+                        stream= data[i];
+                        var row= $('<div class="col-lg-4 col-md-6">'+
+                            '<div class="game-item">'+
+                            '<h5>'+ stream['title'] +'</h5>'+
+                            '<a href="{{ path('watch_stream', {'id': 2}) }}" class="read-more">Watch now!  <img src="{{ asset('front/img/icons/double-arrow.png') }}" alt="#"/></a>'+
+                            '</div>'+
+                            '</div>');
+                        $('#streamsArea').append(row)
+
+                    }
+                }else{
+                    var div=$('<div class="col-lg-4 col-md-6">'+
+                        '<div class="game-item">'+
+                        '<p>No live streams for this category :/</p>'+
+                        '</div>'+
+                        '</div>')
+                    $('#streamsArea').empty().append(div)
+                }
+            },
+            error : function(xhr, textStatus, errorThrown) {
+                console.log(errorThrown);
+            }
+        })
+
+    }
+</script>
 
 
     <!-- Page top section -->
     <section class="page-top-section set-bg" data-setbg="{{ asset('front/img/page-top-bg/1.jpg') }}">
         <div class="page-info">
-            <h2>Games</h2>
+            <h2>Streams</h2>
             <div class="site-breadcrumb">
                 <a href="{{ asset('/') }}">Home</a>  /
-                <span>Games</span>
+                <span>Streams</span>
             </div>
         </div>
     </section>
@@ -28,11 +112,13 @@
             <div class="row">
                 <div class="col">
                     <ul class="blog-filter">
-                        <!-- K3ayba for -->
+
+                        <!-- K3ayba for Rating Maturity-->
                         {% for rating in ratings %}
-                        <li><a href="#">{{ rating.label }}</a></li>
+                        <li><a id="rating{{ rating.id }}" onclick="searchByRating({{ rating.id }})" href="#">{{ rating.label }}</a></li>
                         {%  endfor %}
                         <!-- endfor -->
+
                     </ul>
                 </div>
 
@@ -47,14 +133,13 @@
             <div class="row blog-item">
                 <!-- ******** Games list ******** -->
                 <div class="col-xl-9 col-lg-8 col-md-7">
-                    <div class="row">
+                    <div class="row" id="streamsArea">
                         <!-- ******** FOURAT NOTE ******** -->
-                        <!-- ******** ligné for game in games ******** -->
+                        <!-- ******** Streams ******** -->
                         {% if streams|length>0 %}
                         {% for stream in streams %}
                             <div class="col-lg-4 col-md-6">
                                 <div class="game-item">
-                                    <!-- ******** Taswiret elgame ******** -->
                                     <h5>{{ stream.title }}</h5>
                                     <!-- ******** href  ******** -->
                                     <a href="{{ path('watch_stream', {'id':stream.id}) }}" class="read-more">Watch now!  <img src="{{ asset('front/img/icons/double-arrow.png') }}" alt="#"/></a>
@@ -82,7 +167,7 @@
                                 <h4 class="widget-title">Categories</h4>
                                 <ul>
                                     {% for category in categories %}
-                                    <li><a href="">{{ category.label }}</a></li>
+                                    <li><a href="#" onclick="searchByCategory({{ category.id }})">{{ category.label }}</a></li>
                                     {% endfor %}
                                 </ul>
                             </div>

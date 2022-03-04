@@ -21,16 +21,35 @@ class StreamRepository extends ServiceEntityRepository
 
     public function findByState()
     {
-        $em= $this->getEntityManager();
-
         $query = $this->createQueryBuilder('s')
-            ->addSelect('sd') // to make Doctrine actually use the join
-            ->leftJoin('s.accessData', 'sd')
             ->where('s.state = 1')
             ->getQuery();
 
         return $query->getResult();
     }
+
+    public function findByStateRating($ratingId)
+    {
+        $query = $this->createQueryBuilder('s')
+            ->where('s.state = 1')
+            ->andWhere('s.rating = :ratingId')
+            ->setParameter('ratingId', $ratingId)
+            ->getQuery();
+
+        return $query->getResult();
+    }
+
+    public function findByStateCategory($categoryId)
+    {
+        $query = $this->createQueryBuilder('s')
+            ->where('s.state = 1')
+            ->andWhere('s.category = :categoryId')
+            ->setParameter('categoryId', $categoryId)
+            ->getQuery();
+
+        return $query->getResult();
+    }
+
 
     public function findById($id)
     {
