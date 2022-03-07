@@ -8,6 +8,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 
 class ProductFormType extends AbstractType
@@ -19,7 +20,17 @@ class ProductFormType extends AbstractType
             ->add('description')
             ->add('price')
             ->add('brand')
-            ->add('category')
+            ->add('category', ChoiceType::class, [
+                'choices' => [
+                    "laptop"=>"laptop",
+                   "Console de Jeux"=>"console",
+                   "pc gamer"=>"pc gamer",
+                   "Accessoires de Jeux"=>"Accessoires de Jeux",
+                  " Périphériques et Accessoires Gamers"=>" Périphériques et Accessoires Gamers",
+                   "ComposantPcGamer"=> "ComposantPcGamer",
+
+                ]])
+
             ->add('quantity')
             ->add('picture', FileType::class, [
                 'mapped' => false,

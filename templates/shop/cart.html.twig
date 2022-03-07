@@ -9,7 +9,7 @@
         <h2>Your cart</h2>
         <div class="site-breadcrumb">
             <a href="">Home</a>  
-            <span>Reviews</span>
+            <span>Cart</span>
 
         </div>
       
@@ -19,8 +19,10 @@
         
     </div>
 </section>
+<div class="games-section">
+    <div class="container">
 {%if items | length > 0%}
-    <table class="table">
+    <table class="table table-dark">
         <thead>
             <tr>
                 <th>Produit</th>
@@ -48,6 +50,7 @@
         </tbody>
         <tfoot>
             <tr>
+                <td></td><td></td>
                 <td colspan=""3 class="text-right"> Total :  </td>
                 <td>{{ total }}</td>
                 
@@ -61,6 +64,7 @@
     <div>
         <a class="btn btn-success" href="{{ path("command_add") }}">Valider Panier</a>
     </div>
-
+</div>
+</div>
 {% endblock %}
   

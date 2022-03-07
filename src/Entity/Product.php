@@ -46,11 +46,7 @@ class Product
      */
     private $brand;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(message="category is required")
-     */
-    private $category;
+    
 
     /**
      * @ORM\Column(type="integer")
@@ -68,6 +64,11 @@ class Product
      * @ORM\OneToMany(targetEntity=LigneCommande::class, mappedBy="product")
      */
     private $ligneCommandes;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="products")
+     */
+    private $category;
 
     public function __construct()
     {

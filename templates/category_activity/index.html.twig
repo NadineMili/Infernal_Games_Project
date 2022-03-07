@@ -1,0 +1,57 @@
+{% extends 'backBase.html.twig' %}
+
+{% block title %}Hello Admin!{% endblock %}
+
+{% block body %}
+
+    <div class="main-panel">
+        <div class="content-wrapper">
+            <div class="page-header">
+                <h3 class="page-title"> Categoriess </h3>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a class="btn btn-success" href="{{ asset('/category/new') }}">+ Add a category</a></li>
+                    </ol>
+                </nav>
+            </div>
+                <div class="col-lg-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped ">
+                                    <thead>
+                                    <tr>
+                                        <th> Label </th>
+                                       
+
+                                    </tr>
+                                    </thead>
+                                     {% for category in categories %}
+                                    <tbody>
+                                    <!-- ***** Yosra Note **** -->
+                                    <!-- Bech t7il for lina t3abi el table -->
+                                    <tr onclick="">
+                                      
+                                        <th> {{category.label}} </th>
+                                      
+                                        <td> <a class="" href="{{ path('category_activity_edit', {'id' : category.id})}}">
+                                                <i class="mdi mdi-pencil"></i>
+                                            </a></td>
+                                        <td> <a class="" href="{{ path('category_activity_delete', {'id' : category.id})}}">
+                                                <i class="mdi mdi-delete-forever"></i>
+                                            </a></td>
+                                        
+          
+                                    </tr>
+
+                                    </tbody>
+                                    {% endfor %}
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+    </div>
+{% endblock %}

@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Product;
+use App\Entity\Category;
 use App\Repository\ProductRepository;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -21,10 +22,14 @@ class ShopController extends AbstractController
     public function index(): Response
     {
         $products= $this->getDoctrine()->getRepository(Product::class)->findAll();
+        $categories= $this->getDoctrine()->getRepository(Category::class)->findAll();
         return $this->render('shop/index.html.twig', [
             'controller_name' => 'ShopController',
-            'products'=>$products
+            'products'=>$products,
+            'categories'=>$categories
+
         ]);
+       
     }
 
     /**
@@ -101,4 +106,17 @@ class ShopController extends AbstractController
         
      
 }
+/**
+ * @Route ("/view/{id}" ,name="viewProduct")
+ */
+function viewOneProduct($id){
+   
+    $product=$this->getDoctrine()->getRepository(Product::class)->find($id);
+
+    return $this->render('shop/product.html.twig',
+        ['product'=>$product]);
+}
+
+ 
+
 }

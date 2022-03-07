@@ -13,7 +13,7 @@ use App\Form\CommandeType;
 
 class CommandeController extends AbstractController
  /**
-     * @Route("/admin/commandes")
+     * @Route("/commandes")
      */
 {
     /**
@@ -21,7 +21,7 @@ class CommandeController extends AbstractController
      */
     public function index(CommandeRepository $repo): Response
     {
-        $commandess = $repo->findAll();
+        $commandes = $repo->findAll();
 
         return $this->render('commande/index.html.twig',[
             "commandes" =>$commandes,
@@ -44,7 +44,7 @@ class CommandeController extends AbstractController
             return $this->redirectToRoute("shop");
 
         }
-
+        
         return $this->render("shop/commande.html.twig",[
             'commande' =>$commande,
             'form' => $form->createView()

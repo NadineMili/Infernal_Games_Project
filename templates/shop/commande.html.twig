@@ -1,4 +1,4 @@
-{% extends 'backBase.html.twig' %}
+{% extends 'frontBase.html.twig' %}
 
 {% block body %}
 
@@ -14,55 +14,25 @@
                 {{ form_start(form, {'attr':{'novalidate':'novalidate'}}) }}
                             <div class="form-group">
                                 <label for="productName">Name Client</label>
-                                {{ form_widget(user.form.name,{'attr':{'class':'form-control', 'placeholder':'Name'}}) }}
-                                <div class="text-danger">{{ form_errors(form.name) }}</div>
+                                {{ form_widget(form.user,{'attr':{'class':'form-control', 'placeholder':'Name'}}) }}
+                                <div class="text-danger">{{ form_errors(form.user) }}</div>
 
                             </div>
                             <div class="form-group">
-                                <label for="productDescription">Description</label>
-                                {{ form_widget(form.description,{'attr':{'class':'form-control', 'placeholder':'Description'}}) }}
-                                 <div class="text-danger">{{ form_errors(form.description) }}</div>
-
-
-                            </div>
-                            <div class="form-group">
-                                <label for="productPrice">Price</label>
-                                {{ form_widget(form.price,{'attr':{'class':'form-control', 'placeholder':'Price'}}) }}
-                               <div class="text-danger">{{ form_errors(form.price) }}</div>
+                                <label for="productDescription">Total</label>
+                                {{ form_widget(form.total,{'attr':{'class':'form-control'}}) }}
+                                 <div class="text-danger">{{ form_errors(form.total) }}</div>
 
 
                             </div>
                             <div class="form-group">
-                                <label for="productQuantity">Quantity</label>
-                               {{ form_widget(form.quantity,{'attr':{'class':'form-control', 'placeholder':'Quantity'}}) }}
-                               <div class="text-danger">{{ form_errors(form.quantity) }}</div>
+                                <label for="productPrice">Payment Method</label>
+                                {{ form_widget(form.paymentMethod,{'attr':{'class':'form-control', 'placeholder':'Payment Method'}}) }}
+                               <div class="text-danger">{{ form_errors(form.paymentMethod) }}</div>
 
 
                             </div>
-                            <div class="form-group">
-                                <label>Product Picture</label>
-                                <input type="file" name="img[]" class="file-upload-default">
-                                <div class="input-group col-xs-12">
-                                    <input type="text" class="form-control file-upload-info" disabled placeholder="Upload Image">
-                                    <span class="input-group-append">
-                            <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
-                          </span>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="productBrand">Brand</label>
-                             {{ form_widget(form.brand,{'attr':{'class':'form-control', 'placeholder':'Brand'}}) }}
-                                <div class="text-danger">{{ form_errors(form.brand) }}</div>
-
-
-                            </div>
-                            <div class="form-group">
-                                <label for="productCategory">Category</label>
-                                {{ form_widget(form.category,{'attr':{'class':'form-control', 'placeholder':'Category'}}) }}
-                                 <div class="text-danger">{{ form_errors(form.category) }}</div>
-
-
-                            </div>
+                            
                             <button type="submit" class="btn btn-primary mr-2">Submit</button>
                             <a href="{{asset('/admin/products')}}" class="btn btn-dark">Cancel</a>
                         {{form_end(form)}}
