@@ -65,6 +65,11 @@ class User implements UserInterface
      */
     private $gameComment;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Likes::class, inversedBy="idUser")
+     */
+    private $likes;
+
     public function __construct()
     {
         $this->reports = new ArrayCollection();
@@ -224,6 +229,18 @@ class User implements UserInterface
                 $gameComment->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getLikes(): ?Likes
+    {
+        return $this->likes;
+    }
+
+    public function setLikes(?Likes $likes): self
+    {
+        $this->likes = $likes;
 
         return $this;
     }
