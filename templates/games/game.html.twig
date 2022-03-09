@@ -1,6 +1,7 @@
 {% extends 'frontBase.html.twig' %}
 
-{% block title %}{{ game.name }}{% endblock %}
+{% block title %}{{ game.name }}
+   {% endblock %}
 {% block body %}
     <!-- Page top section -->
     <section class="page-top-section set-bg" data-setbg="{{ asset('front/img/page-top-bg/1.jpg') }}">
@@ -43,12 +44,57 @@
                         <div class="widget-item">
                             <div class="rating-widget">
                                 <h4 class="widget-title">Rating</h4>
+                                <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
                                 <div class="rating">
-                                    {% if game.rating is not null %}
-                                        <h5><span>{{ game.rating }}</span> / 5</h5>
-                                    {% else %}
-                                        <h5><span>TBD</span></h5>
-                                    {% endif %}
+                                    <div class="stars">
+                                        <i class="las la-star" style="color: white" data-value="1"></i><i class="las la-star" style="color: white" data-value="2"></i><i class="las la-star" style="color: white" data-value="3"></i><i class="las la-star" style="color: white" data-value="4"></i><i class="las la-star" style="color: white" data-value="5"></i>
+                                    </div>
+                                    <input type="hidden" name="note" id="note" value="0">
+                                    <script>
+                                        window.onload = () => {
+                                            //chercher toutes les étoiles
+                                            const stars = document.querySelectorAll(".la-star");
+                                            console.log(stars);
+
+                                            const note = document.querySelector("#note");
+
+                                            //boucle sur les étoiles pour l'ajouter des écouteurs d'événements
+                                            for(star of stars) {
+                                                star.addEventListener("mouseover",function () {
+                                                    resetStars();
+                                                    console.log(this)
+                                                    this.style.color = "orange";
+                                                    this.classList.add("las");
+                                                    this.classList.remove("lar");
+
+                                                    //l'élément précedent dans le DOM de meme niveau
+                                                    let previousStar = this.previousElementSibling;
+                                                    while(previousStar) {
+                                                        previousStar.style.color = "orange";
+                                                        previousStar.classList.add("las");
+                                                        previousStar.classList.remove("lar");
+                                                        previousStar = previousStar.previousElementSibling;
+                                                    }
+                                                });
+                                                star.addEventListener("click",function ()  {
+                                                    note.value = this.dataset.value;
+                                                });
+                                                star.addEventListener("mouseout",function ()  {
+                                                    resetStars(note.value);
+                                                });
+                                            }
+                                            function resetStars(note = 0){
+                                                for (star of stars) {
+                                                    if (star.dataset.value > note ) {
+                                                        star.style.color = "white";
+                                                    } else {
+                                                        star.style.color ="orange";
+                                                    }
+
+                                                }
+                                            }
+                                        }
+                                    </script>
                                 </div>
                             </div>
                         </div>
@@ -177,7 +223,5 @@
 </table>
     </section>
     <!-- Games end-->
-
-
 
 {% endblock %}
