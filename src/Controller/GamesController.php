@@ -5,11 +5,13 @@ namespace App\Controller;
 use App\Entity\Game;
 use App\Entity\GameComment;
 use App\Entity\Publication;
+use App\Entity\Rating;
 use App\Entity\User;
 use App\Form\CommentType;
 use App\Form\GamesType;
 use App\Repository\GameCommentRepository;
 use App\Repository\GameRepository;
+use App\Repository\RatingRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -35,6 +37,20 @@ class GamesController extends AbstractController
             'games' => $games
         ]);
     }
+    /**
+     * @Route("/gameRatingAjax/{id}", name="gameRatingAjax")
+     */
+    public function gameRatingAjax($id, Request $req, NormalizerInterface $normalizer){
+
+        $rates= $this->getDoctrine()->getRepository(Rating::class)->findBy(['rate'=>$id]);
+        $jsonData=$normalizer->normalize($rates, 'json', ['groups'=>'gameRatings:read']);
+
+        $i=0;
+        foreach ($rates as $rate){
+            $jsonData[$i++]['user']= $rate->getUser()->getUsername();
+        }
+        return new Response(json_encode($jsonData));
+    }
 
     /**
      * @Route("/gameCommentsAjax/{id}", name="gameCommentsAjax")
@@ -57,42 +73,37 @@ class GamesController extends AbstractController
                              UserRepository $userRepository,
                              GameRepository $gameRepository,NormalizerInterface $normalizer)
     {
-        #$user=$this->getUser();
-
         $game = $this->getDoctrine()->getRepository(Game::class)->find($id);
         $comments= $this->getDoctrine()->getRepository(GameComment::class)->findBy(['game'=>$game]);
-        #$comments = $this->getDoctrine()->getRepository(GameComment::class)->findAll();
-        #$comment = new GameComment();
 
-        #$form = $this->createForm(CommentType::class, $comment);
-        #$form->handleRequest($request);
-        #if ($form->isSubmitted() && $form->isValid()) {
-            #$em->persist($comment);
-            #$em->flush();
+        return $this->render('games/game.html.twig',
+            ['game' => $game, 'comments'=>$comments, 'users'=>$userRepository->findAll()]);
 
-            #return $this->redirectToRoute('view_game', ['id' => $id]);
-        #}
-        /*
+    }
+
+    /**
+     * @Route("/addGameRating", name="addGameRating")
+     */
+    public function addGameRating( Request $request, EntityManagerInterface $em,
+                                    UserRepository $userRepository,
+                                    GameRepository $gameRepository,
+                                    RatingRepository $ratingRepository,NormalizerInterface $normalizer)
+    {
         $em = $this->getDoctrine()->getManager();
 
         $user = $userRepository->find($request->get('user'));
-        $gameC = $gameRepository->find($request->get('game'));
+        $game = $gameRepository->find($request->get('game'));
 
-        $description = $request->get('description');
+        $rate = new Rating();
+        $rate->setUser($user);
+        $rate->setRateIndex($rate);
 
-        $comment = new GameComment();
-        $comment->setUser($user);
-        $comment->setGame($gameC);
-        $comment->setDescription($description);
-
-        $em->persist($comment);
+        $em->persist($rate);
         $em->flush();
-        $jsonData=$normalizer->normalize($comment,'json',['groups'=>'comments:read']);
+        $jsonData=$normalizer->normalize($rate,'json',['groups'=>'gameRating:read']);
 
         return new Response(json_encode($jsonData));
-        */
-        return $this->render('games/game.html.twig',
-            ['game' => $game, 'comments'=>$comments, 'users'=>$userRepository->findAll()]);
+
 
     }
 

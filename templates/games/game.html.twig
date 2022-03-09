@@ -44,15 +44,18 @@
                         <div class="widget-item">
                             <div class="rating-widget">
                                 <h4 class="widget-title">Rating</h4>
+
                                 <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
                                 <div class="rating">
                                     <div class="stars">
                                         <i class="las la-star" data-index="0"></i><i class="las la-star" data-index="1"></i><i class="las la-star"  data-index="2"></i><i class="las la-star"  data-index="3"></i><i class="las la-star"  data-index="4"></i>
                                     </div>
-                                    <input type="hidden" name="note" id="note" value="0">
                                     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
                                <script>
+
+                                   var game = "{{ game.id }}";
                                    var ratedIndex = -1;
+                                       var user = 0;
 
                                    $(document).ready(function () {
                                        resetStarColors()
@@ -61,6 +64,7 @@
                                        $('.la-star').on('click', function () {
                                            ratedIndex = parseInt($(this).data('index'));
                                            localStorage.setItem('ratedIndex', ratedIndex);
+                                           saveToTheDB();
                                        })
                                        $('.la-star').mouseover(function () {
                                            resetStarColors();
@@ -74,6 +78,24 @@
                                            }
                                        });
                                    });
+                                   function saveToTheDB() {
+                                       $.ajax({
+                                           url:"/games/addGameRating",
+                                           methode: "POST",
+                                           dataType: 'json',
+                                           async: true,
+                                           data : {
+                                               save: 1,
+                                               'user':user,
+                                               'game':game,
+                                               'rate':ratedIndex,
+                                               ratedIndex : ratedIndex,
+                                           }, success: function (r) {
+                                               user = r.user;
+                                               localStorage.setItem('user',user);
+                                           }
+                                       })
+                                   }
 
                                    function setStars(max){
                                        for (var i=0;  i<=max; i++)
@@ -143,7 +165,6 @@
     <script>
         $(document).ready(function (){
             $('#loadComments').on('click',function (event) {
-                console.log('ehe')
                 console.log($(this).data('id'))
                 $.ajax({
                     url: '/games/gameCommentsAjax/'+$(this).data('id'),
