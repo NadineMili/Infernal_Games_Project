@@ -1,0 +1,85 @@
+
+
+{% block body %}
+    <html lang="zxx">
+    <head>
+        <title>Infernal Games {% block title %}{% endblock %}</title>
+        <meta charset="UTF-8">
+
+        <link rel="stylesheet" href="{{ asset('front/login/css/style.css') }}"/>
+        <link href="{{ asset('img/infernalLogo.ico') }}" rel="shortcut icon"/>
+        <link rel="stylesheet" href="{{ asset ('front/css/style.css ') }}"/>
+        <link rel="stylesheet" href="{{ asset('front/css/font-awesome.min.css') }}"/>
+        <script src="https://kit.fontawesome.com/3bcd2f2179.js" crossorigin="anonymous"></script>
+
+
+
+    </head>
+    <body>
+
+    <!-- Page top section -->
+
+    <div class="page-info">
+        <img src="img/infernalLogo.ico" width="100" height="100" alt="img"/>
+    </div>
+
+    <div class="site-breadcrumb">
+        <a href="{{ asset('/home') }}"> <i class="fa-solid fa-house-chimney" style='font-size:32px;color:white;position:relative;right:70px;top:30px'></i></a>
+    </div>
+
+    <!-- Page top end-->
+    <section class="games-section">
+        <div >
+            <div >
+                <div class="row w-100 m-0">
+                    <div class="content-wrapper full-page-wrapper d-flex align-items-center auth login-bg">
+                        <div class="card col-lg-4 mx-auto">
+                            <div class="card-body px-5 py-5">
+                                <h3 class="card-title text-left mb-3">Please sign up</h3>
+                                {{ form_start(registrationForm, {'attr':{'novalidate':'novalidate'}}) }}
+                                    <div class="form-group">
+                                        <label for="email"></label>
+                                        {{ form_widget(registrationForm.email,{'attr':{'class':'form-control', 'placeholder':'email'}}) }}
+                                        <div class="text-danger">{{ form_errors(registrationForm.email) }}</div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="password"></label>
+                                        {{ form_widget(registrationForm.Password,{'attr':{'class':'form-control', 'placeholder':'password'}}) }}
+                                        <div class="text-danger">{{ form_errors(registrationForm.Password) }}</div>
+                                    </div>
+                                <div class="mb-3">
+                                    If you have an account  <a href="{{ path('app_login') }}">    sign in</a>
+                                </div>
+                                    {{ form_row(registrationForm.agreeTerms) }}
+                                    <button type="submit" class="file-upload-browse btn btn-primary">Register</button>
+                                    {{ form_end(registrationForm) }}
+                            </div>
+                        </div>
+                    </div>
+                    <!-- content-wrapper ends -->
+                </div>
+                <!-- row ends -->
+            </div>
+            <!-- page-body-wrapper ends -->
+        </div>
+    </section>
+
+
+    <!-- container-scroller -->
+    <!-- plugins:js -->
+    <script src="{{ asset('vendors/js/vendor.bundle.base.js') }}"></script>
+    <!-- endinject -->
+    <!-- Plugin js for this page -->
+    <!-- End plugin js for this page -->
+    <!-- inject:js -->
+    <script src="{{ asset('front/login/js/off-canvas.js') }}"></script>
+    <script src="{{ asset('front/login/js/hoverable-collapse.js') }}"></script>
+    <script src="{{ asset('front/login/js/misc.js') }}"></script>
+    <script src="{{ asset('front/login/js/settings.js') }}"></script>
+    <script src="{{ asset('front/login/js/todolist.js') }}"></script>
+    <!-- endinject -->
+    </body>
+    </html>
+
+{% endblock %}
+

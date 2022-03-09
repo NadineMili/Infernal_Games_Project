@@ -62,9 +62,12 @@ class Game
     private $picture;
 
     /**
-     * @ORM\OneToMany(targetEntity=GameComment::class, mappedBy="Game", cascade={"all"} , orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=GameComment::class, mappedBy="game")
      */
     private $gameComments;
+
+
+
 
     public function __construct()
     {
@@ -189,4 +192,7 @@ class Game
 
         return $this;
     }
+
+
+
 }

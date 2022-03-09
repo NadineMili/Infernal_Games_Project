@@ -69,29 +69,112 @@
 
             <section class="newsletter-section">
                 <div class="container">
-                    {{ form_start(form, {'attr':{'novalidate':'novalidate'}}) }}
-                    <h2>Create your comment</h2>
-                    <div class="newsletter-form">
-                        {{ form_widget(form.text,{'attr':{'class':'form-control', 'placeholder':'ENJOY WITH YOUR WORDS'}}) }}
-                        <button class="site-btn">Add  <img src="{{ asset ('front/img/icons/double-arrow.png') }}" alt="#"/></button>
-                    </div>
-                    {{ form_end(form) }}
+                    <script src="{{ asset('http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js') }}"></script>
+
+    <script>
+        $(document).ready(function (){
+            $('#chatButton').on('click',function (event) {
+                var user = $('#chatUser option:selected').val();
+                var game = "{{ game.id }}";
+                var description = $('#chatText').val();
+
+                console.log(user);
+                console.log(game);
+                console.log(description);
+                $.ajax({
+                    url: '/games/addGameComment',
+                    type: 'POST',
+                    data: {
+                        'user':user,
+                        'game':game,
+                        'description':description
+                    },
+                    dataType :'json',
+                    async:true,
+
+                    success:function (data,status) {
+                        console.log(data);
+                        $('#loadComments').click()
+                    },
+                    error: function (xhr, textStatus,errorThrown) {
+                        console.log(errorThrown);
+                        console.log(textStatus)
+                    }
+                })
+                
+            })
+        })
+    </script>
+    <script>
+        $(document).ready(function (){
+            $('#loadComments').on('click',function (event) {
+                console.log('ehe')
+                console.log($(this).data('id'))
+                $.ajax({
+                    url: '/games/gameCommentsAjax/'+$(this).data('id'),
+                    type: 'POST',
+                    dataType: 'json',
+                    async: true,
+
+                    success:function (data,status) {
+                        console.log(data)
+                        $('#commentsArea').empty();
+                        for (i=0;i<data.length; i++){
+                            comment=data[i];
+                            var row= $('<tr> <td class="text-danger" id="user"></td> <td class="text-light" id="text"></td> </tr>');
+                            $('#user', row).html(comment['user']);
+                            $('#text', row).html(comment['description']);
+                            $('#commentsArea').append(row);
+                        }
+                    },
+                    error : function(xhr, textStatus, errorThrown) {
+                        console.log(errorThrown); }
+                })
+            })
+        })
+    </script>
+
+                    <script>
+                        $(document).ready(function(){
+
+                            $('#loadComments').click()
+                        })
+                    </script>
+
+
                 </div>
             </section>
         </div>
-        <tbody>
-        {% for c in comments %}
 
 
-            <h2>{{ c.text }}</h2>
+        <div class="col">
+            <div class="row">
+                <div>
+                    <a class="btn btn-primary" href="#" id="loadComments" data-id="{{ game.id }}">Load comments</a>
+                </div>
+            </div>
+            <div class="row align-self-end">
+                <select id="chatUser">
+                    {% for user in users %}
+                        <option value="{{ user.id }}">{{ user.username }}</option>
+                    {% endfor %}
+                </select>
 
-        <div class="newsletter-form">
-            <button class="site-btn" href="{{ path('comment_edit',{'id': c.id}) }}">Edit
-                <img src="{{ asset ('front/img/icons/double-arrow.png') }}" alt="#"/></button>
-            <button class="site-btn" href="{{ path('comment_delete',{'id': c.id}) }}">Delete
-                <img src="{{ asset ('front/img/icons/double-arrow.png') }}" alt="#"/></button>
+                <input type="text" id="chatText" class="form-control">
+                <a id="chatButton" href="#" class="btn btn-info">Post</a>
+
+            </div>
+
+
         </div>
-        {%  endfor %}
+
+
+
+<table>
+        <tbody id="commentsArea">
+
+        </tbody>
+</table>
     </section>
     <!-- Games end-->
 
