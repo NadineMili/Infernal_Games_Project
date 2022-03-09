@@ -30,3 +30,10 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    Vangrg\ProfanityBundle\Storage\ProfanitiesStorageDefault: '@vangrg_profanity.storage.default'
+    vangrg_profanity.storage.default:
+        class: Vangrg\ProfanityBundle\Storage\ProfanitiesStorageDefault
+        public: true
+        arguments:
+            - "%vangrg_profanity.source.file_name%"
+            - "%vangrg_profanity.source.format%"

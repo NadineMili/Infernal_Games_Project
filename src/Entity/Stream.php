@@ -52,7 +52,7 @@ class Stream
     private $category;
 
     /**
-     * @ORM\ManyToOne(targetEntity=StreamData::class, inversedBy="streams")
+     * @ORM\ManyToOne(targetEntity=StreamData::class, inversedBy="streams", cascade={"persist", "remove"})
      * @Groups("streams:read")
      */
     private $accessData;

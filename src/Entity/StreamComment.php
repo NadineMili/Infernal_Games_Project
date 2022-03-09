@@ -20,13 +20,13 @@ class StreamComment
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="streamComments")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="streamComments", cascade={"persist", "remove"})
      * @Groups("comments:read")
      */
     private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Stream::class, inversedBy="streamComments")
+     * @ORM\ManyToOne(targetEntity=Stream::class, inversedBy="streamComments", cascade={"persist", "remove"})
      * @Groups("comments:read")
      */
     private $stream;

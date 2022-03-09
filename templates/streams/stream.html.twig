@@ -10,21 +10,80 @@
         }
     </style>
 
+    <!-- Emoji -->
+    <link href="{{ asset('emoji/css/emoji.css') }}" rel="stylesheet">
+
+    <!-- Ajax -->
+    <script src="{{ asset('http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js') }}"></script>
+    <script src="{{ asset('http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js') }}"></script>
+
+
+    <!-- Facebook -->
+    <script async defer crossorigin="anonymous" src="{{asset('https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v13.0')}}" nonce="oMllQGkK"></script>
+    <!-- Twitter -->
+    <script async src="{{ asset('https://platform.twitter.com/widgets.js') }}" charset="utf-8"></script>
+
+    <!-- VideoJS -->
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        /*document.addEventListener('DOMContentLoaded', function() {
             var player = videojs('player');
             player.play();
-        }, false);
+        }, false);*/
         function reconnect() {
             var player = videojs('player');
             player.reset();
             player.src("{{ asset('http://127.0.0.1:8050/hls/'~stream.accessData.streamKey~'/index.m3u8') }}");
         }
     </script>
-    <script src="{{ asset('http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js') }}"></script>
+
     <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var conn = new WebSocket('ws://localhost:8002');
+            conn.onopen = function (e) {
+                console.log("Connection established!");
+            }
+            var messages = []
+
+            $('#chatButton').click(function(){
+                var text = $('#name').val();
+                var msg = {
+                    'user': 'User X',
+                    'text': text,
+                };
+
+                updateMessages(msg);
+                conn.send(JSON.stringify(msg));
+            });
+
+            function updateMessages(msg){
+                messages.push(msg);
+
+                var row= $('<tr> <td class="text-danger" id="user"></td> <td class="text-light" id="text"></td> </tr>');
+
+                $('#user', row).html(msg['text']);
+                $('#text', row).html(msg['user']);
+                $('#commentsArea').append(row);
+            }
+        }, false)
+
+    </script>
+
+    <script>
+        $(function() {
+            window.emojiPicker = new EmojiPicker({
+                emojiable_selector: '[data-emojiable=true]',
+                assetsPath: '{{ asset('emoji/img/') }}',
+                popupButtonClasses: 'fa fa-smile-o'
+            });
+            window.emojiPicker.discover();
+        });
+    </script>
+
+    <!-- Add comment Ajax 3adi -->
+    <script>
+
         $(document).ready(function(){
-            $('#chatButton').on('click', function(event){
+            $('#chatButtonn').on('click', function(event){
                 var user= $('#chatUser option:selected').val();
                 var stream= "{{ stream.id }}";
                 var text= $('#chatText').val()
@@ -53,17 +112,24 @@
             })
         })
     </script>
+
+    <!-- Load comment onload -->
+
+
+    <!-- Load comment btn -->
     <script>
         $(document).ready(function(){
             $('#loadComments').on('click', function(event){
+
                 $.ajax({
-                    url: '/streams/streamCommentsAjax/'+$(this).data('id'),
+                    url: '/streams/streamCommentsAjax/'+'{{ stream.id }}',
                     type: 'POST',
                     dataType: 'json',
                     async: true,
 
                     success: function(data, status){
                         $('#commentsArea').empty();
+                        console.log(data)
                         for (i=0;i<data.length; i++){
                             comment= data[i];
                             var row= $('<tr> <td class="text-danger" id="user"></td> <td class="text-light" id="text"></td> </tr>');
@@ -87,7 +153,7 @@
         <div class="page-info">
             <h2>Streams</h2>
             <div class="site-breadcrumb">
-                <a href="">Home</a>  /
+                <a href="#" onclick="">Home</a>  /
                 <span>Stream</span>
             </div>
         </div>
@@ -110,7 +176,7 @@
                     </div>
                 </div>
                 <div class="col">
-                    <div class="categories-widget" style="height: 700px">
+                    <div class="categories-widget" style="height: 700px; max-width: 400px;">
 
                         <div class="col">
                             <div class="row">
@@ -130,10 +196,11 @@
                                             <option value="{{ user.id }}">{{ user.username }}</option>
                                         {% endfor %}
                                     </select>
+                                <p class="emoji-picker-container">
+                                    <textarea id="chatText" class="form-control" rows="" placeholder="" style="width:300px;max-width: 300px" data-emojiable="true" data-emoji-input="unicode"></textarea>
+                                </p>
 
-                                    <input type="text" id="chatText" class="form-control">
                                     <a id="chatButton" href="#" class="btn btn-info">Post</a>
-
                             </div>
 
 
@@ -146,11 +213,12 @@
                     <h2 class="gs-title">{{ stream.title }}</h2>
                     <h4>What it is about:</h4>
                     <p>{{ stream.description }}</p>
-                    <div class="geme-social-share pt-5 d-flex">
+                    <div class="game-social-share pt-5 d-flex">
                         <p>Share:</p>
-                        <a href="#"><i class="fa fa-instagram"></i></a>
-                        <a href="#"><i class="fa fa-facebook"></i></a>
-                        <a href="#"><i class="fa fa-twitter"></i></a>
+                        <div class="fb-share-button" data-href="http://127.0.0.1:8000/streams/watch/13" data-layout="button" data-size="large">
+                            <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2F127.0.0.1%3A8000%2Fstreams%2Fwatch%2F{{ stream.id }}&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Share</a>
+                        </div>
+                        <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-size="large" data-url="http://127.0.0.1:8000/streams/watch/{{ stream.id }}" data-hashtags="infernal_games #infernalGames" data-show-count="false">Tweet</a>
                     </div>
                 </div>
                 </div>

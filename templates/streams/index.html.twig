@@ -22,10 +22,11 @@
 
                         for (i=0; i<data.length; i++){
                             stream= data[i];
+                            var route = "{{ path('watch_stream', {'id': 'streamId' })}}".replace("streamId", stream['id']);
                             var row= $('<div class="col-lg-4 col-md-6">'+
                                 '<div class="game-item">'+
                                     '<h5>'+ stream['title'] +'</h5>'+
-                                '<a href="{{ path('watch_stream', {'id': 2}) }}" class="read-more">Watch now!  <img src="{{ asset('front/img/icons/double-arrow.png') }}" alt="#"/></a>'+
+                                '<a href="'+route+'" class="read-more">Watch now!  <img src="{{ asset('front/img/icons/double-arrow.png') }}" alt="#"/></a>'+
                                 '</div>'+
                             '</div>');
                             $('#streamsArea').append(row)
@@ -64,13 +65,15 @@
 
                     for (i=0; i<data.length; i++){
                         stream= data[i];
+                        var route = "{{ path('watch_stream', {'id': 'streamId' })}}".replace("streamId", stream['id']);
                         var row= $('<div class="col-lg-4 col-md-6">'+
                             '<div class="game-item">'+
                             '<h5>'+ stream['title'] +'</h5>'+
-                            '<a href="{{ path('watch_stream', {'id': 2}) }}" class="read-more">Watch now!  <img src="{{ asset('front/img/icons/double-arrow.png') }}" alt="#"/></a>'+
+                            '<a href="'+route+'" class="read-more">Watch now!  <img src="{{ asset('front/img/icons/double-arrow.png') }}" alt="#"/></a>'+
                             '</div>'+
                             '</div>');
                         $('#streamsArea').append(row)
+
 
                     }
                 }else{

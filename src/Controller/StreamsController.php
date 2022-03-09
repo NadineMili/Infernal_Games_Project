@@ -22,6 +22,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Vangrg\ProfanityBundle\Service\ProfanityChecker;
 
 class StreamsController extends AbstractController
     /**
@@ -70,12 +71,13 @@ class StreamsController extends AbstractController
     /**
      * @Route("/streamCommentsAjax/{id}", name="streamCommentsAjax")
      */
-    public function streamCommentsAjax($id, Request $req, NormalizerInterface $normalizer){
+    public function streamCommentsAjax($id, Request $req, NormalizerInterface $normalizer, ProfanityChecker $checker){
         $comments= $this->getDoctrine()->getRepository(StreamComment::class)->findBy(['stream'=>$id]);
         $jsonData=$normalizer->normalize($comments, 'json', ['groups'=>'comments:read']);
 
         $i=0;
         foreach ($comments as $comment){
+            $jsonData[$i]['text']= $checker->obfuscateIfProfane($jsonData[$i]['text']);
             $jsonData[$i++]['user']= $comment->getUser()->getUsername();
         }
         return new Response(json_encode($jsonData));
@@ -86,11 +88,10 @@ class StreamsController extends AbstractController
      */
     public function addStreamCommentsAjax( Request $req, UserRepository $userRepository, StreamRepository $streamRepository, NormalizerInterface $normalizer){
 
-        //dd($id);
         $em= $this->getDoctrine()->getManager();
 
         $user= $userRepository->find($req->get('user'));
-        //$user= $userRepository->find(2);
+
         $stream= $streamRepository->find($req->get('stream'));
 
 
