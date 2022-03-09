@@ -70,9 +70,12 @@ class Product
      */
     private $category;
 
+    
+
     public function __construct()
     {
         $this->ligneCommandes = new ArrayCollection();
+        $this->wishLists = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -193,4 +196,6 @@ class Product
 
         return $this;
     }
+
+    
 }

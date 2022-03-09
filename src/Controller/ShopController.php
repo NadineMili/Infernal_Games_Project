@@ -10,6 +10,7 @@ use App\Entity\Product;
 use App\Entity\Category;
 use App\Repository\ProductRepository;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ShopController extends AbstractController
     /**
@@ -51,6 +52,7 @@ class ShopController extends AbstractController
               $totalItem = $item['product']->getPrice() * $item['quantity'];
               $total += $totalItem ;
           }
+          $session->set('total',$total);
 
 
         return $this->render('shop/cart.html.twig',
@@ -116,6 +118,16 @@ function viewOneProduct($id){
     return $this->render('shop/product.html.twig',
         ['product'=>$product]);
 }
+
+/**
+     * @Route("/searchByCategory", name="searchByCategory")
+     */
+    public function searchByCategory(Request $request, ProductRepository $rep,  NormalizerInterface $normalizer): Response
+    {
+        $products= $rep->findByStateCategory( $request->get('id') );
+        $jsonData= $normalizer->normalize($products, 'json', ['groups'=>'products:read']);
+        return new Response(json_encode($jsonData));
+    }
 
  
 

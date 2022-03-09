@@ -137,7 +137,49 @@
     </section>
     <!-- Featured section end-->
 
+<script>
+    function searchByCategory(categoryId){
+        $.ajax({
+            url: '/shop/searchByCategory',
+            type: 'POST',
+            data:{
+                "categoryId": categoryId
+            },
+            dataType: 'json',
+            async: true,
 
+            success: function(data, status){
 
+                if(data.length>0){
+                    $('#productsArea').empty();
+
+                    for (i=0; i<data.length; i++){
+                        product= data[i];
+                        var route = "{{ path('viewProduct', {'id': 'produitId' })}}".replace("produitId", product['id']);
+                        var row= $('<div class="col-lg-4 col-md-6">'+
+                            '<div class="game-item">'+
+                            '<h5>'+ stream['title'] +'</h5>'+
+                            '<a href="'+route+'" class="read-more">Watch now!  <img src="{{ asset('front/img/icons/double-arrow.png') }}" alt="#"/></a>'+
+                            '</div>'+
+                            '</div>');
+                        $('#productsArea').append(row)
+
+                    }
+                }else{
+                    var div=$('<div class="col-lg-4 col-md-6">'+
+                        '<div class="game-item">'+
+                        '<p>No live streams for this category :/</p>'+
+                        '</div>'+
+                        '</div>')
+                    $('#streamsArea').empty().append(div)
+                }
+            },
+            error : function(xhr, textStatus, errorThrown) {
+                console.log(errorThrown);
+            }
+        })
+
+    }
+</script>
 
 {% endblock %}

@@ -35,7 +35,15 @@ class ProductRepository extends ServiceEntityRepository
         ;
     }
     */
-
+    public function findByStateCategory($categoryId)
+    {
+        $query = $this->createQueryBuilder('s')
+            ->where('s.category = :categoryId')
+            ->setParameter('categoryId', $categoryId)
+            ->getQuery();
+    
+        return $query->getResult();
+    }
     /*
     public function findOneBySomeField($value): ?Product
     {
