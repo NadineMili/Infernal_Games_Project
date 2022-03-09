@@ -41,12 +41,6 @@ class Blog
      */
     private $Author;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Admin::class, inversedBy="blogs")
-     * @ORM\JoinColumn(nullable=false)
-     */
-   
-
     public function getId(): ?int
     {
         return $this->id;

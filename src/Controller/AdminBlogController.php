@@ -8,9 +8,12 @@ use App\Repository\AdminRepository;
 use App\Repository\BlogRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Knp\Component\Pager\PaginatorInterface;
 
 /**
  * @Route("/admin/blogs")
@@ -20,10 +23,63 @@ class AdminBlogController extends AbstractController
     /**
      * @Route("/", name="admin_blogs", methods={"GET"})
      */
-    public function index(BlogRepository $blogRepository): Response
+    public function index(Request $request, BlogRepository $blogRepository, PaginatorInterface $paginator): Response
     {
+        $donnees = $blogRepository->findAll();
+        $blogs = $paginator->paginate(
+            $donnees, // Requête contenant les données à paginer (ici nos articles)
+            $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
+            6 // Nombre de résultats par page
+        );
+
         return $this->render('admin_blogs/index.html.twig', [
-            'blogs' => $blogRepository->findAll()
+            'blogs' => $blogs
+        ]);
+    }
+
+    public function searchBar()
+    {
+        $form = $this->createFormBuilder()
+            ->setAction($this->generateUrl('handleSearch'))
+            ->add('query', TextType::class, [
+                'label' => false,
+                'attr' => [
+                    'class' => 'form-control w-100',
+                    'placeholder' => 'Entrez un mot-clé'
+                ]
+            ])
+            ->add('recherche', SubmitType::class, [
+                'attr' => [
+                    'class' => 'btn btn-primary'
+                ]
+            ])
+            ->getForm();
+        return $this->render('search/searchBar.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/handleSearch", name="handleSearch")
+     * @param Request $request
+     */
+    public function handleSearch(Request $request, BlogRepository $repo, PaginatorInterface $paginator)
+    {
+        $query = $request->request->get('form')['query'];
+        if($query) {
+            $donnees = $repo->findArticlesByName($query);
+        } else {
+            $donnees = $repo->findAll();
+        }
+
+        $blogs = $paginator->paginate(
+            $donnees, // Requête contenant les données à paginer (ici nos articles)
+            $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
+            6 // Nombre de résultats par page
+        );
+        
+        return $this->render('admin_blogs/index.html.twig', [
+            'blogs' => $blogs
         ]);
     }
 
