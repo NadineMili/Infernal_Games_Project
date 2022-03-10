@@ -36,6 +36,8 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->_em->flush();
     }
 
+
+
     // /**
     //  * @return User[] Returns an array of User objects
     //  */
@@ -64,4 +66,23 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         ;
     }
     */
+    public function findByExpField($value)
+    {
+        return $this->createQueryBuilder('lid')
+            ->Where('lid.id like :val or lid.name like :val or lid.lastName like :val or lid.email like :val or lid.password like :val or lid.roles like :val or lid.image like :val  or lid.activation_token like :val or lid.reset_token like :val')
+            ->setParameter('val', '%'.$value.'%')
+            ->orderBy('lid.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+    public function findlivr()
+    {
+        $query = $this
+            ->createQueryBuilder('c')
+            ->select( 'c')
+            ->addOrderBy('c.id', 'DESC')
+            ->setMaxResults(1);
+        return $query->getQuery()->getSingleResult();
+
+    }
 }

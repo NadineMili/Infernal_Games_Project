@@ -42,12 +42,19 @@
 <!-- Header section -->
 <header class="header-section">
     <div class="header-warp">
+
+
         <div class="header-social d-flex justify-content-end">
             <p>Follow us:</p>
             <a target="_blank" href="#"><i class="fa fa-facebook"></i></a>
             <a target="_blank" href="#"><i class="fa fa-twitter"></i></a>
             <a target="_blank" href="{{ asset ('https://www.instagram.com/infernalgames/')}}"><i class="fa fa-instagram"></i></a>
             <a target="_blank" href="#"><i class="fa fa-twitch"></i></a>
+        </div>
+        <div class="header-social d-flex justify-content-end">
+        {% if app.user %}
+                <a href="{{ path('app_logout') }}">Logout</a>
+            {% endif %}
         </div>
         <div class="header-bar-warp d-flex">
             <!-- site logo -->
@@ -59,7 +66,9 @@
 
                 <div class="user-panel">
                     <a href="/login">Login</a> / <a href="/register">Register</a>
+
                 </div>
+
                 <!-- Menu -->
                 <ul class="main-menu primary-menu">
                     <li><a href="{{ asset('/home') }}">Home</a></li>
@@ -76,7 +85,9 @@
                             <li><a href="game-single.html">Contact Us</a></li>
                         </ul>
                     </li>
+
                 </ul>
+
             </nav>
         </div>
     </div>
