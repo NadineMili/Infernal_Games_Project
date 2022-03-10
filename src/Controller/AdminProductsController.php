@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Validator\Constraints\Date;
 
 use App\Entity\Product;
 use App\Repository\ProductRepository;
@@ -42,6 +43,11 @@ class AdminProductsController extends AbstractController
 
            if($form->isSubmitted() && $form->isValid())
            {
+      // affectation de date d'aujourd'hui  
+            $date= new \DateTime('now');
+            $product->setDate($date);
+
+
             $picture = $form['picture']->getData();
             $newPictureName = $product->getName().'.'.$picture->getExtension();
             $picture->move(

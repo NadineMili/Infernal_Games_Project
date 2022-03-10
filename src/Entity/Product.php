@@ -70,6 +70,11 @@ class Product
      */
     private $category;
 
+    /**
+     * @ORM\Column(type="date")
+     */
+    private $date;
+
     
 
     public function __construct()
@@ -193,6 +198,18 @@ class Product
                 $ligneCommande->setProduct(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(\DateTimeInterface $date): self
+    {
+        $this->date = $date;
 
         return $this;
     }

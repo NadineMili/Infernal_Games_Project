@@ -51,7 +51,27 @@
                 <div class="col-xl-7 col-lg-8 col-md-7">
                     <div class="row">
                         <!-- ********Yosra NOTE ******** -->
-                      
+                        <span>Last products</span>
+                        {# {% set lastProducts = products.slice(0,5) %} #}
+                        {% for product in lastProducts %}
+                            <div class="col-lg-4 col-md-6">
+                                <div class="game-item">
+                                    <!-- ******** Taswiret elgame ******** -->
+                                    <img src="{{ asset('Products/'~product.picture) }}" alt="#" style="height: 200px">
+                                    <h5>{{ product.name }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{product.price}} Dt</h5>
+                                    
+                                    <a href="{{path("shop_add" ,{'id': product.id})}}"  class="btn btn-dark">
+                                        <i class="bi bi-cart-plus"></i>
+                                        Ajouter au Panier
+                                    </a>
+                                    <!-- ******** href  ******** -->
+                                    <a href="{{ path('viewProduct',{'id':product.id}) }}" class="read-more">Check it out 
+                                        <img src="{{ asset('front/img/icons/double-arrow.png') }}" alt="#"/>
+                                    </a>
+                                </div>
+                            </div>
+                        {% endfor %}
+
                         {% for product in products %}
                             <div class="col-lg-4 col-md-6">
                                 <div class="game-item">
@@ -175,7 +195,7 @@
                         '<p>No live streams for this category :/</p>'+
                         '</div>'+
                         '</div>')
-                    $('#productsArea').empty().append(div)
+                    $('#streamsArea').empty().append(div)
                 }
             },
             error : function(xhr, textStatus, errorThrown) {
@@ -184,6 +204,7 @@
         })
 
     }
+   
 </script>
 
 {% endblock %}

@@ -23,11 +23,13 @@ class ShopController extends AbstractController
     public function index(): Response
     {
         $products= $this->getDoctrine()->getRepository(Product::class)->findAll();
+        $lastProducts = $this->getDoctrine()->getRepository(Product::class)->findBy(array(), null, 3, 3);
         $categories= $this->getDoctrine()->getRepository(Category::class)->findAll();
         return $this->render('shop/index.html.twig', [
             'controller_name' => 'ShopController',
             'products'=>$products,
-            'categories'=>$categories
+            'categories'=>$categories,
+            'lastProducts'=>$lastProducts
 
         ]);
        
