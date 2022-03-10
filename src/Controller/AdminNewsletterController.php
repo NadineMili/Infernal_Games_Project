@@ -44,6 +44,25 @@ class AdminNewsletterController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()){
 
+            $images= [$form['imageF']->getData(), $form['imageS']->getData(), $form['imageT']->getData()];
+
+            $newsImagesNames= [$newsletter->getTitleIntro().$newsletter->getTitleF().'.'.$images[0]->guessExtension(),
+                $newsletter->getTitleIntro().$newsletter->getTitleS().'.'.$images[1]->guessExtension(),
+                $newsletter->getTitleIntro().$newsletter->getTitleT().'.'.$images[2]->guessExtension()];
+
+            for ($i=0; $i<3; $i++){
+                $images[$i]->move(
+                    $this->getParameter('NewslettersPictures'),
+                    preg_replace('/\s+/','',$newsImagesNames[$i])
+                );
+            }
+
+
+            $newsletter->setImageF(preg_replace('/\s+/','',$newsImagesNames[0]));
+            $newsletter->setImageS(preg_replace('/\s+/','',$newsImagesNames[1]));
+            $newsletter->setImageT(preg_replace('/\s+/','',$newsImagesNames[2]));
+
+
             // To change later
             $newsletter->setAuthor( $adminRepository->find(1) );
 
@@ -94,6 +113,25 @@ class AdminNewsletterController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()){
 
+            $images= [$form['imageF']->getData(), $form['imageS']->getData(), $form['imageT']->getData()];
+            //dd($images);
+            $newsImagesNames= [$newsletter->getTitleIntro().$newsletter->getTitleF().'.'.$images[0]->guessExtension(),
+                $newsletter->getTitleIntro().$newsletter->getTitleS().'.'.$images[1]->guessExtension(),
+                $newsletter->getTitleIntro().$newsletter->getTitleT().'.'.$images[2]->guessExtension()];
+
+
+            for ($i=0; $i<3; $i++){
+                $images[$i]->move(
+                    $this->getParameter('NewslettersPictures'),
+                    preg_replace('/\s+/','',$newsImagesNames[$i])
+                );
+            }
+
+
+            $newsletter->setImageF(preg_replace('/\s+/','',$newsImagesNames[0]));
+            $newsletter->setImageS(preg_replace('/\s+/','',$newsImagesNames[1]));
+            $newsletter->setImageT(preg_replace('/\s+/','',$newsImagesNames[2]));
+
             //To change later
             $newsletter-> setAuthor($author);
 
@@ -135,8 +173,8 @@ class AdminNewsletterController extends AbstractController
         $email = (new TemplatedEmail())
             ->from('infernalgames2022@gmail.com')
             ->to($rec)
-            ->subject( $newsletter->getTitle())
-            ->htmlTemplate('newsletter\template2.html.twig')
+            ->subject("Infernal Games Newsletter!")
+            ->htmlTemplate('newsletter\template3.html.twig')
             ->context([ 'newsletter'=>$newsletter]);
 
         $mailer->send($email);

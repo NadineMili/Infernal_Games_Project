@@ -20,13 +20,11 @@ class NewsletterController extends AbstractController
     }
 
     /**
-     * @Route("/template1", name="template1")
+     * @Route("/template", name="template1")
      */
     public function template1(): Response
     {
-        $newsletter= new Newsletter();
-        $newsletter->setTitle("Title");
-        $newsletter->setContent("Content");
+        $newsletter= $this->getDoctrine()->getRepository(Newsletter::class)->find(25);
         return $this->render('newsletter/index.html.twig', [
             'newsletter'=> $newsletter
         ]);

@@ -6,7 +6,7 @@
 parameters:
     BlogsPictures: '%kernel.project_dir%/public/Blogs'
     AdsPictures: '%kernel.project_dir%/public/Ads'
-    public: '%kernel.project_dir%/public'
+    NewslettersPictures: '%kernel.project_dir%/public/Newsletters'
 
 services:
     # default configuration for services in *this* file

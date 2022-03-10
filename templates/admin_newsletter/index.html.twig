@@ -44,7 +44,7 @@
                                         <!-- ***** assert('Games/'~game.id) -->
                                         <img src="{{ asset('back/images/faces-clipart/pic-'~random(['1','2','3','4','8'])~'.png') }}" alt="image" />
                                     </td>
-                                    <td> {{ newsletter.title }}</td>
+                                    <td> {{ newsletter.titleIntro }}</td>
                                     <td> {{ newsletter.author }}</td>
                                     <td> {{ newsletter.date|date('Y-m-d') }}</td>
                                     <td> <a class="" href="{{ path('admin_newsletter_edit', {'id':newsletter.id}) }}" title="Inspect">
