@@ -38,6 +38,9 @@
                 </div>
                         <div class="col"><a href="{{ asset('/shop/cart') }}" class="site-btn">Check your cart <img src="{{ asset('front/img/icons/shopping-cart.png') }}" alt="#" style="height: 16px; width: 16px"/></a></div>
                     </div>
+                </div>
+                <div class="col"><a href="{{ asset('/wishlist/viewlist') }}" class="site-btn">Check your wishList <img src="{{ asset('front/img/icons/shopping-cart.png') }}" alt="#" style="height: 16px; width: 16px"/></a></div>
+            </div>
                 </form>
 
             </div>
@@ -143,22 +146,23 @@
             url: '/shop/searchByCategory',
             type: 'POST',
             data:{
-                "categoryId": categoryId
+                "id": categoryId
             },
             dataType: 'json',
             async: true,
 
             success: function(data, status){
-
+                console.log(data);
+                
+                $('#productsArea').empty();
                 if(data.length>0){
-                    $('#productsArea').empty();
 
                     for (i=0; i<data.length; i++){
                         product= data[i];
                         var route = "{{ path('viewProduct', {'id': 'produitId' })}}".replace("produitId", product['id']);
                         var row= $('<div class="col-lg-4 col-md-6">'+
                             '<div class="game-item">'+
-                            '<h5>'+ stream['title'] +'</h5>'+
+                            '<h5>'+ product['name'] +'</h5>'+
                             '<a href="'+route+'" class="read-more">Watch now!  <img src="{{ asset('front/img/icons/double-arrow.png') }}" alt="#"/></a>'+
                             '</div>'+
                             '</div>');
@@ -171,7 +175,7 @@
                         '<p>No live streams for this category :/</p>'+
                         '</div>'+
                         '</div>')
-                    $('#streamsArea').empty().append(div)
+                    $('#productsArea').empty().append(div)
                 }
             },
             error : function(xhr, textStatus, errorThrown) {

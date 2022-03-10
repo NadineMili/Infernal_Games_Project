@@ -24,17 +24,20 @@
 {%if items | length > 0%}
     <table class="table table-dark">
         <thead>
-            <tr>
+            <tr><th>Picture</th>
                 <th>Produit</th>
                 <th>Prix</th>
                 <th>Quantité</th>
                 <th>Total</th>
                 <th></th>
+                <th></th>
+    
             </tr>
         </thead>
         <tbody>
             {% for item in items %}
                <tr>
+                <td><img src="{{ asset('Products/'~item.product.picture) }}" width="100px" height="100px"></td>
                    <td>{{item.product.name}}</td>
                    <td>{{item.product.price}}</td>
                    <td>{{item.quantity}}</td>
@@ -50,7 +53,7 @@
         </tbody>
         <tfoot>
             <tr>
-                <td></td><td></td>
+                <td></td> <td></td><td></td>
                 <td colspan=""3 class="text-right"> Total :  </td>
                 <td>{{ total }}</td>
                 

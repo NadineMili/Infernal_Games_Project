@@ -129,6 +129,9 @@ function viewOneProduct($id){
         return new Response(json_encode($jsonData));
     }
 
+
+    
+
  
 
 }
