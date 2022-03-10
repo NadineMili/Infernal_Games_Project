@@ -1,72 +1,261 @@
 {% extends 'frontBase.html.twig' %}
 
-{% block title %}{{ game.name }}{% endblock %}
+{% block title %}{{ game.name }}
+{% endblock %}
 {% block body %}
-<!-- Page top section -->
-<section class="page-top-section set-bg" data-setbg="{{ asset('front/img/page-top-bg/1.jpg') }}">
-    <div class="page-info">
-        <h2>Games</h2>
-        <div class="site-breadcrumb">
-            <a href="">Home</a>  /
-            <span>Games</span>
-        </div>
-    </div>
-</section>
-<!-- Page top end-->
-
-
-<!-- Games section -->
-<section class="games-single-page">
-    <div class="container">
-        <div class="game-single-preview">
-            <img src="{{ asset('Games/'~game.id~'.png') }}" alt="">
-        </div>
-        <div class="row">
-            <div class="col-xl-9 col-lg-8 col-md-7 game-single-content">
-                <h2 class="gs-title">{{ game.name }}</h2>
-                <h4>About the game</h4>
-                <p>{{ game.description }}</p>
-                <h4>Trailer</h4>
-                <iframe src="{{ asset( game.trailerUrl ) }}"  allowfullscreen width="800px" height="500px" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
-                <div class="geme-social-share pt-5 d-flex">
-                    <p>Share:</p>
-                    <a href="#"><i class="fa fa-pinterest"></i></a>
-                    <a href="#"><i class="fa fa-facebook"></i></a>
-                    <a href="#"><i class="fa fa-twitter"></i></a>
-                    <a href="#"><i class="fa fa-dribbble"></i></a>
-                    <a href="#"><i class="fa fa-behance"></i></a>
-                </div>
+    <!-- Page top section -->
+    <section class="page-top-section set-bg" data-setbg="{{ asset('front/img/page-top-bg/1.jpg') }}">
+        <div class="page-info">
+            <h2>Games</h2>
+            <div class="site-breadcrumb">
+                <a href="">Home</a>
+                <span>Games</span>
             </div>
-            <div class="col-xl-3 col-lg-4 col-md-5 sidebar game-page-sideber">
-                <div id="stickySidebar">
-                    <div class="widget-item">
-                        <div class="rating-widget">
-                            <h4 class="widget-title">Rating</h4>
-                            <div class="rating">
-                                {% if game.rating is not null %}
-                                    <h5><span>{{ game.rating }}</span> / 5</h5>
-                                {% else %}
-                                    <h5><span>TBD</span></h5>
-                                {% endif %}
+        </div>
+    </section>
+    <!-- Page top end-->
+
+
+    <!-- Games section -->
+    <section class="games-single-page">
+        <div class="container">
+            <div class="game-single-preview">
+                <img src="{{ asset('Games/'~game.picture) }}" alt="">
+            </div>
+            <div class="row">
+                <div class="col-xl-9 col-lg-8 col-md-7 game-single-content">
+                    <h2 class="gs-title">{{ game.name }}</h2>
+                    <h4>About the game</h4>
+                    <p>{{ game.description }}</p>
+                    <h4>Trailer</h4>
+                    <iframe src="{{ asset( game.trailerUrl ) }}"  allowfullscreen width="800px" height="500px" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+                    <div class="geme-social-share pt-5 d-flex">
+                        <p>Share:</p>
+                        <a href="#"><i class="fa fa-pinterest"></i></a>
+                        <a href="#"><i class="fa fa-facebook"></i></a>
+                        <a href="#"><i class="fa fa-twitter"></i></a>
+                        <a href="#"><i class="fa fa-dribbble"></i></a>
+                        <a href="#"><i class="fa fa-behance"></i></a>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-lg-4 col-md-5 sidebar game-page-sideber">
+                    <div id="stickySidebar">
+                        <div class="widget-item">
+                            <div class="rating-widget">
+                                <h4 class="widget-title">Rating</h4>
+                                <div class="rating" id="thisGameRating">
+                                    {% if gameRating is not null %}
+                                        <h5><span>{{ gameRating|round(2, 'floor') }}</span>/5</h5>
+                                    {% else %}
+                                        <h5><span>TBD</span></h5>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- User rating -->
+                        <div class="widget-item">
+                            <div class="rating-widget">
+                                <h4 class="widget-title">Rate this game!</h4>
+
+                                <link rel="stylesheet" href="{{ asset('https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css') }}">
+                                <div class="rating">
+                                    <div class="stars">
+                                        <i class="las la-star fa-2x" data-index="0"></i>
+                                        <i class="las la-star fa-2x" data-index="1"></i>
+                                        <i class="las la-star fa-2x"  data-index="2"></i>
+                                        <i class="las la-star fa-2x"  data-index="3"></i>
+                                        <i class="las la-star fa-2x"  data-index="4"></i>
+                                    </div>
+                                    <script src="{{ asset('https://code.jquery.com/jquery-3.6.0.min.js') }}" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+                                    <script>
+
+                                        var game = "{{ game.id }}";
+                                        var ratedIndex = -1;
+                                        var ratedIndexUser = '{{ userRating }}';
+                                        var user = 3;
+
+                                        $(document).ready(function () {
+                                            resetStarColors()
+                                            setStars(ratedIndexUser-1)
+                                            //if (localStorage.getItem('ratedIndex') != null)
+                                            //     setStars(parseInt(localStorage.getItem('ratedIndex')));
+                                            $('.la-star').on('click', function () {
+                                                ratedIndexUser = parseInt($(this).data('index'));
+                                                ratedIndexUser +=1;
+                                                localStorage.setItem('ratedIndex', ratedIndexUser);
+                                                saveToTheDB();
+                                            })
+                                            $('.la-star').mouseover(function () {
+                                                resetStarColors();
+                                                var currentIndex = parseInt($(this).data('index'));
+                                                setStars(currentIndex);
+                                            });
+                                            $('.la-star').mouseleave(function () {
+                                                resetStarColors();
+                                                setStars(ratedIndexUser-1);
+                                            });
+                                        });
+                                        function saveToTheDB() {
+                                            console.log(ratedIndexUser)
+                                            $.ajax({
+                                                url:"/games/addGameRating",
+                                                methode: "POST",
+                                                dataType: 'json',
+                                                async: true,
+                                                data : {
+                                                    save: 1,
+                                                    'user':3,
+                                                    'game':game,
+                                                    'rate':ratedIndexUser,
+                                                    //ratedIndex : ratedIndex,
+                                                }, success: function (r) {
+                                                    user = r.user;
+                                                    localStorage.setItem('user',user);
+                                                }
+                                            })
+                                        }
+
+                                        function setStars(max){
+
+                                            for (var i=0;  i<=max; i++) {
+                                                $('.la-star:eq(' + i + ')').css('color', 'orange');
+                                                console.log(i)
+                                            }
+                                        }
+
+                                        function resetStarColors(){
+                                            $('.la-star').css('color','white');
+                                        }
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Lehné Ads -->
+                        <div class="widget-item">
+                            <div class="testimonials-widget">
+                                <h4 class="widget-title">Ads</h4>
+                                <div class="testim-text">
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolo re magna aliqua. Quis ipsum suspend isse ultrices.</p>
+                                    <h6><span>James Smith,</span>Gamer</h6>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <!-- Lehné Ads -->
-                    <div class="widget-item">
-                        <div class="testimonials-widget">
-                            <h4 class="widget-title">Ads</h4>
-                            <div class="testim-text">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolo re magna aliqua. Quis ipsum suspend isse ultrices.</p>
-                                <h6><span>James Smith,</span>Gamer</h6>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-</section>
-<!-- Games end-->
 
+            <section class="newsletter-section">
+                <div class="container">
+                    <script src="{{ asset('http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js') }}"></script>
+
+                    <script>
+                        $(document).ready(function (){
+                            $('#chatButton').on('click',function (event) {
+                                var user = $('#chatUser option:selected').val();
+                                var game = "{{ game.id }}";
+                                var description = $('#chatText').val();
+
+                                console.log(user);
+                                console.log(game);
+                                console.log(description);
+                                $.ajax({
+                                    url: '/games/addGameComment',
+                                    type: 'POST',
+                                    data: {
+                                        'user':user,
+                                        'game':game,
+                                        'description':description
+                                    },
+                                    dataType :'json',
+                                    async:true,
+
+                                    success:function (data,status) {
+                                        console.log(data);
+                                        $('#loadComments').click()
+                                    },
+                                    error: function (xhr, textStatus,errorThrown) {
+                                        console.log(errorThrown);
+                                        console.log(textStatus)
+                                    }
+                                })
+
+                            })
+                        })
+                    </script>
+                    <script>
+                        $(document).ready(function (){
+                            $('#loadComments').on('click',function (event) {
+                                console.log($(this).data('id'))
+                                $.ajax({
+                                    url: '/games/gameCommentsAjax/'+$(this).data('id'),
+                                    type: 'POST',
+                                    dataType: 'json',
+                                    async: true,
+
+                                    success:function (data,status) {
+                                        console.log(data)
+                                        $('#commentsArea').empty();
+                                        for (i=0;i<data.length; i++){
+                                            comment=data[i];
+                                            var row= $('<tr> <td class="text-danger" id="user"></td> <td class="text-light" id="text"></td> </tr>');
+                                            $('#user', row).html(comment['user']);
+                                            $('#text', row).html(comment['description']);
+                                            $('#commentsArea').append(row);
+                                        }
+                                    },
+                                    error : function(xhr, textStatus, errorThrown) {
+                                        console.log(errorThrown); }
+                                })
+                            })
+                        })
+                    </script>
+
+                    <script>
+                        $(document).ready(function(){
+
+                            $('#loadComments').click()
+                        })
+                    </script>
+
+
+                </div>
+            </section>
+        </div>
+
+
+        <div class="col">
+            <div class="row">
+                <div>
+                    <a class="btn btn-primary" href="#" id="loadComments" data-id="{{ game.id }}">Load comments</a>
+                </div>
+            </div>
+            <div class="row align-self-end">
+                <select id="chatUser">
+                    {% for user in users %}
+                        <option value="{{ user.id }}">{{ user.username }}</option>
+                    {% endfor %}
+                </select>
+
+                <input type="text" id="chatText" class="form-control">
+                <a id="chatButton" href="#" class="btn btn-info">Post</a>
+
+            </div>
+
+
+        </div>
+
+
+
+        <table>
+            <tbody id="commentsArea" >
+
+            </tbody>
+        </table>
+
+    </section>
+    <!-- Games end-->
 
 {% endblock %}

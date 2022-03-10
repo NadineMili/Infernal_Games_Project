@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Knp\Component\Pager\PaginatorInterface;
 
 /**
  * @Route("/admin/ads")
@@ -20,10 +21,17 @@ class AdminAdsController extends AbstractController
     /**
      * @Route("/", name="admin_ads", methods={"GET"})
      */
-    public function index(AdRepository $adRepository): Response
+    public function index(AdRepository $adRepository, Request $request, PaginatorInterface $paginator): Response
     {
+        $donnees = $adRepository->findAll();
+        $ads = $paginator->paginate(
+            $donnees, // Requête contenant les données à paginer (ici nos articles)
+            $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
+            6 // Nombre de résultats par page
+        );
+
         return $this->render('admin_ads/index.html.twig', [
-            'ads' => $adRepository->findAll()
+            'ads' => $ads
         ]);
     }
 

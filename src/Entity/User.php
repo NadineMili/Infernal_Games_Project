@@ -61,9 +61,23 @@ class User implements UserInterface
      */
     private $streamComments;
 
+    /**
+     * @ORM\OneToMany(targetEntity=GameComment::class, mappedBy="user")
+     */
+    private $gameComment;
+
+
+    /**
+     * @ORM\OneToMany(targetEntity=Rating::class, mappedBy="user")
+     */
+    private $ratings;
+
+
     public function __construct()
     {
         $this->streamComments = new ArrayCollection();
+        $this->gameComment = new ArrayCollection();
+        $this->ratings = new ArrayCollection();
     }
 
 
@@ -235,5 +249,65 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return Collection<int, GameComment>
+     */
+    public function getGameComment(): Collection
+    {
+        return $this->gameComment;
+    }
+
+    public function addGameComment(GameComment $gameComment): self
+    {
+        if (!$this->gameComment->contains($gameComment)) {
+            $this->gameComment[] = $gameComment;
+            $gameComment->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGameComment(GameComment $gameComment): self
+    {
+        if ($this->gameComment->removeElement($gameComment)) {
+            // set the owning side to null (unless already changed)
+            if ($gameComment->getUser() === $this) {
+                $gameComment->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * @return Collection<int, Rating>
+     */
+    public function getRatings(): Collection
+    {
+        return $this->ratings;
+    }
+
+    public function addRating(Rating $rating): self
+    {
+        if (!$this->ratings->contains($rating)) {
+            $this->ratings[] = $rating;
+            $rating->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRating(Rating $rating): self
+    {
+        if ($this->ratings->removeElement($rating)) {
+            // set the owning side to null (unless already changed)
+            if ($rating->getUser() === $this) {
+                $rating->setUser(null);
+            }
+        }
+
+        return $this;
+    }
 
 }

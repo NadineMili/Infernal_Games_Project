@@ -36,6 +36,14 @@ class AdminGamesController extends AbstractController
         $form =$this->createForm(GamesType::class, $game);
         $form -> handleRequest($request);
         if ($form -> isSubmitted() && $form -> isValid()) {
+            $image= $form['picture']->getData();
+            $newImageName= $game->getName().'.'.$image->guessExtension();
+            $image->move(
+                $this->getParameter('GamesPictures'),
+                $newImageName
+            );
+            $game->setPicture($newImageName);
+
             $em->persist($game);
             $em->flush();
             return $this->redirectToRoute('admin_games');
@@ -43,7 +51,7 @@ class AdminGamesController extends AbstractController
         return $this->render('admin_games/new.html.twig', [
             'form' => $form -> createView()
         ]);
-        }
+    }
 
     /**
      * @Route("/edit/{id}", name="admin_games_edit", methods={"GET", "POST"})
@@ -65,6 +73,7 @@ class AdminGamesController extends AbstractController
 
     /**
      * @Route("/delete/{id}", name="admin_games_delete")
+     *
      */
     public function delete($id,Request $request, GameRepository $repository, EntityManagerInterface $em): Response
     {
@@ -72,6 +81,20 @@ class AdminGamesController extends AbstractController
         $em=$this->getDoctrine()->getManager();
         $em->remove($games);
         $em->flush();
-        return $this->redirectToRoute('admin_games', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('admin_games');
+    }
+
+    /**
+     * @Route ("/search" ,name="search")
+     */
+    function search (GameRepository $repository, Request $request) {
+        $data = $request -> get('search');
+        $game = $repository ->findBy( ['name'=> $data]);
+        return $this -> render('admin_games/index.html.twig' ,[
+                'games' => $game
+            ]
+        );
+
+
     }
 }
