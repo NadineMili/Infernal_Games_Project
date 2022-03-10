@@ -21,7 +21,74 @@
             player.src("{{ asset('http://127.0.0.1:8050/hls/'~stream.accessData.streamKey~'/index.m3u8') }}");
         }
     </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var conn = new WebSocket('ws://localhost:8002');
+            conn.onopen = function (e) {
+                console.log("Connection established!");
+            }
+
+            conn.onmessage = function(e) {
+                var msg = JSON.parse(e.data);
+                updateMessages(msg);
+            };
+
+            var messages = []
+
+
+
+            function updateMessages(msg){
+                console.log(msg['stream'])
+                console.log('{{ stream.id }}')
+                console.log(msg['stream'] == '{{ stream.id }}')
+
+                if(msg['stream'] == '{{ stream.id }}') {
+                    messages.push(msg);
+
+                    var row = $('<tr> <td class="text-danger" id="user"></td> <td class="text-light" id="text"></td> </tr>');
+
+                    $('#user', row).html(msg['user']);
+                    $('#text', row).html(msg['text']);
+                    $('#commentsArea').append(row);
+                }
+            }
+
+        }, false)
+
+    </script>
+
     <script src="{{ asset('http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js') }}"></script>
+
+    <!-- Load comment onload -->
+
+    <script>
+
+        $(document).ready( function (){
+            $.ajax({
+                url: '/streams/streamCommentsAjax/'+'{{ stream.id }}',
+                type: 'POST',
+                dataType: 'json',
+                async: true,
+
+                success: function(data, status){
+                    $('#commentsArea').empty();
+
+                    for (i=0;i<data.length; i++){
+                        comment= data[i];
+                        var row= $('<tr> <td class="text-danger" id="user"></td> <td class="text-light" id="text"></td> </tr>');
+                        $('#user', row).html(comment['user']);
+                        $('#text', row).html(comment['text']);
+                        $('#commentsArea').append(row);
+                    }
+                },
+                error : function(xhr, textStatus, errorThrown) {
+                    console.log(errorThrown);
+                }
+            })
+        })
+    </script>
+
 
     <script>
         $(document).ready(function(){

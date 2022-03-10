@@ -3,6 +3,8 @@ namespace App\RatchetServer;
 
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
+use Vangrg\ProfanityBundle\Service\ProfanityChecker;
+use Vangrg\ProfanityBundle\Storage\ProfanitiesStorageDefault;
 
 class Chat implements MessageComponentInterface {
     protected $clients;
@@ -23,11 +25,20 @@ class Chat implements MessageComponentInterface {
         echo sprintf('Connection %d sending message "%s" to %d other connection%s' . "\n"
             , $from->resourceId, $msg, $numRecv, $numRecv == 1 ? '' : 's');
 
+        $data = json_decode($msg, true);
+
+        $storage= new ProfanitiesStorageDefault("C:\Dev\Wamp64\www\Infernal_Games_Project-master\public\profanities.json", "json");
+        $checker= new ProfanityChecker($storage, false);
+        $text= $checker->obfuscateIfProfane($data['text']);
+        $data['text']= $text;
+
+
         foreach ($this->clients as $client) {
-            if ($from !== $client) {
+            //if ($from !== $client) {
                 // The sender is not the receiver, send to each client connected
-                $client->send($msg);
-            }
+                //$client->send($msg);
+                $client->send(json_encode($data));
+            //}
         }
     }
 

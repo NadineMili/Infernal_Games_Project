@@ -42,28 +42,78 @@
             conn.onopen = function (e) {
                 console.log("Connection established!");
             }
+
+            conn.onmessage = function(e) {
+                var msg = JSON.parse(e.data);
+                updateMessages(msg);
+            };
+
+            conn.onerror =function (e){
+                console.log("You have disconnected :(")
+            }
+
             var messages = []
 
             $('#chatButton').click(function(){
-                var text = $('#name').val();
+                var userid= $('#chatUser option:selected').val();
+                var username= $('#chatUser option:selected').html();
+                var stream= "{{ stream.id }}";
+                var text= $('#chatText').val()
                 var msg = {
-                    'user': 'User X',
+                    'user': username,
                     'text': text,
+                    'stream': stream
                 };
-
-                updateMessages(msg);
+                addToDatabase();
+                //updateMessages(msg);
                 conn.send(JSON.stringify(msg));
             });
 
             function updateMessages(msg){
-                messages.push(msg);
+                console.log(msg['stream'])
+                console.log('{{ stream.id }}')
+                console.log(msg['stream'] == '{{ stream.id }}')
 
-                var row= $('<tr> <td class="text-danger" id="user"></td> <td class="text-light" id="text"></td> </tr>');
+                if(msg['stream'] == '{{ stream.id }}') {
+                    messages.push(msg);
 
-                $('#user', row).html(msg['text']);
-                $('#text', row).html(msg['user']);
-                $('#commentsArea').append(row);
+                    var row = $('<tr> <td class="text-danger" id="user"></td> <td class="text-light" id="text"></td> </tr>');
+
+                    $('#user', row).html(msg['user']);
+                    $('#text', row).html(msg['text']);
+                    $('#commentsArea').append(row);
+                }
             }
+
+            function addToDatabase(){
+
+                var user= $('#chatUser option:selected').val();
+                var stream= "{{ stream.id }}";
+                var text= $('#chatText').val()
+
+                console.log(user)
+                console.log(stream)
+                $.ajax({
+                    url: '/streams/addStreamCommentsAjax/new',
+                    type: 'POST',
+                    data:{
+                        'user':user,
+                        'stream':stream,
+                        'text':text
+                    },
+                    dataType: 'json',
+                    async: true,
+
+                    success: function(data, status){
+
+                        console.log(data)
+                    },
+                    error : function(xhr, textStatus, errorThrown) {
+                        console.log(errorThrown);
+                    }
+                })
+            }
+
         }, false)
 
     </script>
@@ -129,7 +179,6 @@
 
                     success: function(data, status){
                         $('#commentsArea').empty();
-                        console.log(data)
                         for (i=0;i<data.length; i++){
                             comment= data[i];
                             var row= $('<tr> <td class="text-danger" id="user"></td> <td class="text-light" id="text"></td> </tr>');
