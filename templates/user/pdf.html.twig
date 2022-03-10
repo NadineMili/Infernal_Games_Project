@@ -1,0 +1,46 @@
+{% block body %}
+    <div>
+        <img  src="/img/infernalLogo.png">
+        <span style="font:bold;font-size: 35px;padding-left: 3%">
+            Liste des Utilisateurs</span></div>
+
+    <br><br><br>
+
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+    <br>
+    <table class="table" border ="1">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Email:</th>
+            <th>Name:</th>
+            <th> Last_name</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tbody>
+        {% for p in tour %}
+            <tr>
+                <td class="py-1">{{p.id}}</td>
+                <td>{{p.email}}</td>
+                <td>{{p.name}}</td>
+                <td>{{p.lastName}}</td>
+                </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
