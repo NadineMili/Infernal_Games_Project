@@ -66,12 +66,18 @@ class Game
      */
     private $gameComments;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Rating::class, mappedBy="game")
+     */
+    private $ratings;
+
 
 
 
     public function __construct()
     {
         $this->gameComments = new ArrayCollection();
+        $this->ratings = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -187,6 +193,36 @@ class Game
             // set the owning side to null (unless already changed)
             if ($gameComment->getGame() === $this) {
                 $gameComment->setGame(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Rating>
+     */
+    public function getRatings(): Collection
+    {
+        return $this->ratings;
+    }
+
+    public function addRating(Rating $rating): self
+    {
+        if (!$this->ratings->contains($rating)) {
+            $this->ratings[] = $rating;
+            $rating->setGame($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRating(Rating $rating): self
+    {
+        if ($this->ratings->removeElement($rating)) {
+            // set the owning side to null (unless already changed)
+            if ($rating->getGame() === $this) {
+                $rating->setGame(null);
             }
         }
 

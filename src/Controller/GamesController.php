@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Game;
 use App\Entity\GameComment;
+use App\Entity\Likes;
 use App\Entity\Publication;
 use App\Entity\Rating;
 use App\Entity\User;
@@ -76,8 +77,19 @@ class GamesController extends AbstractController
         $game = $this->getDoctrine()->getRepository(Game::class)->find($id);
         $comments= $this->getDoctrine()->getRepository(GameComment::class)->findBy(['game'=>$game]);
 
+        $userRating= $this->getDoctrine()->getRepository(Rating::class)->findOneBy(['user'=>3]);
+        $gameRating= $this->getDoctrine()->getRepository(Rating::class)->getAvrGameRating($id);
+        if ($userRating){
+            $r= $userRating->getUserRating();
+        }else{
+            $r=0;
+        }
         return $this->render('games/game.html.twig',
-            ['game' => $game, 'comments'=>$comments, 'users'=>$userRepository->findAll()]);
+            ['game' => $game, 'comments'=>$comments,
+                'users'=>$userRepository->findAll(),
+                'gameRating'=>$gameRating[0]['avgGameRating'],
+                'userRating'=>(string) $r
+                ]);
 
     }
 
@@ -93,10 +105,17 @@ class GamesController extends AbstractController
 
         $user = $userRepository->find($request->get('user'));
         $game = $gameRepository->find($request->get('game'));
+        $rating= $request->get('rate');
 
-        $rate = new Rating();
-        $rate->setUser($user);
-        $rate->setRateIndex($rate);
+        $rate= $ratingRepository->findOneBy(['user'=>$user->getId()]);
+        if(!$rate){
+            $rate = new Rating();
+            $rate->setUser($user);
+            $rate->setGame($game);
+
+        }
+        $rate->setUserRating($rating);
+        //$rate->setRateIndex($rate);
 
         $em->persist($rate);
         $em->flush();
@@ -140,6 +159,7 @@ class GamesController extends AbstractController
     public function edit(GameCommentRepository $repository, $id, Request $request, EntityManagerInterface $em): Response
     {
         $comments = $repository ->find($id);
+
         $form = $this -> createForm(CommentType::class, $comments);
         $form -> handleRequest($request);
         if ($form -> isSubmitted() && $form -> isValid()) {
@@ -164,6 +184,26 @@ class GamesController extends AbstractController
         return new Response(null);
     }
 
+    function addLike($haveLike, $typeLike, $idUser, $comments)
+    {
 
+        if ($haveLike == null) {
+            $like = new Likes();
+            $like->setTypeLike($typeLike);
+            $comment = $this->getDoctrine()->getManager()->getRepository(GameComment::class)->find($comments);
+
+            $like->setComment($comment);
+            $like->setIdUser($idUser);
+
+            $repository = $this->getDoctrine()->getManager();
+            $repository->persist($like);
+            $repository->flush();
+
+        } else {
+            $missionManager = $this->getDoctrine()->getManager();
+            $missionManager->remove($haveLike);
+            $missionManager->flush();
+        }
+    }
 
 }

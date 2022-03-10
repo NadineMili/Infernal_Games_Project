@@ -20,21 +20,55 @@ class Rating
     /**
      * @ORM\Column(type="integer")
      */
-    private $rateIndex;
+    private $userRating;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="ratings")
+     */
+    private $user;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Game::class, inversedBy="ratings")
+     */
+    private $game;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getRateIndex(): ?int
+    public function getUserRating(): ?int
     {
-        return $this->rateIndex;
+        return $this->userRating;
     }
 
-    public function setRateIndex(int $rateIndex): self
+    public function setUserRating(int $userRating): self
     {
-        $this->rateIndex = $rateIndex;
+        $this->userRating = $userRating;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getGame(): ?Game
+    {
+        return $this->game;
+    }
+
+    public function setGame(?Game $game): self
+    {
+        $this->game = $game;
 
         return $this;
     }

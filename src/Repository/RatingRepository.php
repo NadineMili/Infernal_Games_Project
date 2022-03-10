@@ -21,6 +21,17 @@ class RatingRepository extends ServiceEntityRepository
         parent::__construct($registry, Rating::class);
     }
 
+
+    public function getAvrGameRating($id){
+        $query= $this->createQueryBuilder('gr')
+            ->select('avg(gr.userRating) as avgGameRating')
+            ->where('gr.game = :id')
+            ->setParameter('id', $id)
+            ->getQuery();
+
+        return $query->getResult();
+    }
+
     /**
      * @throws ORMException
      * @throws OptimisticLockException

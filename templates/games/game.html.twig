@@ -44,26 +44,47 @@
                         <div class="widget-item">
                             <div class="rating-widget">
                                 <h4 class="widget-title">Rating</h4>
+                                <div class="rating" id="thisGameRating">
+                                    {% if gameRating is not null %}
+                                        <h5><span>{{ gameRating|round(2, 'floor') }}</span>/5</h5>
+                                    {% else %}
+                                        <h5><span>TBD</span></h5>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
 
-                                <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+                        <!-- User rating -->
+                        <div class="widget-item">
+                            <div class="rating-widget">
+                                <h4 class="widget-title">Rate this game!</h4>
+
+                                <link rel="stylesheet" href="{{ asset('https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css') }}">
                                 <div class="rating">
                                     <div class="stars">
-                                        <i class="las la-star" data-index="0"></i><i class="las la-star" data-index="1"></i><i class="las la-star"  data-index="2"></i><i class="las la-star"  data-index="3"></i><i class="las la-star"  data-index="4"></i>
+                                        <i class="las la-star fa-2x" data-index="0"></i>
+                                        <i class="las la-star fa-2x" data-index="1"></i>
+                                        <i class="las la-star fa-2x"  data-index="2"></i>
+                                        <i class="las la-star fa-2x"  data-index="3"></i>
+                                        <i class="las la-star fa-2x"  data-index="4"></i>
                                     </div>
-                                    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+                                    <script src="{{ asset('https://code.jquery.com/jquery-3.6.0.min.js') }}" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
                                <script>
 
                                    var game = "{{ game.id }}";
                                    var ratedIndex = -1;
-                                       var user = 0;
+                                   var ratedIndexUser = '{{ userRating }}';
+                                       var user = 3;
 
                                    $(document).ready(function () {
                                        resetStarColors()
-                                       if (localStorage.getItem('ratedIndex') != null)
-                                           setStars(parseInt(localStorage.getItem('ratedIndex')));
+                                       setStars(ratedIndexUser-1)
+                                       //if (localStorage.getItem('ratedIndex') != null)
+                                      //     setStars(parseInt(localStorage.getItem('ratedIndex')));
                                        $('.la-star').on('click', function () {
-                                           ratedIndex = parseInt($(this).data('index'));
-                                           localStorage.setItem('ratedIndex', ratedIndex);
+                                           ratedIndexUser = parseInt($(this).data('index'));
+                                           ratedIndexUser +=1;
+                                           localStorage.setItem('ratedIndex', ratedIndexUser);
                                            saveToTheDB();
                                        })
                                        $('.la-star').mouseover(function () {
@@ -73,12 +94,11 @@
                                        });
                                        $('.la-star').mouseleave(function () {
                                            resetStarColors();
-                                           if (ratedIndex != -1) {
-                                               setStars(ratedIndex);
-                                           }
+                                           setStars(ratedIndexUser-1);
                                        });
                                    });
                                    function saveToTheDB() {
+                                       console.log(ratedIndexUser)
                                        $.ajax({
                                            url:"/games/addGameRating",
                                            methode: "POST",
@@ -86,10 +106,10 @@
                                            async: true,
                                            data : {
                                                save: 1,
-                                               'user':user,
+                                               'user':3,
                                                'game':game,
-                                               'rate':ratedIndex,
-                                               ratedIndex : ratedIndex,
+                                               'rate':ratedIndexUser,
+                                               //ratedIndex : ratedIndex,
                                            }, success: function (r) {
                                                user = r.user;
                                                localStorage.setItem('user',user);
@@ -98,8 +118,11 @@
                                    }
 
                                    function setStars(max){
-                                       for (var i=0;  i<=max; i++)
-                                           $('.la-star:eq('+i+')').css('color','orange');
+
+                                       for (var i=0;  i<=max; i++) {
+                                           $('.la-star:eq(' + i + ')').css('color', 'orange');
+                                           console.log(i)
+                                       }
                                    }
 
                                   function resetStarColors(){
@@ -227,10 +250,11 @@
 
 
 <table>
-        <tbody id="commentsArea">
+        <tbody id="commentsArea" >
 
         </tbody>
 </table>
+
     </section>
     <!-- Games end-->
 
