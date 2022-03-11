@@ -8,6 +8,19 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+use phpDocumentor\Reflection\DocBlock\Serializer;
+use Serializable;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
+use Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader;
+
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  */
@@ -20,10 +33,11 @@ class User implements UserInterface
      */
     private $id;
 
+
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      */
-    private $username;
+    //private $username;
 
     /**
      * @ORM\Column(type="json")
@@ -37,19 +51,29 @@ class User implements UserInterface
     private $password;
 
     /**
+     * @var
+     * @ORM\Column(type="string")
+     * @Assert\NotBlank(message="Name is required")
+     */
+    private $name;
+    /**
+     * @var
+     * @ORM\Column(type="string")
+     * @Assert\NotBlank(message="lastName is required")
+     */
+    private $lastName;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @var string
+     */
+    private $image= null ;
+
+
+    /**
      * @ORM\Column(type="string", length=255)
      */
     private $email;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $address;
-
-    /**
-     * @ORM\Column(type="date", nullable=true)
-     */
-    private $banPeriod;
 
     /**
      * @ORM\OneToOne(targetEntity=Subscription::class, mappedBy="user", cascade={"persist", "remove"})
@@ -72,14 +96,71 @@ class User implements UserInterface
      */
     private $ratings;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Commande::class, mappedBy="user")
+     */
+    private $commandes;
+
+    /**
+     * @ORM\Column(type="string", length=50, nullable=true)
+     */
+    private $activation_token;
+
+    /**     * @ORM\Column(type="string", length=50, nullable=true)
+     */
+    private $reset_token;
+
+    public function setImageFile(File $image = null)
+    {
+        $this->imageFile = $image;
+
+        // VERY IMPORTANT:
+        // It is required that at least one field changes if you are using Doctrine,
+        // otherwise the event listeners won't be called and the file is lost
+        if ($image) {
+            // if 'updatedAt' is not defined in your entity, use another property
+            $this->updatedAt = new \DateTime('now');
+        }
+    }
 
     public function __construct()
     {
         $this->streamComments = new ArrayCollection();
         $this->gameComment = new ArrayCollection();
         $this->ratings = new ArrayCollection();
+        $this->commandes = new ArrayCollection();
     }
 
+    /**
+     * @Vich\UploadableField(mapping="product_images", fileNameProperty="image")
+     * @var File
+     */
+    private $imageFile = null;
+    public function serialize()
+    {
+        $this->image = base64_encode($this->image);
+    }
+
+    public function unserialize($serialized)
+    {
+        $this->image = base64_decode($this->image);
+
+    }
+
+    public function getImageFile()
+    {
+        return $this->imageFile;
+    }
+
+    public function setImage($image)
+    {
+        $this->image = $image;
+    }
+
+    public function getImage()
+    {
+        return $this->image;
+    }
 
     public function getId(): ?int
     {
@@ -93,16 +174,16 @@ class User implements UserInterface
      */
     public function getUsername(): string
     {
-        return (string) $this->username;
+        return (string) $this->email;
     }
-
+/*
     public function setUsername(string $username): self
     {
         $this->username = $username;
 
         return $this;
     }
-
+*/
     /**
      * @see UserInterface
      */
@@ -138,6 +219,39 @@ class User implements UserInterface
     }
 
     /**
+     * @return mixed
+     */
+    public function getLastName()
+    {
+        return $this->lastName;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param mixed $lastName
+     */
+    public function setLastName($lastName): void
+    {
+        $this->lastName = $lastName;
+    }
+
+    /**
+     * @param mixed $name
+     */
+    public function setName($name): void
+    {
+        $this->name = $name;
+    }
+
+
+    /**
      * Returning a salt is only needed, if you are not using a modern
      * hashing algorithm (e.g. bcrypt or sodium) in your security.yaml.
      *
@@ -169,26 +283,26 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getAddress(): ?string
+    public function getActivationToken(): ?string
     {
-        return $this->address;
+        return $this->activation_token;
     }
 
-    public function setAddress(?string $address): self
+    public function setActivationToken(?string $activation_token): self
     {
-        $this->address = $address;
+        $this->activation_token = $activation_token;
 
         return $this;
     }
 
-    public function getBanPeriod(): ?\DateTime
+    public function getResetToken(): ?string
     {
-        return $this->banPeriod;
+        return $this->reset_token;
     }
 
-    public function setBanPeriod(?\DateTime $banPeriod): self
+    public function setResetToken(?string $reset_token): self
     {
-        $this->banPeriod = $banPeriod;
+        $this->reset_token = $reset_token;
 
         return $this;
     }
@@ -216,7 +330,8 @@ class User implements UserInterface
     }
 
     public function __toString(){
-        return $this->username;
+        //return $this->username;
+        return $this->name;
     }
 
     /**

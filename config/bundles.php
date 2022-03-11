@@ -15,4 +15,5 @@ return [
     Symfony\Bundle\WebServerBundle\WebServerBundle::class => ['dev' => true],
     Vangrg\ProfanityBundle\VangrgProfanityBundle::class => ['all' => true],
     Knp\Bundle\PaginatorBundle\KnpPaginatorBundle::class => ['all' => true],
+    Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle::class => ['all' => true],
 ];

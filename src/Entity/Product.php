@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ProductRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -34,6 +36,7 @@ class Product
     /**
      * @ORM\Column(type="float")
      * @Assert\NotBlank(message="prix is required")
+     * @Assert\Positive(message="Can't be negative")
      */
     private $price;
 
@@ -43,17 +46,43 @@ class Product
      */
     private $brand;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(message="category is required")
-     */
-    private $category;
+
 
     /**
      * @ORM\Column(type="integer")
      * @Assert\NotBlank(message="quantity is required")
+     * @Assert\Positive(message="Can't be negative")
      */
     private $quantity;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $picture;
+
+    /**
+     * @ORM\OneToMany(targetEntity=LigneCommande::class, mappedBy="product")
+     */
+    private $ligneCommandes;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="products")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $category;
+
+    /**
+     * @ORM\Column(type="date")
+     */
+    private $date;
+
+
+
+    public function __construct()
+    {
+        $this->ligneCommandes = new ArrayCollection();
+        $this->wishLists = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -108,12 +137,12 @@ class Product
         return $this;
     }
 
-    public function getCategory(): ?string
+    public function getCategory(): ?Category
     {
         return $this->category;
     }
 
-    public function setCategory(string $category): self
+    public function setCategory(?Category $category): self
     {
         $this->category = $category;
 
@@ -131,4 +160,60 @@ class Product
 
         return $this;
     }
+
+    public function getPicture(): ?string
+    {
+        return $this->picture;
+    }
+
+    public function setPicture(string $picture): self
+    {
+        $this->picture = $picture;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|LigneCommande[]
+     */
+    public function getLigneCommandes(): Collection
+    {
+        return $this->ligneCommandes;
+    }
+
+    public function addLigneCommande(LigneCommande $ligneCommande): self
+    {
+        if (!$this->ligneCommandes->contains($ligneCommande)) {
+            $this->ligneCommandes[] = $ligneCommande;
+            $ligneCommande->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLigneCommande(LigneCommande $ligneCommande): self
+    {
+        if ($this->ligneCommandes->removeElement($ligneCommande)) {
+            // set the owning side to null (unless already changed)
+            if ($ligneCommande->getProduct() === $this) {
+                $ligneCommande->setProduct(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(\DateTimeInterface $date): self
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+
 }

@@ -141,7 +141,6 @@ class StreamsController extends AbstractController
             $em->persist($stream);
             $em->flush();
 
-
             $em->persist($streamData);
             $em->flush();
 
