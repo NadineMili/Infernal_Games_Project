@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Stream;
 use App\Entity\StreamCategory;
 use App\Entity\StreamComment;
+use App\Entity\StreamData;
 use App\Entity\StreamRating;
 use App\Entity\User;
 use App\Form\StreamType;
@@ -38,13 +39,26 @@ class StreamsController extends AbstractController
         $streams= $srep->findByState();
         $categories= $this->getDoctrine()->getRepository(StreamCategory::class)->findAll();
         $ratings= $this->getDoctrine()->getRepository(StreamRating::class)->findAll();
+
+        $currentUser= $this->getUser();
+        $currentUserStream= [];
+
+        if ($currentUser){
+            $currentUserStream= $srep->findByStateUser($currentUser->getId());
+            if ($currentUserStream){
+                $currentUserStream= $currentUserStream[0];
+            }
+        }
+
         return $this->render('streams/index.html.twig', [
             'controller_name' => 'StreamsController',
             'streams'=>$streams,
             'categories'=>$categories,
             'ratings'=>$ratings,
             'ads'=> $adRepository->findBy(['etat'=>true]),
-            'game'=>$game[0][0]
+            'game'=>$game[0][0],
+            'currentUser'=> $currentUser,
+            'currentUserStream'=>$currentUserStream
         ]);
     }
 
@@ -78,7 +92,7 @@ class StreamsController extends AbstractController
         $i=0;
         foreach ($comments as $comment){
             $jsonData[$i]['text']= $checker->obfuscateIfProfane($jsonData[$i]['text']);
-            $jsonData[$i++]['user']= $comment->getUser()->getUsername();
+            $jsonData[$i++]['user']= $comment->getUser()->getName();
         }
         return new Response(json_encode($jsonData));
     }
@@ -114,11 +128,18 @@ class StreamsController extends AbstractController
      */
     public function watchStream($id, Request $req)
     {
+        $currentUser= $this->getUser();
+
+        if($currentUser==null){
+            $currentUser=new User();
+        }
+
         $users= $this->getDoctrine()->getRepository(User::class)->findAll();
         $stream= $this->getDoctrine()->getRepository(Stream::class)->find($id);
         return $this->render('streams/stream.html.twig', [
             'stream'=>$stream,
-            'users'=>$users
+            'users'=>$users,
+            'currentUser'=> $currentUser
         ]);
     }
 
@@ -127,11 +148,21 @@ class StreamsController extends AbstractController
      */
     public function newStream(Request $request, EntityManagerInterface $em, StreamRepository $srep, StreamDataRepository $sdrep): Response
     {
+        $currentUser= $this->getUser();
+
         $stream= new Stream();
         $form= $this->createForm(StreamType::class, $stream);
 
         //To change later: ye5ou el ID mta3 el current user $streamData= $sdrep->find($id);
-        $streamData= $sdrep->find(1);
+        $streamData= $sdrep->findOneBy(['streamer'=>$currentUser->getId()]);
+
+        if(!$streamData){
+            $streamData= new StreamData();
+            $streamData->setStreamer($currentUser);
+            $streamData->setStreamKey($currentUser->getName().$currentUser->getId());
+            $em->persist($streamData);
+            $em->flush();
+        }
 
         $form->handleRequest($request);
 
@@ -141,14 +172,12 @@ class StreamsController extends AbstractController
             $em->persist($stream);
             $em->flush();
 
-            $em->persist($streamData);
-            $em->flush();
-
             return $this->redirectToRoute('streamManager',['id'=>$stream->getId()]);
         }
 
         return $this->render('streams/new.html.twig', [
             'form'=>$form->createView(),
+            'streamData'=>$streamData
         ]);
     }
 

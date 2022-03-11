@@ -38,7 +38,7 @@
                 <div class="col-xl-3 col-lg-4 col-md-5 sidebar game-page-sideber">
                     <div id="stickySidebar">
                         <!-- Lehné Ads -->
-                        {% set ad= random(0, ads|length) %}
+                        {% set ad= random(0, ads|length-1) %}
                         <a href="{{ asset(ads[ad].reflink) }}" target="_blank"><img src="{{ asset('Ads/'~ads[ad].image) }}" width="200px"></a>
                         <!--<div class="widget-item">
                             <div class="testimonials-widget">
@@ -58,7 +58,7 @@
     <section class="game-author-section">
         <div class="container">
             <!-- Taswirt eluser -->
-            <div class="game-author-pic set-bg" data-setbg="{{ asset('front/img/author.jpg') }}"></div>
+            <div class="game-author-pic set-bg" data-setbg="{{ asset('/uploads/images/products/'~blog.author.image) }}"></div>
             <div class="game-author-info">
                 <h4>Written by: {{ blog.author }}</h4>
             </div>

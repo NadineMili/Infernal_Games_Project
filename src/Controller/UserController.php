@@ -7,7 +7,7 @@ use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Repository\GamerRepository;
 use App\Repository\UserRepository;
-
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,11 +22,15 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 
 class UserController extends AbstractController
+    /**
+     * @Route("/admin/users")
+     */
 {
     /**
-     * @Route("/user", name="user")
+     * @Route("/bruh", name="user")
      */
     public function index(): Response
     {
@@ -43,10 +47,10 @@ class UserController extends AbstractController
         return $this->render('gamer/user.html.twig',['user'=>$user]);
     }
     /**
-     * @IsGranted("ROLE_MANAGER")
+     * @IsGranted("ROLE_ADMIN")
      * @param UserRepository $repository
      * @return Response
-     * @Route ("/afficheuser",name="afficheuser")
+     * @Route ({"/","/afficheuser"},name="afficheuser")
      */
     public function afficheuser(UserRepository $repository)
     {
@@ -57,8 +61,8 @@ class UserController extends AbstractController
         ]);
     }
     /**
-     * @IsGranted("ROLE_MANAGER")
-     * @Route ("/delete/{id}",name="delete")
+     * @IsGranted("ROLE_ADMIN")
+     * @Route ("/delete/{id}",name="deleteUser")
      */
     public function delete($id)
     {
@@ -160,4 +164,36 @@ class UserController extends AbstractController
             "Attachment" => false
         ]);
     }
+
+    /**
+     * @Route("/new", name="admin_users_new", methods={"GET", "POST"})
+     */
+    public function new(Request $request,
+                        UserPasswordEncoderInterface $passwordEncoder
+    //                    ,GuardAuthenticatorHandler $guardHandler,
+    //                    AppcAuthenticator $authenticator
+    ) : Response
+    {
+        $user = new User();
+        $form =$this->createForm(RegistrationFormType::class, $user );
+        $form -> handleRequest($request);
+        if ($form -> isSubmitted() && $form -> isValid()) {
+            $user->setPassword(
+                $passwordEncoder->encodePassword(
+                    $user,
+                    $form->get('password')->getData()
+                )
+            );
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($user);
+            $entityManager->flush();
+            return $this->redirectToRoute('admin_users');
+
+        }
+        return $this->render('admin_user/new.html.twig', [
+            'user' =>$user,
+            'form' => $form -> createView()
+        ]);
+    }
+
 }

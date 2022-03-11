@@ -1,6 +1,6 @@
 {% extends 'backBase.html.twig' %}
 {% block body %}
-
+    {% block username %} {{ app.user.name }} {% endblock %}
     {{ form_start(form) }}
     {{ form_widget(form) }}
     <button class="btn">{{ button_label|default('Save') }}</button>

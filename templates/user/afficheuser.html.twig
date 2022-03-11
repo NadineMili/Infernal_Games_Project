@@ -3,7 +3,7 @@
 {% block title %}Hello Admin!{% endblock %}
 
 {% block body %}
-
+    {% block username %} {{ app.user.name }} {% endblock %}
     <div class="main-panel">
     <div class="content-wrapper">
     <div class="page-header">
@@ -19,22 +19,18 @@
             <div class="card-body">
                 <div class="table-responsive">
                     <div class="card-body">
-                        <a class="btn btn-block btn-outline-danger btn-lg" href="/pdfnav">PDF</a>
+                        <a class="btn btn-block btn-outline-danger btn-lg" href="{{ asset('/admin/users/pdfnav') }}">PDF</a>
                         <div class="table-responsive">
                             <input id="search" class="form-control form-control-sidebar"  type="search" placeholder="Chercher" aria-label="search">
                             <table class="table table-striped ">
                                 <thead>
                                 <tr>
                                     <th>Id</th>
-                                    <th>Email:</th>
-                                    <th>Name:</th>
-                                    <th> Last_name</th>
-                                    <th> Password </th>
-
-
-                                    <th>Image </th>
-
-
+                                    <th>Picture</th>
+                                    <th>Email</th>
+                                    <th>Name</th>
+                                    <th>Last name</th>
+                                    <th>Password</th>
                                     <th>Delete</th>
                                     <th>Update</th>
                                 </tr>
@@ -43,7 +39,7 @@
                                 {% for c in tab %}
                                     <tr>
                                         <td class="py-1">{{c.id}}</td>
-                                        <td><img src="uploads/images/products/{{c.image}}" width="50px" height="50px" alt="image"></td>
+                                        <td><img src="{{ asset('uploads/images/products/'~ c.image) }}" width="50px" height="50px" alt="image"></td>
 
                                         <td>{{c.email}}</td>
                                         <td>{{c.name}}</td>
@@ -54,7 +50,7 @@
 
 
 
-                                        <td><a href="{{path('delete',{'id':c.id})}}">Delete</a></td>
+                                        <td><a href="{{path('deleteUser',{'id':c.id})}}">Delete</a></td>
                                         <td><a href="{{ path('updateuser',{'id':c.id}) }}">Update</a></td>
 
                                     </tr>

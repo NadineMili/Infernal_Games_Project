@@ -32,11 +32,6 @@ class Newsletter
      */
     private $contentF;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Admin::class, inversedBy="newsletters")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $author;
 
     /**
      * @ORM\Column(type="date")
@@ -105,6 +100,11 @@ class Newsletter
      * @Assert\Length(min="20",minMessage="Not enough content. It should be at least 20")
      */
     private $contentIntro;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="newsletters")
+     */
+    private $author;
     
 
     public function getId(): ?int
@@ -136,17 +136,6 @@ class Newsletter
         return $this;
     }
 
-    public function getAuthor(): ?Admin
-    {
-        return $this->author;
-    }
-
-    public function setAuthor(?Admin $author): self
-    {
-        $this->author = $author;
-
-        return $this;
-    }
 
     public function getDate(): ?\DateTime
     {
@@ -276,6 +265,18 @@ class Newsletter
     public function setContentIntro(string $contentIntro): self
     {
         $this->contentIntro = $contentIntro;
+
+        return $this;
+    }
+
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?User $author): self
+    {
+        $this->author = $author;
 
         return $this;
     }

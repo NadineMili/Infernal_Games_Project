@@ -25,10 +25,10 @@
 
     <!-- VideoJS -->
     <script>
-        /*document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function() {
             var player = videojs('player');
             player.play();
-        }, false);*/
+        }, false);
         function reconnect() {
             var player = videojs('player');
             player.reset();
@@ -55,18 +55,28 @@
             var messages = []
 
             $('#chatButton').click(function(){
-                var userid= $('#chatUser option:selected').val();
-                var username= $('#chatUser option:selected').html();
-                var stream= "{{ stream.id }}";
-                var text= $('#chatText').val()
-                var msg = {
-                    'user': username,
-                    'text': text,
-                    'stream': stream
-                };
-                addToDatabase();
-                //updateMessages(msg);
-                conn.send(JSON.stringify(msg));
+                //var userid= $('#chatUser option:selected').val();
+                //var username= $('#chatUser option:selected').html();
+                var user= "{{ app.user }}";
+                if(user!= undefined) {
+                    var userId= "{{ currentUser.id }}";
+                    var username= user;
+                    var stream= "{{ stream.id }}";
+                    var text= $('#chatText').val();
+
+                    $('#chatText').val="";
+
+                    var msg = {
+                        'user': username,
+                        'text': text,
+                        'stream': stream
+                    };
+                    console.log(msg)
+                    addToDatabase(userId);
+                    //updateMessages(msg);
+                    conn.send(JSON.stringify(msg));
+                }
+
             });
 
             function updateMessages(msg){
@@ -85,9 +95,8 @@
                 }
             }
 
-            function addToDatabase(){
+            function addToDatabase(user){
 
-                var user= $('#chatUser option:selected').val();
                 var stream= "{{ stream.id }}";
                 var text= $('#chatText').val()
 
@@ -130,38 +139,6 @@
     </script>
 
     <!-- Add comment Ajax 3adi -->
-    <script>
-
-        $(document).ready(function(){
-            $('#chatButtonn').on('click', function(event){
-                var user= $('#chatUser option:selected').val();
-                var stream= "{{ stream.id }}";
-                var text= $('#chatText').val()
-
-                console.log(user)
-                console.log(stream)
-                $.ajax({
-                    url: '/streams/addStreamCommentsAjax/new',
-                    type: 'POST',
-                    data:{
-                        'user':user,
-                        'stream':stream,
-                        'text':text
-                    },
-                    dataType: 'json',
-                    async: true,
-
-                    success: function(data, status){
-
-                        console.log(data)
-                    },
-                    error : function(xhr, textStatus, errorThrown) {
-                        console.log(errorThrown);
-                    }
-                })
-            })
-        })
-    </script>
 
     <!-- Load comment onload -->
 
@@ -240,16 +217,15 @@
                                 </div>
                             </div>
                             <div class="row align-self-end">
-                                    <select id="chatUser">
-                                        {% for user in users %}
-                                            <option value="{{ user.id }}">{{ user.username }}</option>
-                                        {% endfor %}
-                                    </select>
-                                <p class="emoji-picker-container">
-                                    <textarea id="chatText" class="form-control" rows="" placeholder="" style="width:300px;max-width: 300px" data-emojiable="true" data-emoji-input="unicode"></textarea>
-                                </p>
 
+                                {% if app.user is not null  %}
+                                    <p class="emoji-picker-container">
+                                        <textarea id="chatText" class="form-control" rows="" placeholder="" style="width:300px;max-width: 300px" data-emojiable="true" data-emoji-input="unicode"></textarea>
+                                    </p>
                                     <a id="chatButton" href="#" class="btn btn-info">Post</a>
+                                {% else %}
+                                    <a href="{{ asset('/login') }}" class="btn btn-info">Login to comment!</a>
+                                {% endif %}
                             </div>
 
 

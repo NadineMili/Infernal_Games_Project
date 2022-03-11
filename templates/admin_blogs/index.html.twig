@@ -4,7 +4,7 @@
 {% endblock %}
 
 {% block body %}
-
+    {% block username %} {{ app.user.name }} {% endblock %}
     <div class="main-panel">
         <div class="content-wrapper">
             <div class="page-header d-flex flex-wrap">

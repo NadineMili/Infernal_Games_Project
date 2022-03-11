@@ -36,10 +36,10 @@ class Blog
     private $image;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Admin::class, inversedBy="blogs")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="blogs")
      */
-    private $Author;
+    private $author;
+
     
 
     public function getId(): ?int
@@ -83,17 +83,18 @@ class Blog
         return $this;
     }
 
-    public function getAuthor(): ?Admin
+    public function getAuthor(): ?User
     {
-        return $this->Author;
+        return $this->author;
     }
 
-    public function setAuthor(?Admin $Author): self
+    public function setAuthor(?User $author): self
     {
-        $this->Author = $Author;
+        $this->author = $author;
 
         return $this;
     }
+
 
 
 }

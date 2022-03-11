@@ -1,6 +1,6 @@
 {% extends 'backBase.html.twig' %}
 {% block body %}
-
+    {% block username %} {{ app.user.name }} {% endblock %}
     <!DOCTYPE html>
 
     <title>Edit Blog</title>

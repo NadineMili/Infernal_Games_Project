@@ -9,6 +9,7 @@ use App\Form\NewsletterType;
 use App\Repository\AdminRepository;
 use App\Repository\NewsletterRepository;
 use App\Repository\SubscriptionRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,7 +38,7 @@ class AdminNewsletterController extends AbstractController
     /**
      * @Route("/new", name="admin_newsletter_new", methods={"GET", "POST"})
      */
-    public function new(Request $request,MailerInterface $mailer, EntityManagerInterface $entityManager, SubscriptionRepository $subscriptionRepository, AdminRepository $adminRepository): Response{
+    public function new(Request $request,MailerInterface $mailer, EntityManagerInterface $entityManager, SubscriptionRepository $subscriptionRepository, UserRepository $userRepository): Response{
         $newsletter= new Newsletter();
         $form=$this->createForm(NewsletterType::class, $newsletter);
         $form->handleRequest($request);
@@ -64,7 +65,8 @@ class AdminNewsletterController extends AbstractController
 
 
             // To change later
-            $newsletter->setAuthor( $adminRepository->find(1) );
+            $currentUser= $this->getUser();
+            $newsletter->setAuthor( $userRepository->find($currentUser->getId()) );
 
             // Get local date
             $date= new \DateTime('now');

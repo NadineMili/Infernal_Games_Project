@@ -23,7 +23,7 @@
         function resetTest(){
             var player = videojs('testStream');
             player.reset();
-            player.src("{{ asset('http://127.0.0.1:8050/hls/Fourat1/index.m3u8') }}");
+            player.src("{{ asset('http://127.0.0.1:8050/hls/'~streamData.streamKey~'/index.m3u8') }}");
 
         }
 
@@ -51,7 +51,6 @@
         <div class="row">
             <div class="col-lg-7 order-2 order-lg-1">
                 <div class="contact-form">
-
                     {{ form_start(form, {'attr':{'novalidate':'novalidate'}}) }}
                         {{ form_widget(form.title, {'attr':{'class':'','placeholder':'Title'}}) }}
                         <div class="cont-info">
@@ -81,10 +80,10 @@
                         </div>
 
                         <div class="contact-text text-white font-italic">
-                            <div class="col-form-label">{{ form_label(form.accessData, 'Your stream key' ) }}
+                            <div class="col-form-label">Your stream key <b class="text-danger">{{ streamData.streamKey }}</b>
                             </div>
+                            {% do form.accessData.setRendered() %}
 
-                            {{ form_widget(form.accessData, {'attr':{'class':'js-example-basic-single ' , 'style': 'width:48%'}}) }}
                         </div>
 
 
@@ -117,7 +116,7 @@
         <div class="game-single-preview mt-4">
             <video id="testStream" width="600px" height="300px" class="video-js vjs-matrix" controls="true" poster="{{ asset('front/img/promo-bg.jpg') }}">
                 <source
-                        src="{{ asset('http://127.0.0.1:8050/hls/Fourat1/index.m3u8') }}"
+                        src="{{ asset('http://127.0.0.1:8050/hls/'~streamData.streamKey~'/index.m3u8') }}"
                         type="application/x-mpegURL">
             </video>
 

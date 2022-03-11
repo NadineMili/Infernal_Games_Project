@@ -98,30 +98,33 @@
                                             });
                                         });
                                         function saveToTheDB() {
-                                            console.log(ratedIndexUser)
-                                            $.ajax({
-                                                url:"/games/addGameRating",
-                                                methode: "POST",
-                                                dataType: 'json',
-                                                async: true,
-                                                data : {
-                                                    save: 1,
-                                                    'user':3,
-                                                    'game':game,
-                                                    'rate':ratedIndexUser,
-                                                    //ratedIndex : ratedIndex,
-                                                }, success: function (r) {
-                                                    user = r.user;
-                                                    localStorage.setItem('user',user);
-                                                }
-                                            })
+                                            var user= "{{ app.user }}";
+                                            if(user!= undefined) {
+                                                $.ajax({
+                                                    url:"/games/addGameRating",
+                                                    methode: "POST",
+                                                    dataType: 'json',
+                                                    async: true,
+                                                    data : {
+                                                        save: 1,
+                                                        'user':{{ currentUser.id }},
+                                                        'game':game,
+                                                        'rate':ratedIndexUser,
+                                                        //ratedIndex : ratedIndex,
+                                                    }, success: function (r) {
+                                                        user = r.user;
+                                                        localStorage.setItem('user',user);
+                                                    }
+                                                })
+
+                                            }
+
                                         }
 
                                         function setStars(max){
 
                                             for (var i=0;  i<=max; i++) {
                                                 $('.la-star:eq(' + i + ')').css('color', 'orange');
-                                                console.log(i)
                                             }
                                         }
 
@@ -154,68 +157,69 @@
                     <script>
                         $(document).ready(function (){
                             $('#chatButton').on('click',function (event) {
-                                var user = $('#chatUser option:selected').val();
-                                var game = "{{ game.id }}";
-                                var description = $('#chatText').val();
+                                var user= "{{ app.user }}"
+                                var userId= -1;
+                                if(user!= undefined){
+                                    userId = user['id'];
 
-                                console.log(user);
-                                console.log(game);
-                                console.log(description);
-                                $.ajax({
-                                    url: '/games/addGameComment',
-                                    type: 'POST',
-                                    data: {
-                                        'user':user,
-                                        'game':game,
-                                        'description':description
-                                    },
-                                    dataType :'json',
-                                    async:true,
+                                    var game = "{{ game.id }}";
+                                    var description = $('#chatText').val();
+                                    $.ajax({
+                                        url: '/games/addGameComment',
+                                        type: 'POST',
+                                        data: {
+                                            'user':{{ currentUser.id }},
+                                            'game':game,
+                                            'description':description
+                                        },
+                                        dataType :'json',
+                                        async:true,
 
-                                    success:function (data,status) {
-                                        console.log(data);
-                                        $('#loadComments').click()
-                                    },
-                                    error: function (xhr, textStatus,errorThrown) {
-                                        console.log(errorThrown);
-                                        console.log(textStatus)
-                                    }
-                                })
+                                        success:function (data,status) {
+                                            console.log(data);
+                                            loadComments();
+                                        },
+                                        error: function (xhr, textStatus,errorThrown) {
+                                            console.log(errorThrown);
+                                            console.log(textStatus)
+                                        }
+                                    })
+                                }
+
 
                             })
                         })
                     </script>
                     <script>
                         $(document).ready(function (){
-                            $('#loadComments').on('click',function (event) {
-                                console.log($(this).data('id'))
-                                $.ajax({
-                                    url: '/games/gameCommentsAjax/'+$(this).data('id'),
-                                    type: 'POST',
-                                    dataType: 'json',
-                                    async: true,
-
-                                    success:function (data,status) {
-                                        console.log(data)
-                                        $('#commentsArea').empty();
-                                        for (i=0;i<data.length; i++){
-                                            comment=data[i];
-                                            var row= $('<tr> <td class="text-danger" id="user"></td> <td class="text-light" id="text"></td> </tr>');
-                                            $('#user', row).html(comment['user']);
-                                            $('#text', row).html(comment['description']);
-                                            $('#commentsArea').append(row);
-                                        }
-                                    },
-                                    error : function(xhr, textStatus, errorThrown) {
-                                        console.log(errorThrown); }
-                                })
-                            })
+                            loadComments()
                         })
-                    </script>
 
+                        function loadComments(){
+                            $.ajax({
+                                url: '/games/gameCommentsAjax/'+{{ game.id }},
+                                type: 'POST',
+                                dataType: 'json',
+                                async: true,
+
+                                success:function (data,status) {
+                                    console.log(data)
+                                    $('#commentsArea').empty();
+                                    for (i=0;i<data.length; i++){
+                                        comment=data[i];
+                                        var row= $('<tr> <td class="text-danger" id="user"></td> <td class="text-light" id="text"></td> </tr>');
+                                        $('#user', row).html(comment['user']);
+                                        $('#text', row).html(comment['description']);
+                                        $('#commentsArea').append(row);
+                                    }
+                                },
+                                error : function(xhr, textStatus, errorThrown) {
+                                    console.log(errorThrown); }
+                            })
+                        }
+                    </script>
                     <script>
                         $(document).ready(function(){
-
                             $('#loadComments').click()
                         })
                     </script>
@@ -233,14 +237,12 @@
                 </div>
             </div>
             <div class="row align-self-end">
-                <select id="chatUser">
-                    {% for user in users %}
-                        <option value="{{ user.id }}">{{ user.username }}</option>
-                    {% endfor %}
-                </select>
-
-                <input type="text" id="chatText" class="form-control">
-                <a id="chatButton" href="#" class="btn btn-info">Post</a>
+                {% if app.user is not null %}
+                    <input type="text" id="chatText" class="form-control">
+                    <a id="chatButton" href="#" class="btn btn-info">Post</a>
+                {% else %}
+                    <a href="{{ asset('/login') }}" class="site-btn">Login to comment!</a>
+                {% endif %}
 
             </div>
 

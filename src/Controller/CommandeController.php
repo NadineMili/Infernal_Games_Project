@@ -34,15 +34,18 @@ class CommandeController extends AbstractController
     /**
      * * @Route("/add", name="command_add")
      */
-    public function addCommande(Request $request, MailerInterface $mailer){
+    public function addCommande(Request $request, SessionInterface $session, MailerInterface $mailer){
         $commande= new Commande();
         $form = $this->createForm(CommandeType::class,$commande);
         $form->handleRequest($request);
+
+        $total= $session->get('total');
 
         if($form->isSubmitted() && $form->isValid())
         {
 
             $entityManager = $this->getDoctrine()->getManager();
+            $commande->setTotal($total);
             $entityManager->persist($commande);
             $entityManager->flush();
 
@@ -53,7 +56,8 @@ class CommandeController extends AbstractController
 
         return $this->render("shop/commande.html.twig",[
             'commande' =>$commande,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'total'=>$total
         ]);
     }
 

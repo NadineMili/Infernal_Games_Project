@@ -33,6 +33,7 @@ class GamesController extends AbstractController
     public function index(): Response
     {
         $games = $this->getDoctrine()->getRepository(Game::class)->findAll();
+        ;
         return $this->render('games/index.html.twig', [
             'controller_name' => 'GamesController',
             'games' => $games
@@ -62,7 +63,7 @@ class GamesController extends AbstractController
 
         $i=0;
         foreach ($comments as $comment){
-            $jsonData[$i++]['user']= $comment->getUser()->getUsername();
+            $jsonData[$i++]['user']= $comment->getUser()->getName();
         }
         return new Response(json_encode($jsonData));
     }
@@ -74,10 +75,17 @@ class GamesController extends AbstractController
                              UserRepository $userRepository,
                              GameRepository $gameRepository,NormalizerInterface $normalizer)
     {
+        $currentUser= $this->getUser();
+
+        if($currentUser==null){
+            $currentUser=new User();
+        }
+
         $game = $this->getDoctrine()->getRepository(Game::class)->find($id);
         $comments= $this->getDoctrine()->getRepository(GameComment::class)->findBy(['game'=>$game]);
 
-        $userRating= $this->getDoctrine()->getRepository(Rating::class)->findOneBy(['user'=>3]);
+
+        $userRating= $this->getDoctrine()->getRepository(Rating::class)->findOneBy(['user'=>$currentUser->getId()]);
         $gameRating= $this->getDoctrine()->getRepository(Rating::class)->getAvrGameRating($id);
         if ($userRating){
             $r= $userRating->getUserRating();
@@ -88,7 +96,8 @@ class GamesController extends AbstractController
             ['game' => $game, 'comments'=>$comments,
                 'users'=>$userRepository->findAll(),
                 'gameRating'=>$gameRating[0]['avgGameRating'],
-                'userRating'=>(string) $r
+                'userRating'=>(string) $r,
+                'currentUser'=>$currentUser
             ]);
 
     }

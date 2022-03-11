@@ -50,6 +50,17 @@ class StreamRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
+    public function findByStateUser($userId)
+    {
+        $query = $this->createQueryBuilder('s')
+            ->leftJoin('s.accessData', 'a')
+            ->where('s.state = 1')
+            ->andWhere('a.streamer = :userId')
+            ->setParameter('userId', $userId)
+            ->getQuery();
+
+        return $query->getResult();
+    }
 
     public function findById($id)
     {

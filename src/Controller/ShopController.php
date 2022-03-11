@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\GameRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,16 +21,19 @@ class ShopController extends AbstractController
     /**
      * @Route("/", name="shop")
      */
-    public function index(): Response
+    public function index( GameRepository $gameRepository): Response
     {
         $products= $this->getDoctrine()->getRepository(Product::class)->findAll();
         $lastProducts = $this->getDoctrine()->getRepository(Product::class)->findBy(array(), null, 3, 3);
+
         $categories= $this->getDoctrine()->getRepository(Category::class)->findAll();
+        $game= $gameRepository->findHighestRated();
         return $this->render('shop/index.html.twig', [
             'controller_name' => 'ShopController',
             'products'=>$products,
             'categories'=>$categories,
-            'lastProducts'=>$lastProducts
+            'lastProducts'=>$lastProducts,
+            'game'=>$game[0][0],
 
         ]);
 

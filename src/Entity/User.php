@@ -23,6 +23,8 @@ use Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
+ * @Vich\Uploadable
  */
 class User implements UserInterface
 {
@@ -129,6 +131,8 @@ class User implements UserInterface
         $this->gameComment = new ArrayCollection();
         $this->ratings = new ArrayCollection();
         $this->commandes = new ArrayCollection();
+        $this->blogs = new ArrayCollection();
+        $this->newsletters = new ArrayCollection();
     }
 
     /**
@@ -136,6 +140,16 @@ class User implements UserInterface
      * @var File
      */
     private $imageFile = null;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Blog::class, mappedBy="author")
+     */
+    private $blogs;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Newsletter::class, mappedBy="author")
+     */
+    private $newsletters;
     public function serialize()
     {
         $this->image = base64_encode($this->image);
@@ -419,6 +433,66 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($rating->getUser() === $this) {
                 $rating->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Blog>
+     */
+    public function getBlogs(): Collection
+    {
+        return $this->blogs;
+    }
+
+    public function addBlog(Blog $blog): self
+    {
+        if (!$this->blogs->contains($blog)) {
+            $this->blogs[] = $blog;
+            $blog->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBlog(Blog $blog): self
+    {
+        if ($this->blogs->removeElement($blog)) {
+            // set the owning side to null (unless already changed)
+            if ($blog->getAuthor() === $this) {
+                $blog->setAuthor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Newsletter>
+     */
+    public function getNewsletters(): Collection
+    {
+        return $this->newsletters;
+    }
+
+    public function addNewsletter(Newsletter $newsletter): self
+    {
+        if (!$this->newsletters->contains($newsletter)) {
+            $this->newsletters[] = $newsletter;
+            $newsletter->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNewsletter(Newsletter $newsletter): self
+    {
+        if ($this->newsletters->removeElement($newsletter)) {
+            // set the owning side to null (unless already changed)
+            if ($newsletter->getAuthor() === $this) {
+                $newsletter->setAuthor(null);
             }
         }
 

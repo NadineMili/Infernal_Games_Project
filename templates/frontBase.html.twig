@@ -60,9 +60,18 @@
 
             <nav class="top-nav-area navbar-dark w-100">
 
-                <div class="user-panel">
-                    <a href="">Login</a> / <a href="">Register</a>
-                </div>
+                {% if app.user is not null %}
+                    <div class="user-panel">
+                        <a href="{{ asset('/logout') }}">Logout</a>
+                        {% if app.user.roles[0] == "ROLE_ADMIN" %}
+                            / <a href="{{ asset('/admin') }}">Go to admin</a>
+                        {% endif %}
+                    </div>
+                {% else %}
+                    <div class="user-panel">
+                        <a href="{{ asset('/login') }}">Login</a> / <a href="{{ asset('/register') }}">Register</a>
+                    </div>
+                {% endif %}
                 <!-- Menu -->
                 <ul class="main-menu primary-menu">
                     <li><a href="{{ asset('/home') }}">Home</a></li>
@@ -95,10 +104,13 @@
 <section class="newsletter-section">
     <div class="container">
         <h2>Subscribe to our newsletter</h2>
-        <form class="newsletter-form">
-            <input type="text" placeholder="ENTER YOUR E-MAIL">
-            <button class="site-btn">subscribe  <img src="{{ asset('front/img/icons/double-arrow.png') }}" alt="#"/></button>
-        </form>
+
+        {% if app.user is not null  %}
+            <a  class="site-btn" href="{{ asset("/subscribeToNewsletter") }}">Subscribe  <img src="{{ asset('front/img/icons/double-arrow.png') }}" alt="#"/></a>
+            <a  class="site-btn" href="{{ asset("/unSubscribeToNewsletter") }}">Unubscribe  <img src="{{ asset('front/img/icons/double-arrow.png') }}" alt="#"/></a>
+        {% else %}
+            <a href="{{ asset('/login') }}" class="site-btn">Login to subscribe!</a>
+        {% endif %}
     </div>
 </section>
 <!-- Newsletter section end -->

@@ -6,6 +6,7 @@ use App\Entity\Blog;
 use App\Form\BlogType;
 use App\Repository\AdminRepository;
 use App\Repository\BlogRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -86,7 +87,7 @@ class AdminBlogController extends AbstractController
     /**
      * @Route("/new", name="admin_blogs_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, EntityManagerInterface $entityManager, AdminRepository $adminRepository): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
     {
         $blog = new Blog();
         $form = $this->createForm(BlogType::class, $blog);
@@ -94,7 +95,8 @@ class AdminBlogController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $blog->setAuthor($adminRepository->find(1));
+            $currentUser= $this->getUser();
+            $blog->setAuthor($userRepository->find( $currentUser->getId()));
 
             $image = $form['image']->getData();
             $newImageName= $blog->getTitle().'.'.$image->guessExtension();

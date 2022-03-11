@@ -9,6 +9,7 @@ parameters:
     NewslettersPictures: '%kernel.project_dir%/public/Newsletters'
     GamesPictures: '%kernel.project_dir%/public/Games'
     PicturesProducts: '%kernel.project_dir%/public/Products'
+    app.path.product_images: /uploads/images/products
 
 services:
     # default configuration for services in *this* file
