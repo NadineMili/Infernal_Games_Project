@@ -20,7 +20,51 @@
 	<!-- Page top end-->
 
 
+	<script>
+		function searchByFL(first){
+			console.log(first)
+			$.ajax({
+				url: '/games/searchGameL',
+				type: 'POST',
+				data:{
+					"first": first
+				},
+				dataType: 'json',
+				async: true,
 
+				success:function (data, status){
+					$('#gamesArea').empty();
+					if (data.length>0){
+						for (i=0; i<data.length; i++){
+							game=data[0]
+							console.log(game)
+							var route = "{{ path('view_game', {'id': 'gameId' })}}".replace("gameId", game['id']);
+							var src= "{{ asset('Games/gamep') }}".replace("gamep", game['picture']);
+							var row= '<div class="col-lg-4 col-md-6">'+
+									'<div class="game-item">'+
+							'<img src="'+src+'" alt="" style="height: 200px">'+
+									'<h5>'+game['name']+'</h5>'+
+							'<a href="'+route+'" class="read-more">Read More  <img src="{{ asset('front/img/icons/double-arrow.png') }}" alt="#"/></a>'+
+						'</div>'+
+						'</div>'
+							$('#gamesArea').append(row);
+						}
+					}else{
+						var div=$('<div class="col-lg-4 col-md-6">'+
+								'<div class="game-item">'+
+								'<p>No games starts with this letter :/</p>'+
+								'</div>'+
+								'</div>')
+						$('#gamesArea').empty().append(div)
+					}
+				},
+				error : function(xhr, textStatus, errorThrown) {
+					console.log(errorThrown);
+				}
+			})
+		}
+
+	</script>
 
 	<!-- Games section -->
 	<section class="games-section">
@@ -29,39 +73,39 @@
 
 				<!-- ******** FOURAT NOTE ******** -->
 				<!-- Lehné rodhom yetnadhmou b2awel 7arf min ism el game :33 -->
-				<li><a href="">A</a></li>
-				<li><a href="">B</a></li>
-				<li><a href="">C</a></li>
-				<li><a href="">D</a></li>
-				<li><a href="">E</a></li>
-				<li><a href="">F</a></li>
-				<li><a href="">G</a></li>
-				<li><a href="">H</a></li>
-				<li><a href="">I</a></li>
-				<li><a href="">J</a></li>
-				<li><a href="">K</a></li>
-				<li><a href="">L</a></li>
-				<li><a href="">M</a></li>
-				<li><a href="">N</a></li>
-				<li><a href="">O</a></li>
-				<li><a href="">P</a></li>
-				<li><a href="">Q</a></li>
-				<li><a href="">R</a></li>
-				<li><a href="">S</a></li>
-				<li><a href="">T</a></li>
-				<li><a href="">U</a></li>
-				<li><a href="">V</a></li>
-				<li><a href="">W</a></li>
-				<li><a href="">X</a></li>
-				<li><a href="">Y</a></li>
-				<li><a href="">Z</a></li>
+				<li><a href="#" onclick="searchByFL('A')">A</a></li>
+				<li><a href="#" onclick="searchByFL('B')">B</a></li>
+				<li><a href="#"onclick="searchByFL('C')">C</a></li>
+				<li><a href="#"onclick="searchByFL('D')">D</a></li>
+				<li><a href="#"onclick="searchByFL('E')">E</a></li>
+				<li><a href="#"onclick="searchByFL('F')">F</a></li>
+				<li><a href="#"onclick="searchByFL('G')">G</a></li>
+				<li><a href="#"onclick="searchByFL('H')">H</a></li>
+				<li><a href="#"onclick="searchByFL('I')">I</a></li>
+				<li><a href="#"onclick="searchByFL('J')">J</a></li>
+				<li><a href="#"onclick="searchByFL('K')">K</a></li>
+				<li><a href="#"onclick="searchByFL('L')">L</a></li>
+				<li><a href="#"onclick="searchByFL('M')">M</a></li>
+				<li><a href="#"onclick="searchByFL('N')">N</a></li>
+				<li><a href="#"onclick="searchByFL('O')">O</a></li>
+				<li><a href="#"onclick="searchByFL('P')">P</a></li>
+				<li><a href="#"onclick="searchByFL('Q')">Q</a></li>
+				<li><a href="#"onclick="searchByFL('R')">R</a></li>
+				<li><a href="#"onclick="searchByFL('S')">S</a></li>
+				<li><a href="#"onclick="searchByFL('T')">T</a></li>
+				<li><a href="#"onclick="searchByFL('U')">U</a></li>
+				<li><a href="#"onclick="searchByFL('V')">V</a></li>
+				<li><a href="#"onclick="searchByFL('W')">W</a></li>
+				<li><a href="#"onclick="searchByFL('X')">X</a></li>
+				<li><a href="#"onclick="searchByFL('Y')">Y</a></li>
+				<li><a href="#"onclick="searchByFL('Z')">Z</a></li>
 			</ul>
 
 			<!-- ******** FOURAT NOTE ******** -->
 			<div class="row">
 				<!-- ******** Games list ******** -->
 				<div class="col-xl-7 col-lg-8 col-md-7">
-					<div class="row">
+					<div class="row" id="gamesArea">
 						<!-- ******** FOURAT NOTE ******** -->
 						<!-- ******** ligné for game in games ******** -->
 						{% for game in games %}
@@ -91,12 +135,12 @@
 							<div class="categories-widget">
 								<h4 class="widget-title">categories</h4>
 								<ul>
-									<li><a href="">Games</a></li>
-									<li><a href="">Gaming Tips & Tricks</a></li>
-									<li><a href="">Online Games</a></li>
-									<li><a href="">Team Games</a></li>
-									<li><a href="">Community</a></li>
-									<li><a href="">Uncategorized</a></li>
+									<li><a href="#">Games</a></li>
+									<li><a href="#">Gaming Tips & Tricks</a></li>
+									<li><a href="#">Online Games</a></li>
+									<li><a href="#">Team Games</a></li>
+									<li><a href="#">Community</a></li>
+									<li><a href="#">Uncategorized</a></li>
 								</ul>
 							</div>
 						</div>
@@ -104,12 +148,12 @@
 							<div class="categories-widget">
 								<h4 class="widget-title">platform</h4>
 								<ul>
-									<li><a href="">Xbox</a></li>
-									<li><a href="">X box 360</a></li>
-									<li><a href="">Play Station</a></li>
-									<li><a href="">Play Station VR</a></li>
-									<li><a href="">Nintendo Wii</a></li>
-									<li><a href="">Nintendo Wii U</a></li>
+									<li><a href="#">Xbox</a></li>
+									<li><a href="#">X box 360</a></li>
+									<li><a href="#">Play Station</a></li>
+									<li><a href="#">Play Station VR</a></li>
+									<li><a href="#">Nintendo Wii</a></li>
+									<li><a href="#">Nintendo Wii U</a></li>
 								</ul>
 							</div>
 						</div>
@@ -117,12 +161,12 @@
 							<div class="categories-widget">
 								<h4 class="widget-title">Genre</h4>
 								<ul>
-									<li><a href="">Online</a></li>
-									<li><a href="">Adventure</a></li>
-									<li><a href="">S.F.</a></li>
-									<li><a href="">Strategy</a></li>
-									<li><a href="">Racing</a></li>
-									<li><a href="">Shooter</a></li>
+									<li><a href="#">Online</a></li>
+									<li><a href="#">Adventure</a></li>
+									<li><a href="#">S.F.</a></li>
+									<li><a href="#">Strategy</a></li>
+									<li><a href="#">Racing</a></li>
+									<li><a href="#">Shooter</a></li>
 								</ul>
 							</div>
 						</div>
@@ -139,7 +183,7 @@
 		<div class="featured-bg set-bg" data-setbg="{{ asset('front/img/featured-bg.jpg') }}"></div>
 		<div class="featured-box">
 			<div class="text-box">
-				<div class="top-meta">11.11.18  /  in <a href="">Games</a></div>
+				<div class="top-meta">11.11.18  /  in <a href="#">Games</a></div>
 				<h3>The game you’ve been waiting  for is out now</h3>
 				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliquamet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Vestibulum posuere porttitor justo id pellentesque. Proin id lacus feugiat, posuere erat sit amet, commodo ipsum. Donec pellentesque vestibulum metus...</p>
 				<a href="#" class="read-more">Read More <img src="img/icons/double-arrow.png" alt="#"/></a>

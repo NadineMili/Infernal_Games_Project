@@ -85,7 +85,7 @@ class AdminGamesController extends AbstractController
     }
 
     /**
-     * @Route ("/search" ,name="search")
+     * @Route ("/searchh" ,name="searchh")
      */
     function search (GameRepository $repository, Request $request) {
         $data = $request -> get('search');

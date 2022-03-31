@@ -32,12 +32,14 @@ class CommandeController extends AbstractController
         ]);
     }
     /**
-     * * @Route("/add", name="command_add")
+     * @Route("/add", name="command_add")
      */
     public function addCommande(Request $request, SessionInterface $session, MailerInterface $mailer){
+
         $commande= new Commande();
         $form = $this->createForm(CommandeType::class,$commande);
         $form->handleRequest($request);
+
 
         $total= $session->get('total');
 
@@ -49,8 +51,8 @@ class CommandeController extends AbstractController
             $entityManager->persist($commande);
             $entityManager->flush();
 
-            $this->emailCommande($mailer, $commande,$commande->getUser());
-            return $this->redirectToRoute("shop");
+            $this->emailCommande($mailer, $commande,$this->getUser());
+            return $this->redirectToRoute("stripe");
 
         }
 
@@ -98,7 +100,7 @@ class CommandeController extends AbstractController
         $entityManager->remove($commande);
         $entityManager->flush();
 
-        return $this->redirectToRoute("commande");
+        return $this->redirectToRoute("stripe");
     }
 
 

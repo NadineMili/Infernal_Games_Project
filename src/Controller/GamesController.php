@@ -30,10 +30,9 @@ class GamesController extends AbstractController
     /**
      * @Route("/", name="games")
      */
-    public function index(): Response
+    public function index(GameRepository $gameRepository): Response
     {
         $games = $this->getDoctrine()->getRepository(Game::class)->findAll();
-        ;
         return $this->render('games/index.html.twig', [
             'controller_name' => 'GamesController',
             'games' => $games
@@ -65,6 +64,15 @@ class GamesController extends AbstractController
         foreach ($comments as $comment){
             $jsonData[$i++]['user']= $comment->getUser()->getName();
         }
+        return new Response(json_encode($jsonData));
+    }
+
+    /**
+     * @Route("/searchGameL", name="searchGameL")
+     */
+    public function searchGameL(Request $request, GameRepository $gameRepository, NormalizerInterface $normalizer){
+        $games = $gameRepository->findByFirstLetter($request->get('first'));
+        $jsonData= $normalizer->normalize($games, 'json', ['groups'=>'games:read']);
         return new Response(json_encode($jsonData));
     }
 

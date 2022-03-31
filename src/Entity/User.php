@@ -19,7 +19,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
-use Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader;
+use Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader;use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -32,6 +32,7 @@ class User implements UserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("users:read")
      */
     private $id;
 
@@ -56,12 +57,14 @@ class User implements UserInterface
      * @var
      * @ORM\Column(type="string")
      * @Assert\NotBlank(message="Name is required")
+     * @Groups("users:read")
      */
     private $name;
     /**
      * @var
      * @ORM\Column(type="string")
      * @Assert\NotBlank(message="lastName is required")
+     * @Groups("users:read")
      */
     private $lastName;
 
@@ -74,6 +77,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("users:read")
      */
     private $email;
 
