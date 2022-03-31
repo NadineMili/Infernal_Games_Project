@@ -1,18 +1,44 @@
 {% extends 'backBase.html.twig' %}
 
-{% block title %}Hello Admin!{% endblock %}
+{% block title %}Hello Admin!
+{% endblock %}
 
 {% block body %}
-
+    {% block username %} {{ app.user.name }} {% endblock %}
     <div class="main-panel">
         <div class="content-wrapper">
-            <div class="page-header">
-                <h3 class="page-title"> Games </h3>
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a class="btn btn-success" href="{{ asset('/admin/games/newGame') }}">+ Add a game</a></li>
-                    </ol>
-                </nav>
+            <div class="page-header d-flex flex-wrap">
+                <div class="w-100">
+                    <h3 class="page-title text-center">
+                        <p style="color:purple;">
+                            Blogs
+                        </p>
+                    </h3>
+                </div>
+                <div class="w-100 d-inline-flex">
+                    {# <form name="form" method="post" action="/admin/blogs/handleSearch">
+						<div id="form">
+							<div><input type="text" id="form_query" name="form[query]" required="required" class="form-control" placeholder="Entrez un mot-clé"></div>
+							<div>
+								<button type="submit" id="form_recherche" name="form[recherche]" class="btn btn-primary">Recherche</button>
+							</div><input type="hidden" id="form__token" name="form[_token]" value="LxPCb1XV5lw7otgyAgXMSrdVA4WYxV8MhEHHa5pxZmM"></div>
+					</form> #}
+                    <div class="nav-link d-flex search w-100 h-auto">
+                        {{ render(controller(
+                            'App\\Controller\\AdminBlogController::searchBar'
+                        )) }}
+                    </div>
+                    {# <form class="nav-link d-flex search w-100 h-auto">
+						<input type="text" class="form-control" placeholder="Search blog title">
+					</form> #}
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a class="btn btn-success" href="{{ asset('/admin/blogs/new') }}">+ Add a blog</a>
+                            </li>
+                        </ol>
+                    </nav>
+                </div>
             </div>
             <div class="col-lg-12 grid-margin stretch-card">
                 <div class="card">
@@ -21,39 +47,48 @@
                             <table class="table table-striped ">
                                 <thead>
                                 <tr>
-                                    <th> Picture </th>
-                                    <th> ID </th>
-                                    <th> Name </th>
-                                    <th> Description </th>
-                                    <th> Price </th>
-                                    <th> Trailer Url </th>
-                                    <th> Category </th>
+                                    <th>
+                                        ID
+                                    </th>
+                                    <th>
+                                        Title
+                                    </th>
+                                    <th>
+                                        Content
+                                    </th>
+
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {% for game in games %}
+                                {% for blog in blogs %}
                                     <tr onclick="">
-                                        <td class="py-1">
 
-                                            <img src="{{ asset('back/images/faces-clipart/pic-1.png') }}" alt="image" />
+                                        <th>
+                                            {{ blog.id }}
+                                        </th>
+                                        <td>
+                                            {{ blog.title }}
                                         </td>
-                                        <th> {{ game.id }} </th>
-                                        <td> {{ game.name }} </td>
-                                        <td> {{ game.description }} </td>
-                                        <td> {{ game.price }} </td>
-                                        <td> {{ game.trailerUrl }} </td>
-                                        <td> {{ game.category }} </td>
-                                        <td> <a class="" href="{{ path('admin_games_edit',{'id': game.id}) }}">
-                                                <i class="mdi mdi-pencil"></i>
-                                            </a></td>
+                                        <td>
+                                            {{ blog.content }}
+                                        </td>
 
-                                        <td> <a class="" href="{{ path('admin_games_delete',{'id':game.id})}}">
+                                        <td>
+                                            <a class="" href="{{ path('admin_blogs_edit',{'id': blog.id}) }}">
+                                                <i class="mdi mdi-pencil"></i>
+                                            </a>
+                                        </td>
+
+                                        <td>
+                                            <a class="" href="{{ path('admin_blogs_delete',{'id':blog.id})}}">
                                                 <i class="mdi mdi-delete-forever"></i>
-                                            </a></td>
+                                            </a>
+                                        </td>
                                     </tr>
                                 {% endfor %}
                                 </tbody>
                             </table>
+                            {{ knp_pagination_render(blogs) }}
                         </div>
                     </div>
                 </div>

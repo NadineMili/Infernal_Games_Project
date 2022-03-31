@@ -1,0 +1,66 @@
+{% extends 'backBase.html.twig' %}
+
+{% block body %}
+
+    <div class="main-panel">
+    <div class="content-wrapper">
+    <div class="page-header">
+        <h3 class="page-title"> Ads </h3>
+    </div>
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                {{ form_start(form, {'attr':{'novalidate':'novalidate'}}) }}
+                <div class="form-group">
+                    <label for="gameName">Nom</label>
+                    {{ form_widget(form.nom,{'attr':{'class':'form-control', 'placeholder':'Nom'}}) }}
+                    <div class="text-danger">{{ form_errors(form.nom) }}</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="gameDescription">Type</label>
+                    {{ form_widget(form.type,{'attr':{'class':'form-control', 'placeholder':'Type'}}) }}
+                    <div class="text-danger">{{ form_errors(form.type) }}</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="gameDescription">Description</label>
+                    {{ form_widget(form.description,{'attr':{'class':'form-control', 'placeholder':'Awesome product!'}}) }}
+                    <div class="text-danger">{{ form_errors(form.description) }}</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="gameDescription">Nom Sponsor</label>
+                    {{ form_widget(form.sponsor,{'attr':{'class':'form-control', 'placeholder':'AMD!'}}) }}
+                    <div class="text-danger">{{ form_errors(form.sponsor) }}</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="gameDescription">Etat: Active?</label>
+                    {{ form_widget(form.etat,{'attr':{'class':'form-control', 'placeholder':'Etat: Active?'}}) }}
+                    <div class="text-danger">{{ form_errors(form.etat) }}</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="gameDescription">Referral Link</label>
+                    {{ form_widget(form.reflink,{'attr':{'class':'form-control', 'placeholder':'https://www.example.com/'}}) }}
+                    <div class="text-danger">{{ form_errors(form.reflink) }}</div>
+                </div>
+
+                <div class="form-group">
+                    <label>Ad Image</label>
+                    {{ form_widget(form.image,{'attr':{'class':'form-control file-upload-info file-upload-browse btn btn-primary', 'placeholder':'Upload'}}) }}
+                    <div class="input-group col-12">
+                    </div>
+                </div>
+
+
+                <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                <button class="btn btn-dark">Cancel</button>
+
+
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

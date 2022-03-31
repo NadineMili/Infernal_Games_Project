@@ -9,12 +9,14 @@ use App\Form\NewsletterType;
 use App\Repository\AdminRepository;
 use App\Repository\NewsletterRepository;
 use App\Repository\SubscriptionRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints\Date;
 
@@ -36,39 +38,70 @@ class AdminNewsletterController extends AbstractController
     /**
      * @Route("/new", name="admin_newsletter_new", methods={"GET", "POST"})
      */
-    public function new(Request $request,MailerInterface $mailer, EntityManagerInterface $entityManager, SubscriptionRepository $subscriptionRepository, AdminRepository $adminRepository): Response{
+    public function new(Request $request,MailerInterface $mailer, EntityManagerInterface $entityManager, SubscriptionRepository $subscriptionRepository, UserRepository $userRepository): Response{
         $newsletter= new Newsletter();
         $form=$this->createForm(NewsletterType::class, $newsletter);
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
 
+            $images= [$form['imageF']->getData(), $form['imageS']->getData(), $form['imageT']->getData()];
+
+            $newsImagesNames= [$newsletter->getTitleIntro().$newsletter->getTitleF().'.'.$images[0]->guessExtension(),
+                $newsletter->getTitleIntro().$newsletter->getTitleS().'.'.$images[1]->guessExtension(),
+                $newsletter->getTitleIntro().$newsletter->getTitleT().'.'.$images[2]->guessExtension()];
+
+            for ($i=0; $i<3; $i++){
+                $images[$i]->move(
+                    $this->getParameter('NewslettersPictures'),
+                    preg_replace('/\s+/','',$newsImagesNames[$i])
+                );
+            }
+
+
+            $newsletter->setImageF(preg_replace('/\s+/','',$newsImagesNames[0]));
+            $newsletter->setImageS(preg_replace('/\s+/','',$newsImagesNames[1]));
+            $newsletter->setImageT(preg_replace('/\s+/','',$newsImagesNames[2]));
+
+
             // To change later
-            $newsletter->setAuthor( $adminRepository->find(1) );
+            $currentUser= $this->getUser();
+            $newsletter->setAuthor( $userRepository->find($currentUser->getId()) );
 
             // Get local date
             $date= new \DateTime('now');
             $newsletter->setDate($date);
 
+            $entityManager->persist($newsletter);
+            $entityManager->flush();
+
             if($newsletter->getSent()){
                 $sub= $subscriptionRepository->findBy([
                     'status'=>1
                 ]);
-
-                $entityManager->persist($newsletter);
-                $entityManager->flush();
                 for($i=0;$i<count($sub);$i++){
                     $rec= $sub[$i]->getUser()->getEmail();
                     $this->emailNewsLetter($mailer, $newsletter,$rec);
                 }
             }
-            return $this->redirectToRoute('admin_newsletter', [], Response::HTTP_SEE_OTHER);
+
+            return $this->redirectToRoute('admin_newsletter');
         }
         return $this->render('admin_newsletter/new.html.twig',[
             'newsletter'=> $newsletter,
             'form' => $form->createView()
         ]);
     }
+
+    /**
+     * @Route("/read/{id}", name="admin_newsletter_read", methods={"GET"})
+     */
+    public function read($id, NewsletterRepository $newsletterRepository){
+        return $this->render('admin_newsletter/read.html.twig', [
+            'newsletter'=>  $newsletterRepository->find($id)
+            ]);
+    }
+
 
     /**
      * @Route("/edit/{id}", name="admin_newsletter_edit", methods={"GET", "POST"})
@@ -81,6 +114,25 @@ class AdminNewsletterController extends AbstractController
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
+
+            $images= [$form['imageF']->getData(), $form['imageS']->getData(), $form['imageT']->getData()];
+            //dd($images);
+            $newsImagesNames= [$newsletter->getTitleIntro().$newsletter->getTitleF().'.'.$images[0]->guessExtension(),
+                $newsletter->getTitleIntro().$newsletter->getTitleS().'.'.$images[1]->guessExtension(),
+                $newsletter->getTitleIntro().$newsletter->getTitleT().'.'.$images[2]->guessExtension()];
+
+
+            for ($i=0; $i<3; $i++){
+                $images[$i]->move(
+                    $this->getParameter('NewslettersPictures'),
+                    preg_replace('/\s+/','',$newsImagesNames[$i])
+                );
+            }
+
+
+            $newsletter->setImageF(preg_replace('/\s+/','',$newsImagesNames[0]));
+            $newsletter->setImageS(preg_replace('/\s+/','',$newsImagesNames[1]));
+            $newsletter->setImageT(preg_replace('/\s+/','',$newsImagesNames[2]));
 
             //To change later
             $newsletter-> setAuthor($author);
@@ -118,16 +170,14 @@ class AdminNewsletterController extends AbstractController
 
     public function emailNewsLetter(MailerInterface $mailer, Newsletter $newsletter, $rec){
 
-        $email = (new Email())
+
+        //src="{{ email.image('@newsletterImages/img/infernalLogo.png') }}"
+        $email = (new TemplatedEmail())
             ->from('infernalgames2022@gmail.com')
             ->to($rec)
-            ->subject( $newsletter->getTitle())
-            ->html('
-                            <h1>{$newsletter->getTitle()}</h1>
-                            <p>{$newsletter->getContent()}</p>
-                            <footer>{$newsletter->getAuthor()}</footer>
-                    ');
-        $l= (MailerInterface::class);
+            ->subject("Infernal Games Newsletter!")
+            ->htmlTemplate('newsletter\template3.html.twig')
+            ->context([ 'newsletter'=>$newsletter]);
 
         $mailer->send($email);
         return $this->redirectToRoute('admin_newsletter');

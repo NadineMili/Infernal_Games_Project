@@ -9,8 +9,11 @@
     <!-- Favicon -->
     <link href="{{ asset('img/infernalLogo.ico') }}" rel="shortcut icon"/>
 
+    <!-- VideoJs -->
+    <link href="{{ asset('https://vjs.zencdn.net/7.6.6/video-js.css') }}" rel="stylesheet" />
+
     <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto:400,400i,500,500i,700,700i,900,900i" rel="stylesheet">
+    <link href="{{ asset('https://fonts.googleapis.com/css?family=Roboto:400,400i,500,500i,700,700i,900,900i') }}" rel="stylesheet">
 
 
     <!-- Stylesheets -->
@@ -57,9 +60,18 @@
 
             <nav class="top-nav-area navbar-dark w-100">
 
-                <div class="user-panel">
-                    <a href="">Login</a> / <a href="">Register</a>
-                </div>
+                {% if app.user is not null %}
+                    <div class="user-panel">
+                        <a href="{{ asset('/logout') }}">Logout</a>
+                        {% if app.user.roles[0] == "ROLE_ADMIN" %}
+                            / <a href="{{ asset('/admin') }}">Go to admin</a>
+                        {% endif %}
+                    </div>
+                {% else %}
+                    <div class="user-panel">
+                        <a href="{{ asset('/login') }}">Login</a> / <a href="{{ asset('/register') }}">Register</a>
+                    </div>
+                {% endif %}
                 <!-- Menu -->
                 <ul class="main-menu primary-menu">
                     <li><a href="{{ asset('/home') }}">Home</a></li>
@@ -69,6 +81,7 @@
                         </ul>
                     </li>
                     <li><a href="{{ asset('/shop') }}">Shop</a></li>
+                    <li><a href="{{ asset('/streams') }}">Streams</a></li>
                     <li><a href="{{ asset('/blogs') }}">Blogs</a></li>
                     <li><a href="contact.html">More</a>
                         <ul class="sub-menu">
@@ -91,10 +104,13 @@
 <section class="newsletter-section">
     <div class="container">
         <h2>Subscribe to our newsletter</h2>
-        <form class="newsletter-form">
-            <input type="text" placeholder="ENTER YOUR E-MAIL">
-            <button class="site-btn">subscribe  <img src="{{ asset('front/img/icons/double-arrow.png') }}" alt="#"/></button>
-        </form>
+
+        {% if app.user is not null  %}
+            <a  class="site-btn" href="{{ asset("/subscribeToNewsletter") }}">Subscribe  <img src="{{ asset('front/img/icons/double-arrow.png') }}" alt="#"/></a>
+            <a  class="site-btn" href="{{ asset("/unSubscribeToNewsletter") }}">Unubscribe  <img src="{{ asset('front/img/icons/double-arrow.png') }}" alt="#"/></a>
+        {% else %}
+            <a href="{{ asset('/login') }}" class="site-btn">Login to subscribe!</a>
+        {% endif %}
     </div>
 </section>
 <!-- Newsletter section end -->
@@ -103,13 +119,13 @@
 <footer class="footer-section">
     <div class="container">
         <div class="footer-left-pic">
-            <img width="450px" height="300px"  src="{{ asset ('front/img/footer-left-pic.png') }}" alt="">
+            <img width="480px" height="320px"  src="{{ asset ('front/img/footer-left-pic.png') }}" alt="">
         </div>
         <div class="footer-right-pic">
-            <img width="200px" height="295px" src="{{ asset ('front/img/footer-right-pic.png') }}" alt="">
+            <img width="220px" height="330px" src="{{ asset ('front/img/footer-right-pic.png') }}" alt="">
         </div>
         <a href="#" class="footer-logo">
-            <img src="{{ asset ('front/./img/logo.png') }}" alt="">
+            <img src="{{ asset ('img/infernalLogo.png') }}" width="100px" height="100px" alt="">
         </a>
 
         <div class="footer-social d-flex justify-content-center">
@@ -123,6 +139,12 @@
 </footer>
 <!-- Footer section end -->
 
+<!-- plugins:js -->
+<script src="{{ asset('back/vendors/js/vendor.bundle.base.js') }}"></script>
+
+<script src="{{ asset('back/vendors/select2/select2.min.js') }}"></script>
+<script src="{{ asset('back/js/select2.js') }}"></script>
+<!-- endinject -->
 
 <!--====== Javascripts & Jquery ======-->
 <script src="{{ asset ('front/js/jquery-3.2.1.min.js') }}"></script>
@@ -132,6 +154,22 @@
 <script src="{{ asset ('front/js/jquery.sticky-sidebar.min.js') }}"></script>
 <script src="{{ asset ('front/js/jquery.magnific-popup.min.js') }}"></script>
 <script src="{{ asset ('front/js/main.js') }}"></script>
+
+<!-- JQuery -->
+<script src="{{ asset ('https://code.jquery.com/jquery-1.11.3.min.js') }}"></script>
+
+<!-- emoji-picker -->
+<script src="{{ asset('emoji/js/config.js') }}"></script>
+<script src="{{ asset('emoji/js/util.js') }}"></script>
+<script src="{{ asset('emoji/js/jquery.emojiarea.js') }}"></script>
+<script src="{{ asset('emoji/js/emoji-picker.js') }}"></script>
+
+
+
+<!-- VideoJs -->
+<script src="{{ asset('https://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js') }}"></script>
+<script src="{{ asset('https://vjs.zencdn.net/7.6.6/video.js') }}"></script>
+<script>videojs.options.flash.swf = "video-js.swf";</script>
 
 </body>
 </html>

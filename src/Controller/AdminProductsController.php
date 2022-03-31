@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Validator\Constraints\Date;
 
 use App\Entity\Product;
 use App\Repository\ProductRepository;
@@ -34,25 +35,39 @@ class AdminProductsController extends AbstractController
      * @Route("/new", name="admin_products_new", methods={"GET", "POST"})
      */
 
-   
+
     public function addProduct(Request $request ): Response{
         $product= new Product();
-           $form = $this->createForm(ProductFormType::class,$product);
-           $form->handleRequest($request);
+        $form = $this->createForm(ProductFormType::class,$product);
+        $form->handleRequest($request);
 
-           if($form->isSubmitted() && $form->isValid())
-           {
-               $entityManager = $this->getDoctrine()->getManager();
-               $entityManager->persist($product);
-               $entityManager->flush();
-               return $this->redirectToRoute("admin_products");
+        if($form->isSubmitted() && $form->isValid())
+        {
+            //dd($form);
+            // affectation de date d'aujourd'hui
+            $date= new \DateTime('now');
+            $product->setDate($date);
 
-           }
 
-           return $this->render("admin_products/new.html.twig",[
-               'product' =>$product,
-               'form' => $form->createView()
-           ]);
+            $picture = $form['picture']->getData();
+            $newPictureName = $product->getName().'.'.$picture->getExtension();
+            $picture->move(
+                $this->getParameter('PicturesProducts'),
+                $newPictureName
+            );
+            $product->setPicture($newPictureName);
+            $entityManager = $this->getDoctrine()->getManager();
+
+            $entityManager->persist($product);
+            $entityManager->flush();
+            return $this->redirectToRoute("admin_products");
+
+        }
+
+        return $this->render("admin_products/new.html.twig",[
+            'product' =>$product,
+            'form' => $form->createView()
+        ]);
     }
 
     /**
@@ -63,19 +78,26 @@ class AdminProductsController extends AbstractController
         $product = $repo->find($id);
         $form = $this->createForm(ProductFormType::class,$product);
         $form->handleRequest($request);
-       
-    
+
+
         if($form->isSubmitted() && $form->isValid())
-            {
-                $entityManager = $this->getDoctrine()->getManager();
-                $entityManager->flush();
-                return $this->redirectToRoute("admin_products");
-        
-            }
-        
+        {
+            $picture = $form['picture']->getData();
+            $newPictureName = $product->getName().'.'.$picture->getExtension();
+            $picture->move(
+                $this->getParameter('PicturesProducts'),
+                $newPictureName
+            );
+            $product->setPicture($newPictureName);
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->flush();
+            return $this->redirectToRoute("admin_products");
+
+        }
+
         return $this->render("admin_products/new.html.twig", [
             'product' =>$product,
-               'form' => $form->createView()
+            'form' => $form->createView()
         ]);
     }
 
@@ -89,9 +111,20 @@ class AdminProductsController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($product);
         $entityManager->flush();
-     
+
         return $this->redirectToRoute("admin_products");
     }
 
-     
+    /**
+     * @Route ("/search" ,name="search")
+     */
+    function search (ProductRepository $repository, Request $request) {
+        $data = $request -> get('search');
+        $product = $repository ->findBy( ['name'=> $data]);
+        return $this -> render('admin_products/index.html.twig' ,[
+                'products' => $product
+            ]
+        );
+
+    }
 }

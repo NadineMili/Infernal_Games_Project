@@ -1,0 +1,79 @@
+<html lang="en">
+{% apply inline_css %}
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
+        <title>Template 1</title>
+
+        <style>
+            .col-image-header {
+                float: left;
+                width: 25%;
+            }
+            .col-title-header {
+                float: left;
+                width: 75%;
+            }
+            .col {
+                float: left;
+                width: 50%;
+            }
+            .row:after {
+                content: "";
+                display: table;
+                clear: both;
+            }
+            body {
+                background-image: url("{{ email.image('@newsletterImages/img/temp-bg.jpg') }}");
+                background-repeat: no-repeat;
+                background-position: center;
+            }
+        </style>
+    </head>
+
+    <body>
+    <table width="100%">
+        <tbody>
+            <tr>
+                <td>
+                    <table >
+                        <tr>
+                            <td style="padding-right: 10px"><p>Follow us:</p><td>
+                            <td style="padding-right: 10px"><a target="_blank" href="#"><img src="{{ email.image('@newsletterImages/img/facebook.png') }}" style="height: 20px;width: 20px;" /></a></td>
+                            <td style="padding-right: 10px"><a target="_blank" href="#"><img src="{{ email.image('@newsletterImages/img/twitter.png') }}" style="height: 20px;width: 20px;" /></a></td>
+                            <td style="padding-right: 10px"><a target="_blank" href="{{ asset ('https://www.instagram.com/infernalgames/')}}"><img src="{{ email.image('@newsletterImages/img/instagram.png') }}" style="height: 20px;width: 20px;" /></a></td>
+                            <td><a target="_blank" href="#"><img src="{{ email.image('@newsletterImages/img/twitch.png') }}" style="height: 20px;width: 20px;" /></a></td>
+                        </tr>
+                    </table>
+                </td>
+                <td><h1>Infernal Games Newsletter</h1></td>
+                <td><img src="{{ email.image('@newsletterImages/img/infernalLogo.png') }}" style="height: 100px;width: 100px;" /></td>
+            </tr>
+            <tr>
+                <td><img style="height: 139px;width: 100%;" src="{{ email.image('@newsletterImages/front/img/blog-big/3.jpg') }}" /></td>
+            </tr>
+            <tr>
+                <td>
+                    <h3>{{ newsletter.title }} 1</h3>
+                    <p>{{ newsletter.content  }} 1</p>
+                </td>
+            </tr>
+            <tr>
+                <td><img style="width: 100%;" src="{{ email.image('@newsletterImages/front/img/blog-big/1.jpg') }}"/></td>
+                <td><img style="width: 100%;" src="{{ email.image('@newsletterImages/front/img/blog-big/2.jpg') }}"/></td>
+            </tr>
+            <tr>
+                <td>
+                    <h3>{{ newsletter.title }} 2</h3>
+                    <p>{{ newsletter.content  }} 2</p>
+                </td>
+                <td>
+                    <h3>{{ newsletter.title }} 3</h3>
+                    <p>{{ newsletter.content  }} 3</p>
+                </td>
+            </tr>
+        </table>
+    </tbody>
+    </body>
+{% endapply %}
+</html>

@@ -1,0 +1,48 @@
+{% extends 'frontBase.html.twig' %}
+
+
+{% block title %}hello Shop controller{% endblock %}
+
+{% block body %}
+    <section class="page-top-section set-bg" data-setbg="{{ asset('front/img/page-top-bg/2.jpg') }}">
+        <div class="page-info">
+            <h2>Your cart</h2>
+            <div class="site-breadcrumb">
+                <a href="">Home</a>
+                <span>Commandes</span>
+
+            </div>
+
+        </div>
+    </section>
+<div class="games-section">
+    <div class="container">
+        <div class="col-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    {{ form_start(form, {'attr':{'novalidate':'novalidate'}}) }}
+                    <div class="form-group">
+                        <label>Your total is {{ total }} DT</label><br>
+
+                        <label for="productName">Name Client</label>
+                        {{ form_widget(form.user,{'attr':{'class':'form-control', 'placeholder':'Name'}}) }}
+                        <div class="text-danger">{{ form_errors(form.user) }}</div>
+
+                        <label for="productDescription">Payment Method</label>
+                        {{ form_widget(form.paymentMethod,{'attr':{'class':'form-control'}}) }}
+                        <div class="text-danger">{{ form_errors(form.paymentMethod) }}</div>
+                        {% do form.total.setRendered() %}
+                    </div>
+                    <div>
+                        <a class="btn btn-success" href="{{ path("stripe") }}">Payment</a>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                    <a href="{{asset('/admin/products')}}" class="btn btn-dark">Cancel</a>
+                    {{form_end(form)}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

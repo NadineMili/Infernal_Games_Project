@@ -4,6 +4,12 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
+    BlogsPictures: '%kernel.project_dir%/public/Blogs'
+    AdsPictures: '%kernel.project_dir%/public/Ads'
+    NewslettersPictures: '%kernel.project_dir%/public/Newsletters'
+    GamesPictures: '%kernel.project_dir%/public/Games'
+    PicturesProducts: '%kernel.project_dir%/public/Products'
+    app.path.product_images: /uploads/images/products
 
 services:
     # default configuration for services in *this* file
@@ -28,3 +34,10 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    Vangrg\ProfanityBundle\Storage\ProfanitiesStorageDefault: '@vangrg_profanity.storage.default'
+    vangrg_profanity.storage.default:
+        class: Vangrg\ProfanityBundle\Storage\ProfanitiesStorageDefault
+        public: true
+        arguments:
+            - "%vangrg_profanity.source.file_name%"
+            - "%vangrg_profanity.source.format%"

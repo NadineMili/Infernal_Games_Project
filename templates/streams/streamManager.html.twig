@@ -1,0 +1,189 @@
+{% extends 'frontBase.html.twig' %}
+
+{% block title %}Stream{% endblock %}
+{% block body %}
+
+    <style>
+        .vertical-scrollable {
+            width: 50%;
+            overflow-y: scroll;
+        }
+    </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var player = videojs('player');
+            player.play();
+        }, false);
+        function reconnect() {
+            var player = videojs('player');
+            player.reset();
+            player.src("{{ asset('http://127.0.0.1:8050/hls/'~stream.accessData.streamKey~'/index.m3u8') }}");
+        }
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var conn = new WebSocket('ws://localhost:8002');
+            conn.onopen = function (e) {
+                console.log("Connection established!");
+            }
+
+            conn.onmessage = function(e) {
+                var msg = JSON.parse(e.data);
+                updateMessages(msg);
+            };
+
+            var messages = []
+
+
+
+            function updateMessages(msg){
+                console.log(msg['stream'])
+                console.log('{{ stream.id }}')
+                console.log(msg['stream'] == '{{ stream.id }}')
+
+                if(msg['stream'] == '{{ stream.id }}') {
+                    messages.push(msg);
+
+                    var row = $('<tr> <td class="text-danger" id="user"></td> <td class="text-light" id="text"></td> </tr>');
+
+                    $('#user', row).html(msg['user']);
+                    $('#text', row).html(msg['text']);
+                    $('#commentsArea').append(row);
+                }
+            }
+
+        }, false)
+
+    </script>
+
+    <script src="{{ asset('http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js') }}"></script>
+
+    <!-- Load comment onload -->
+
+    <script>
+
+        $(document).ready( function (){
+            $.ajax({
+                url: '/streams/streamCommentsAjax/'+'{{ stream.id }}',
+                type: 'POST',
+                dataType: 'json',
+                async: true,
+
+                success: function(data, status){
+                    $('#commentsArea').empty();
+
+                    for (i=0;i<data.length; i++){
+                        comment= data[i];
+                        var row= $('<tr> <td class="text-danger" id="user"></td> <td class="text-light" id="text"></td> </tr>');
+                        $('#user', row).html(comment['user']);
+                        $('#text', row).html(comment['text']);
+                        $('#commentsArea').append(row);
+                    }
+                },
+                error : function(xhr, textStatus, errorThrown) {
+                    console.log(errorThrown);
+                }
+            })
+        })
+    </script>
+
+
+    <script>
+        $(document).ready(function(){
+            $('#loadComments').on('click', function(event){
+                $.ajax({
+                    url: '/streams/streamCommentsAjax/'+$(this).data('id'),
+                    type: 'POST',
+                    dataType: 'json',
+                    async: true,
+
+                    success: function(data, status){
+                        $('#commentsArea').empty();
+                        for (i=0;i<data.length; i++){
+                            comment= data[i];
+                            var row= $('<tr> <td class="text-danger" id="user"></td> <td class="text-light" id="text"></td> </tr>');
+                            $('#user', row).html(comment['user']);
+                            $('#text', row).html(comment['text']);
+                            $('#commentsArea').append(row);
+                        }
+                    },
+                    error : function(xhr, textStatus, errorThrown) {
+                        console.log(errorThrown);
+                    }
+                })
+            })
+        })
+    </script>
+
+    <link href="{{ asset('css/stream.css') }}" rel="stylesheet" />
+
+    <!-- Page top section -->
+    <section class="page-top-section set-bg" data-setbg="{{ asset('front/img/page-top-bg/1.jpg') }}">
+        <div class="page-info">
+            <h2>Streams</h2>
+            <div class="site-breadcrumb">
+                <a href="">Home</a>  /
+                <span>Stream</span>
+            </div>
+        </div>
+    </section>
+    <!-- Page top end-->
+
+
+    <!-- Games section -->
+    <section class="games-single-page">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="game-single-preview">
+                        <video id="player" width="600px" height="300px" class="video-js vjs-matrix" controls="true" poster="{{ asset('front/img/promo-bg.jpg') }}">
+                            <source
+                                    src="{{ asset('http://127.0.0.1:8050/hls/'~stream.accessData.streamKey~'/index.m3u8') }}"
+                                    type="application/x-mpegURL">
+                        </video>
+                        <button class="btn btn-success" onclick="reconnect()">Reconnect</button>
+                        <a class="btn btn-danger" href="{{ path('disconnectStream',{'id':stream.id}) }}">Disconnect</a>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="categories-widget" style="height: 700px">
+
+                        <div class="col">
+                            <div class="row">
+                                <div>
+                                    <a class="btn btn-primary" href="#" id="loadComments" data-id="{{ stream.id }}">Load comments</a>
+                                    <div class="vertical-scrollable" style="height: 600px; width: 300px">
+                                        <table width="100%" title="Comments" >
+
+                                            <tbody id="commentsArea"></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-9 col-lg-8 col-md-7 game-single-content">
+                    <h2 class="gs-title">{{ stream.title }}</h2>
+                    <h4>What it is about:</h4>
+                    <p>{{ stream.description }}</p>
+                    <div class="geme-social-share pt-5 d-flex">
+                        <p>Share:</p>
+                        <a href="#"><i class="fa fa-instagram"></i></a>
+                        <a href="#"><i class="fa fa-facebook"></i></a>
+                        <a href="#"><i class="fa fa-twitter"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </section>
+    <!-- Games end-->
+
+{% endblock %}

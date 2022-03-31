@@ -16,28 +16,78 @@
                 {{ form_start(form, {'attr':{'novalidate':'novalidate'}}) }}
 
                     <div class="form-group">
-                        <label for="newsletterTitle">Title</label>
-                        {{ form_widget(form.title,{'attr':{'class':'form-control', 'placeholder':'Title'}}) }}
-                        <div class="text-danger">{{ form_errors(form.title) }}</div>
+                        <label for="newsletterTitle">Title Intro</label>
+                        {{ form_widget(form.titleIntro,{'attr':{'class':'form-control', 'placeholder':'Title'}}) }}
+                        <div class="text-danger">{{ form_errors(form.titleIntro) }}</div>
                     </div>
 
                     <div class="form-group">
-                        <label for="newsletterContent">Content</label>
-                        {{ form_widget(form.content,{'attr':{'class':'form-control', 'placeholder':'Content', 'style':'height:300px'}}) }}
-                        <div class="text-danger">{{ form_errors(form.content) }}</div>
-                    </div>
-                    <div class="form-group">
-                        <label for="newsletterContent">Plan</label>
-                        {{ form_widget(form.plan,{'attr':{'class':' form-control'}}) }}
-                        <div class="text-danger">{{ form_errors(form.content) }}</div>
+                        <label for="newsletterContent">Content Intro</label>
+                        {{ form_widget(form.contentIntro,{'attr':{'class':'form-control', 'placeholder':'Introduction to the newsletter', 'style':'height:300px'}}) }}
+                        <div class="text-danger">{{ form_errors(form.contentIntro) }}</div>
                     </div>
 
-                    <div class="form-check form-check-flat form-check-primary">
+                <div class="form-group">
+                    <label for="newsletterTitle">First Title</label>
+                    {{ form_widget(form.titleF,{'attr':{'class':'form-control', 'placeholder':'Title'}}) }}
+                    <div class="text-danger">{{ form_errors(form.titleF) }}</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="newsletterContent">First Content</label>
+                    {{ form_widget(form.contentF,{'attr':{'class':'form-control', 'placeholder':'Content', 'style':'height:300px'}}) }}
+                    <div class="text-danger">{{ form_errors(form.contentF) }}</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="newsletterTitle">First Image</label>
+                    {{ form_widget(form.imageF,{'attr':{'class':'form-control'}}) }}
+                    <div class="text-danger">{{ form_errors(form.imageF) }}</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="newsletterTitle">Second Title</label>
+                    {{ form_widget(form.titleS,{'attr':{'class':'form-control', 'placeholder':'Title'}}) }}
+                    <div class="text-danger">{{ form_errors(form.titleS) }}</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="newsletterContent">Second Content</label>
+                    {{ form_widget(form.contentS,{'attr':{'class':'form-control', 'placeholder':'Content', 'style':'height:300px'}}) }}
+                    <div class="text-danger">{{ form_errors(form.contentS) }}</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="newsletterTitle">Second Image</label>
+                    {{ form_widget(form.imageS,{'attr':{'class':'form-control'}}) }}
+                    <div class="text-danger">{{ form_errors(form.imageS) }}</div>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="newsletterTitle">Third Title</label>
+                    {{ form_widget(form.titleT,{'attr':{'class':'form-control', 'placeholder':'Title'}}) }}
+                    <div class="text-danger">{{ form_errors(form.titleT) }}</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="newsletterContent">Third Content</label>
+                    {{ form_widget(form.contentT,{'attr':{'class':'form-control', 'placeholder':'Content', 'style':'height:300px'}}) }}
+                    <div class="text-danger">{{ form_errors(form.contentT) }}</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="newsletterTitle">Third Image</label>
+                    {{ form_widget(form.imageT,{'attr':{'class':'form-control'}}) }}
+                    <div class="text-danger">{{ form_errors(form.imageT) }}</div>
+                </div>
+
+                <div class="form-check form-check-flat form-check-primary">
                         <label class="form-check-label">
                         {{ form_widget(form.sent, {'attr':{'class':'form-check-input'}}) }} Send</label>
                     </div>
                     <button type="submit" class="btn btn-primary mr-2">Submit</button>
-                    <a class="btn btn-dark">Cancel</a>
+                <a class="btn btn-dark" href="{{ asset('/admin/newsletter') }}">Cancel</a>
             </div>
             {% do form.date.setRendered() %}
             {% do form.author.setRendered() %}

@@ -1,0 +1,74 @@
+<html lang="en">
+{% apply inline_css %}
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
+    <title>Template 1</title>
+
+    <style>
+        .col-image-header {
+            float: left;
+            width: 25%;
+        }
+        .col-title-header {
+            float: left;
+            width: 75%;
+        }
+        .col {
+            float: left;
+            width: 50%;
+        }
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+    </style>
+</head>
+
+<body style="width: 540px;" background="{{ email.image('@newsletterImages/img/temp-bg.jpg') }}">
+<div class="container">
+    <div class="row">
+        <div class="col-image-header"><img src="{{ email.image('@newsletterImages/img/infernalLogo.png') }}" style="height: 100px;width: 100px;" /></div>
+        <div class="col-title-header">
+            <h1>Infernal Games Newsletter</h1>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12"><img style="height: 139px;width: 100%;" src="{{ email.image('@newsletterImages/front/img/blog-big/2.jpg') }}" /></div>
+    </div>
+    <div class="row">
+        <div class="col-md-12" style="width: 100%;">
+            <h3>{{ newsletter.title }} 1</h3>
+            <p>{{ newsletter.content  }} 1</p>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col" style="width: 50%;">
+            <div class="row">
+                <div class="col-md-6" style="width: 257px;height: 92px;"><img style="width: 100%;" src="{{ email.image('@newsletterImages/front/img/blog-big/1.jpg') }}"/></div>
+                <div class="col-md-6" style="width: 257px;">
+                    <h3>{{ newsletter.title }} 2</h3>
+                    <p>{{ newsletter.content  }} 2</p>
+                </div>
+            </div>
+        </div>
+        <div class="col" style="width: 50%;">
+            <div class="row">
+                <div class="col-md-6" style="width: 257px;height: 92px;"><img style="width: 100%;" src="{{ email.image('@newsletterImages/front/img/blog-big/3.jpg') }}" /></div>
+                <div class="col-md-6" style="width: 257px;">
+                    <h3>{{ newsletter.title }} 3</h3>
+                    <p>{{ newsletter.content  }} 3</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+{% endapply %}
+</html>

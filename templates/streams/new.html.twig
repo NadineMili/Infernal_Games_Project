@@ -1,0 +1,131 @@
+{% extends 'frontBase.html.twig' %}
+
+{% block title %}New stream{% endblock %}
+{% block body %}
+
+    <script>
+        const playerElement = document.querySelector("#testStream")
+
+        playerElement.addEventListener("error", (event) => {
+            console.log("oh no");
+        })
+
+
+        playerElement.onplay= function(){
+            alert('You can start now')
+        }
+
+
+        function testPlay(){
+            var player = videojs('testStream');
+            player.play();
+        }
+        function resetTest(){
+            var player = videojs('testStream');
+            player.reset();
+            player.src("{{ asset('http://127.0.0.1:8050/hls/'~streamData.streamKey~'/index.m3u8') }}");
+
+        }
+
+
+    </script>
+    <link rel="stylesheet" href="{{ asset('back/vendors/select2/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('back/vendors/select2-bootstrap-theme/select2-bootstrap.min.css') }}">
+    <link href="{{ asset('css/stream.css') }}" rel="stylesheet" />
+
+    <!-- Page top section -->
+<section class="page-top-section set-bg" data-setbg="{{ asset('front/img/page-top-bg/4.jpg') }}">
+    <div class="page-info">
+        <h2>Stream</h2>
+        <div class="site-breadcrumb">
+            <a href="">Home</a>  /
+            <span>Stream</span>
+        </div>
+    </div>
+</section>
+<!-- Page top end-->
+
+<!-- Contact page -->
+<section class="contact-page">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7 order-2 order-lg-1">
+                <div class="contact-form">
+                    {{ form_start(form, {'attr':{'novalidate':'novalidate'}}) }}
+                        {{ form_widget(form.title, {'attr':{'class':'','placeholder':'Title'}}) }}
+                        <div class="cont-info">
+                            <div class="text-danger">{{ form_errors(form.title, {'attr':{'class':''}}) }}</div>
+                        </div>
+                        {{ form_widget(form.description, {'attr':{'class':'','placeholder':'Description', 'style':'height:100px'}}) }}
+                        <div class="cont-info">
+                            <div class="text-danger">{{ form_errors(form.description, {'attr':{'class':''}}) }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col contact-text font-italic">
+                                <div class="col-form-label text-white">{{ form_label(form.rating, 'Rating' ,{'label_attr': {'class': ''}}) }}</div>
+                                {{ form_widget(form.rating, {'attr':{'class':'js-example-basic-single ', 'style': 'width:100%'}}) }}
+
+                                <div class="cont-info">
+                                    <div class="text-danger">{{ form_errors(form.rating, {'attr':{'class':''}}) }}</div>
+                                </div>
+
+                            </div>
+                            <div class="col contact-text font-italic">
+                                <div class="col-form-label text-white ">{{ form_label(form.category, 'Category' ,{'label_attr': {'class': ''}}) }}</div>
+                                {{ form_widget(form.category, {'attr':{'class':'js-example-basic-single', 'style': 'width:100%'}}) }}
+                                <div class="cont-info">
+                                    <div class="text-danger">{{ form_errors(form.category, {'attr':{'class':''}}) }}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="contact-text text-white font-italic">
+                            <div class="col-form-label">Your stream key <b class="text-danger">{{ streamData.streamKey }}</b>
+                            </div>
+                            {% do form.accessData.setRendered() %}
+
+                        </div>
+
+
+                        <button class="site-btn mt-4">Let's gooo!<img src="{{ asset('front/img/icons/double-arrow.png') }}" alt="#"/></button>
+                    {{ form_end(form) }}
+                </div>
+
+            </div>
+            <div class="col-lg-5 order-1 order-lg-2 contact-text text-white">
+                <h3>Rules!! </h3>
+                <p>We wish you will follow this rules to provide a healthy environment for everyone:</p>
+                <div class="cont-info">
+                    <div class="ci-text">- Be respectful</div>
+                </div>
+                <div class="cont-info">
+                    <div class="ci-text">- Don't show any forms of hate, racism, sexism or any kind discrimination towards a specific group</div>
+                </div>
+                <div class="cont-info">
+                    <div class="ci-text">- Copy your <b>Stream Key</b> to your broadcasting software, you can't stream without it!</div>
+                </div>
+                <div class="cont-info">
+                    <div class="ci-text">- You can't start streaming until you connect your player</div>
+                </div>
+                <div class="cont-info">
+                    <div class="ci-text">- Good luck and having fun!!</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-single-preview mt-4">
+            <video id="testStream" width="600px" height="300px" class="video-js vjs-matrix" controls="true" poster="{{ asset('front/img/promo-bg.jpg') }}">
+                <source
+                        src="{{ asset('http://127.0.0.1:8050/hls/'~streamData.streamKey~'/index.m3u8') }}"
+                        type="application/x-mpegURL">
+            </video>
+
+            <button class="btn btn-success" onclick="testPlay()">Connect</button>
+            <button class="btn btn-success" onclick="resetTest()">Rest</button>
+        </div>
+    </div>
+</section>
+<!-- Contact page end-->
+
+
+{% endblock %}

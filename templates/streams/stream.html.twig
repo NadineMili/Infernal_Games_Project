@@ -1,0 +1,255 @@
+{% extends 'frontBase.html.twig' %}
+
+{% block title %}Stream{% endblock %}
+{% block body %}
+
+    <style>
+        .vertical-scrollable {
+            width: 50%;
+            overflow-y: scroll;
+        }
+    </style>
+
+    <!-- Emoji -->
+    <link href="{{ asset('emoji/css/emoji.css') }}" rel="stylesheet">
+
+    <!-- Ajax -->
+    <script src="{{ asset('http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js') }}"></script>
+    <script src="{{ asset('http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js') }}"></script>
+
+
+    <!-- Facebook -->
+    <script async defer crossorigin="anonymous" src="{{asset('https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v13.0')}}" nonce="oMllQGkK"></script>
+    <!-- Twitter -->
+    <script async src="{{ asset('https://platform.twitter.com/widgets.js') }}" charset="utf-8"></script>
+
+    <!-- VideoJS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var player = videojs('player');
+            player.play();
+        }, false);
+        function reconnect() {
+            var player = videojs('player');
+            player.reset();
+            player.src("{{ asset('http://127.0.0.1:8050/hls/'~stream.accessData.streamKey~'/index.m3u8') }}");
+        }
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var conn = new WebSocket('ws://localhost:8002');
+            conn.onopen = function (e) {
+                console.log("Connection established!");
+            }
+
+            conn.onmessage = function(e) {
+                var msg = JSON.parse(e.data);
+                updateMessages(msg);
+            };
+
+            conn.onerror =function (e){
+                console.log("You have disconnected :(")
+            }
+
+            var messages = []
+
+            $('#chatButton').click(function(){
+                //var userid= $('#chatUser option:selected').val();
+                //var username= $('#chatUser option:selected').html();
+                var user= "{{ app.user }}";
+                if(user!= undefined) {
+                    var userId= "{{ currentUser.id }}";
+                    var username= user;
+                    var stream= "{{ stream.id }}";
+                    var text= $('#chatText').val();
+
+                    $('#chatText').val="";
+
+                    var msg = {
+                        'user': username,
+                        'text': text,
+                        'stream': stream
+                    };
+                    console.log(msg)
+                    addToDatabase(userId);
+                    //updateMessages(msg);
+                    conn.send(JSON.stringify(msg));
+                }
+
+            });
+
+            function updateMessages(msg){
+                console.log(msg['stream'])
+                console.log('{{ stream.id }}')
+                console.log(msg['stream'] == '{{ stream.id }}')
+
+                if(msg['stream'] == '{{ stream.id }}') {
+                    messages.push(msg);
+
+                    var row = $('<tr> <td class="text-danger" id="user"></td> <td class="text-light" id="text"></td> </tr>');
+
+                    $('#user', row).html(msg['user']);
+                    $('#text', row).html(msg['text']);
+                    $('#commentsArea').append(row);
+                }
+            }
+
+            function addToDatabase(user){
+
+                var stream= "{{ stream.id }}";
+                var text= $('#chatText').val()
+
+                console.log(user)
+                console.log(stream)
+                $.ajax({
+                    url: '/streams/addStreamCommentsAjax/new',
+                    type: 'POST',
+                    data:{
+                        'user':user,
+                        'stream':stream,
+                        'text':text
+                    },
+                    dataType: 'json',
+                    async: true,
+
+                    success: function(data, status){
+
+                        console.log(data)
+                    },
+                    error : function(xhr, textStatus, errorThrown) {
+                        console.log(errorThrown);
+                    }
+                })
+            }
+
+        }, false)
+
+    </script>
+
+    <script>
+        $(function() {
+            window.emojiPicker = new EmojiPicker({
+                emojiable_selector: '[data-emojiable=true]',
+                assetsPath: '{{ asset('emoji/img/') }}',
+                popupButtonClasses: 'fa fa-smile-o'
+            });
+            window.emojiPicker.discover();
+        });
+    </script>
+
+    <!-- Add comment Ajax 3adi -->
+
+    <!-- Load comment onload -->
+
+
+    <!-- Load comment btn -->
+    <script>
+        $(document).ready(function(){
+            $('#loadComments').on('click', function(event){
+
+                $.ajax({
+                    url: '/streams/streamCommentsAjax/'+'{{ stream.id }}',
+                    type: 'POST',
+                    dataType: 'json',
+                    async: true,
+
+                    success: function(data, status){
+                        $('#commentsArea').empty();
+                        for (i=0;i<data.length; i++){
+                            comment= data[i];
+                            var row= $('<tr> <td class="text-danger" id="user"></td> <td class="text-light" id="text"></td> </tr>');
+                            $('#user', row).html(comment['user']);
+                            $('#text', row).html(comment['text']);
+                            $('#commentsArea').append(row);
+                        }
+                    },
+                    error : function(xhr, textStatus, errorThrown) {
+                        console.log(errorThrown);
+                    }
+                })
+            })
+        })
+    </script>
+
+    <link href="{{ asset('css/stream.css') }}" rel="stylesheet" />
+
+    <!-- Page top section -->
+    <section class="page-top-section set-bg" data-setbg="{{ asset('front/img/page-top-bg/1.jpg') }}">
+        <div class="page-info">
+            <h2>Streams</h2>
+            <div class="site-breadcrumb">
+                <a href="#" onclick="">Home</a>  /
+                <span>Stream</span>
+            </div>
+        </div>
+    </section>
+    <!-- Page top end-->
+
+
+    <!-- Games section -->
+    <section class="games-single-page">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="game-single-preview">
+                        <video id="player" width="600px" height="300px" class="video-js vjs-matrix" controls="true" poster="{{ asset('front/img/promo-bg.jpg') }}">
+                            <source
+                                    src="{{ asset('http://127.0.0.1:8050/hls/'~stream.accessData.streamKey~'/index.m3u8') }}"
+                                    type="application/x-mpegURL">
+                        </video>
+                        <button class="btn btn-success" onclick="reconnect()">Reconnect</button>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="categories-widget" style="height: 700px; max-width: 400px;">
+
+                        <div class="col">
+                            <div class="row">
+                                <div>
+                                    <a class="btn btn-primary" href="#" id="loadComments" data-id="{{ stream.id }}">Load comments</a>
+                                    <div class="vertical-scrollable" style="height: 500px; width: 300px">
+                                        <table width="100%" title="Comments" >
+
+                                            <tbody id="commentsArea"></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row align-self-end">
+
+                                {% if app.user is not null  %}
+                                    <p class="emoji-picker-container">
+                                        <textarea id="chatText" class="form-control" rows="" placeholder="" style="width:300px;max-width: 300px" data-emojiable="true" data-emoji-input="unicode"></textarea>
+                                    </p>
+                                    <a id="chatButton" href="#" class="btn btn-info">Post</a>
+                                {% else %}
+                                    <a href="{{ asset('/login') }}" class="btn btn-info">Login to comment!</a>
+                                {% endif %}
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-9 col-lg-8 col-md-7 game-single-content">
+                    <h2 class="gs-title">{{ stream.title }}</h2>
+                    <h4>What it is about:</h4>
+                    <p>{{ stream.description }}</p>
+                    <div class="game-social-share pt-5 d-flex">
+                        <p>Share:</p>
+                        <div class="fb-share-button" data-href="http://127.0.0.1:8000/streams/watch/13" data-layout="button" data-size="large">
+                            <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2F127.0.0.1%3A8000%2Fstreams%2Fwatch%2F{{ stream.id }}&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Share</a>
+                        </div>
+                        <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-size="large" data-url="http://127.0.0.1:8000/streams/watch/{{ stream.id }}" data-hashtags="infernal_games #infernalGames" data-show-count="false">Tweet</a>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Games end-->
+
+{% endblock %}

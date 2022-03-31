@@ -1,20 +1,85 @@
-<!DOCTYPE html>
+{% extends 'backBase.html.twig' %}
 
-<title>Hello AdminStreamsController!</title>
+{% block title %}Hello Admin!{% endblock %}
+
+{% block js %}
+
+{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    <div class="main-panel">
+        <div class="content-wrapper">
+            <div class="page-header">
+                <h3 class="page-title"> Streams </h3>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="ml-2"><a class="btn btn-light" href="{{ asset('/admin/streams/ratings') }}">Ratings</a></li>
+                        <li class="ml-2"><a class="btn btn-success" href="{{ asset('/admin/streams/categories') }}">Categories</a></li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="col-lg-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped ">
+                                <thead>
+                                <tr>
+                                    <th> Picture </th>
+                                    <th> Title </th>
+                                    <th> Streamer </th>
+                                    <th> Rating </th>
+                                    <th> Category </th>
+                                    <th> State </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <!-- ***** Fourat Note **** -->
+                                <!-- Bech t7il for lina t3abi el table -->
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/Dev/Wamp64/www/Infernal_Games_Project-master/src/Controller/AdminStreamsController.php'|file_link(0) }}">src/Controller/AdminStreamsController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/Dev/Wamp64/www/Infernal_Games_Project-master/templates/admin_streams/index.html.twig'|file_link(0) }}">templates/admin_streams/index.html.twig</a></code></li>
-    </ul>
-</div>
+                                {% for stream in streams %}
+                                    <tr onclick="">
+                                        <td class="py-1">
+                                            <!-- ***** Fourat Note **** -->
+                                            <!-- ***** assert('Games/'~game.id) -->
+                                            <img src="{{ asset('back/images/faces-clipart/pic-'~random(['1','2','3','4','8'])~'.png') }}" alt="image" />
+                                        </td>
+                                        <td> {{ stream.title }}</td>
+                                        <td> {{ stream.accessData.streamer }}</td>
+                                        <td> {{ stream.rating }}</td>
+                                        <td> {{ stream.category }}</td>
+                                        {% if stream.state %}
+                                            <td><a target="_blank" href="{{ path('watch_stream',{'id':stream.id}) }}"><label class="badge badge-danger">Live</label></a></td>
+                                            <td> <a href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="mdi mdi-lan-disconnect text-danger mdi-18px"></i>
+                                                </a>
+                                                <div class="dropdown-menu">
+                                                    <h6 class="dropdown-header">Are you sure to disconnect this stream??</h6>
+                                                    <a class="dropdown-item text-danger" href="{{ path('admin_newsletter_delete', {'id':stream.id}) }}">Delete</a>
+                                                </div></td>
+                                        {% else %}
+                                            <td><label class="badge badge-success">Done</label></td>
+                                            <td> <a href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="mdi mdi-delete text-danger mdi-18px"></i>
+                                                </a>
+                                                <div class="dropdown-menu">
+                                                    <h6 class="dropdown-header">Are you sure to remove this stream??</h6>
+                                                    <a class="dropdown-item text-danger" href="{{ path('admin_streams_delete', {'id':stream.id}) }}">Delete</a>
+                                                </div></td>
+                                        {% endif %}
+
+                                    </tr>
+                                {% endfor %}
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
 {% endblock %}

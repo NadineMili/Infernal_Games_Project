@@ -23,12 +23,6 @@ class Subscription
     private $status;
 
     /**
-     * @ORM\ManyToOne(targetEntity=SubscriptionPlan::class, inversedBy="subscriptions")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $plan;
-
-    /**
      * @ORM\OneToOne(targetEntity=User::class, inversedBy="subscription", cascade={"persist", "remove"})
      */
     private $user;
@@ -47,18 +41,6 @@ class Subscription
     public function setStatus(bool $status): self
     {
         $this->status = $status;
-
-        return $this;
-    }
-
-    public function getPlan(): ?SubscriptionPlan
-    {
-        return $this->plan;
-    }
-
-    public function setPlan(?SubscriptionPlan $plan): self
-    {
-        $this->plan = $plan;
 
         return $this;
     }

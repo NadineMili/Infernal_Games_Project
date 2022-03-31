@@ -68,7 +68,7 @@
 						<div class="col-lg-4 col-md-6">
 							<div class="game-item">
 								<!-- ******** Taswiret elgame ******** -->
-								<img src="{{ asset('Games/'~game.id~'.png') }}" alt="#" style="height: 200px">
+								<img src="{{ asset('Games/'~game.picture) }}" alt="'Games/'~{{  game.picture}}" style="height: 200px">
 								<h5>{{ game.name }}</h5>
 								<!-- ******** href  ******** -->
 								<a href="{{ path('view_game',{'id':game.id}) }}" class="read-more">Read More  <img src="{{ asset('front/img/icons/double-arrow.png') }}" alt="#"/></a>

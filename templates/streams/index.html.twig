@@ -1,20 +1,222 @@
-<!DOCTYPE html>
+{% extends 'frontBase.html.twig' %}
 
-<title>Hello StreamsController!</title>
+{% block title %}- Streams{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+<script>
+    function searchByRating(ratingId){
+            $.ajax({
+                url: '/streams/searchByRating',
+                type: 'POST',
+                data:{
+                    "ratingId": ratingId
+                },
+                dataType: 'json',
+                async: true,
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/Dev/Wamp64/www/Infernal_Games_Project-master/src/Controller/StreamsController.php'|file_link(0) }}">src/Controller/StreamsController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/Dev/Wamp64/www/Infernal_Games_Project-master/templates/streams/index.html.twig'|file_link(0) }}">templates/streams/index.html.twig</a></code></li>
-    </ul>
-</div>
+                success: function(data, status){
+
+                    if(data.length>0){
+                        $('#streamsArea').empty();
+
+                        for (i=0; i<data.length; i++){
+                            stream= data[i];
+                            var route = "{{ path('watch_stream', {'id': 'streamId' })}}".replace("streamId", stream['id']);
+                            var row= $('<div class="col-lg-4 col-md-6">'+
+                                '<div class="game-item">'+
+                                    '<h5>'+ stream['title'] +'</h5>'+
+                                '<a href="'+route+'" class="read-more">Watch now!  <img src="{{ asset('front/img/icons/double-arrow.png') }}" alt="#"/></a>'+
+                                '</div>'+
+                            '</div>');
+                            $('#streamsArea').append(row)
+
+                        }
+                    }else{
+                        var div=$('<div class="col-lg-4 col-md-6">'+
+                            '<div class="game-item">'+
+                            '<p>No live streams for this rating :/</p>'+
+                        '</div>'+
+                    '</div>')
+                        $('#streamsArea').empty().append(div)
+                    }
+                },
+                error : function(xhr, textStatus, errorThrown) {
+                    console.log(errorThrown);
+                }
+            })
+
+    }
+
+    function searchByCategory(categoryId){
+        $.ajax({
+            url: '/streams/searchByCategory',
+            type: 'POST',
+            data:{
+                "categoryId": categoryId
+            },
+            dataType: 'json',
+            async: true,
+
+            success: function(data, status){
+
+                if(data.length>0){
+                    $('#streamsArea').empty();
+
+                    for (i=0; i<data.length; i++){
+                        stream= data[i];
+                        var route = "{{ path('watch_stream', {'id': 'streamId' })}}".replace("streamId", stream['id']);
+                        var row= $('<div class="col-lg-4 col-md-6">'+
+                            '<div class="game-item">'+
+                            '<h5>'+ stream['title'] +'</h5>'+
+                            '<a href="'+route+'" class="read-more">Watch now!  <img src="{{ asset('front/img/icons/double-arrow.png') }}" alt="#"/></a>'+
+                            '</div>'+
+                            '</div>');
+                        $('#streamsArea').append(row)
+
+
+                    }
+                }else{
+                    var div=$('<div class="col-lg-4 col-md-6">'+
+                        '<div class="game-item">'+
+                        '<p>No live streams for this category :/</p>'+
+                        '</div>'+
+                        '</div>')
+                    $('#streamsArea').empty().append(div)
+                }
+            },
+            error : function(xhr, textStatus, errorThrown) {
+                console.log(errorThrown);
+            }
+        })
+
+    }
+</script>
+
+
+    <!-- Page top section -->
+    <section class="page-top-section set-bg" data-setbg="{{ asset('front/img/page-top-bg/1.jpg') }}">
+        <div class="page-info">
+            <h2>Streams</h2>
+            <div class="site-breadcrumb">
+                <a href="{{ asset('/') }}">Home</a>  /
+                <span>Streams</span>
+            </div>
+        </div>
+    </section>
+    <!-- Page top end-->
+
+
+
+
+    <!-- Games section -->
+    <section class="games-section">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <ul class="blog-filter">
+
+                        <!-- K3ayba for Rating Maturity-->
+                        {% for rating in ratings %}
+                        <li><a id="rating{{ rating.id }}" onclick="searchByRating({{ rating.id }})" href="#">{{ rating.label }}</a></li>
+                        {%  endfor %}
+                        <!-- endfor -->
+
+                    </ul>
+                </div>
+
+                <div class="col">
+
+                    {% if currentUser is not null %}
+                        {% if currentUserStream == [] %}
+                            <a class="align-top site-btn" href="{{ asset('/streams/new') }}">Start your own stream!</a>
+                        {% else %}
+                            <a class="align-top site-btn" href="{{ asset('/streams/streamManager/'~currentUserStream.id) }}">Manage your stream!</a>
+                        {% endif %}
+                    {% else %}
+                        <a href="{{ asset('/login') }}" class="site-btn">Login to stream!</a>
+                    {% endif %}
+                </div>
+
+            </div>
+
+
+            <!-- ******** FOURAT NOTE ******** -->
+            <div class="row blog-item">
+                <!-- ******** Games list ******** -->
+                <div class="col-xl-9 col-lg-8 col-md-7">
+                    <div class="row" id="streamsArea">
+                        <!-- ******** FOURAT NOTE ******** -->
+                        <!-- ******** Streams ******** -->
+                        {% if streams|length>0 %}
+                        {% for stream in streams %}
+                            <div class="col-lg-4 col-md-6">
+                                <div class="game-item">
+                                    <h5>{{ stream.title }}</h5>
+                                    <!-- ******** href  ******** -->
+                                    <a href="{{ path('watch_stream', {'id':stream.id}) }}" class="read-more">Watch now!  <img src="{{ asset('front/img/icons/double-arrow.png') }}" alt="#"/></a>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        {% else %}
+                        <div class="col-lg-4 col-md-6">
+                            <div class="game-item">
+                                <p>No live streams for now :/</p>
+                            </div>
+                        </div>
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+                <!-- ******** FOURAT NOTE ******** -->
+                <!-- ******** Recherche par category lehné ******** -->
+                <div class="col-xl-3 col-lg-4 col-md-5 sidebar game-page-sideber">
+                    <div id="stickySidebar">
+                        <div class="widget-item">
+                            <div class="categories-widget">
+                                <h4 class="widget-title">Categories</h4>
+                                <ul>
+                                    {% for category in categories %}
+                                    <li><a href="#" onclick="searchByCategory({{ category.id }})">{{ category.label }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                        {% if ads|length>0  %}
+                        <div class="widget-item">
+                            <div class="stickySidebar">
+                                {% set ad= random(0, ads|length-1) %}
+                                <a href="{{ asset(ads[ad].reflink) }}" target="_blank"><img src="{{ asset('Ads/'~ads[ad].image) }}" width="200px"></a>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Games end-->
+
+
+    <!-- Featured section -->
+    <section class="featured-section">
+        <div class="featured-bg set-bg" data-setbg="{{ asset('Games/'~game.picture) }}"></div>
+        <div class="featured-box">
+            <div class="text-box">
+                <div class="top-meta"><a href="">Games</a></div>
+                <h3>{{game.name}}</h3>
+                <p>Our users highest rated game!</p>
+                <a href="{{ asset('/games/view/'~game.id) }}" class="read-more">Read More <img src="{{ asset('front/img/icons/double-arrow.png') }}" alt="#"/></a>
+            </div>
+        </div>
+    </section>
+    <!-- Featured section end-->
+
+
+
+
+
+
 {% endblock %}

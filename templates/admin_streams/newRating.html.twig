@@ -1,0 +1,30 @@
+{% extends 'backBase.html.twig' %}
+
+
+{% block body %}
+
+    <div class="main-panel">
+    <div class="content-wrapper">
+    <div class="page-header">
+        <h3 class="page-title"> Rating </h3>
+
+        <li class="breadcrumb-item active" aria-current="page">Add rating</li>
+    </div>
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                {{ form_start(form, {'attr':{'novalidate':'novalidate'}}) }}
+
+                <div class="form-group">
+                    <label for="newsletterTitle">Label</label>
+                    {{ form_widget(form.label,{'attr':{'class':'form-control', 'placeholder':'Label'}}) }}
+                    <div class="text-danger">{{ form_errors(form.label) }}</div>
+                </div>
+
+                <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                <a class="btn btn-dark">Cancel</a>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

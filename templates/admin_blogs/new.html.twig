@@ -1,56 +1,39 @@
 {% extends 'backBase.html.twig' %}
 
 {% block body %}
-
+    {% block username %} {{ app.user.name }} {% endblock %}
     <div class="main-panel">
     <div class="content-wrapper">
     <div class="page-header">
-        <h3 class="page-title"> Games </h3>
+        <h3 class="page-title"> Blogs </h3>
     </div>
     <div class="col-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
                 {{ form_start(form, {'attr':{'novalidate':'novalidate'}}) }}
                 <div class="form-group">
-                    <label for="gameName">Name</label>
-                    {{ form_widget(form.name,{'attr':{'class':'form-control', 'placeholder':'Name'}}) }}
-                    <div class="text-danger">{{ form_errors(form.name) }}</div>
+                    <label for="gameName">Title</label>
+                    {{ form_widget(form.title,{'attr':{'class':'form-control', 'placeholder':'Title'}}) }}
+                    <div class="text-danger">{{ form_errors(form.title) }}</div>
                 </div>
 
                 <div class="form-group">
-                    <label for="gameDescription">Description</label>
-                    {{ form_widget(form.description,{'attr':{'class':'form-control', 'placeholder':'Description'}}) }}
-                    <div class="text-danger">{{ form_errors(form.description) }}</div>
+                    <label for="gameDescription">Content</label>
+                    {{ form_widget(form.content,{'attr':{'class':'form-control', 'placeholder':'Content'}}) }}
+                    <div class="text-danger">{{ form_errors(form.content) }}</div>
                 </div>
                 <div class="form-group">
-                    <label for="gamePrice">Price</label>
-                    {{ form_widget(form.price,{'attr':{'class':'form-control', 'placeholder':'Price'}}) }}
-                    <div class="text-danger">{{ form_errors(form.price) }}</div>
-                </div>
-                <div class="form-group">
-                    <label>Game Picture</label>
-                    <input type="file" name="img[]" class="file-upload-default">
-                    <div class="input-group col-xs-12">
-                        <input type="text" class="form-control file-upload-info" disabled placeholder="Upload Image">
-                        <span class="input-group-append">
-                            <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
-                          </span>
+                    <label>Blog Image</label>
+                    {{ form_widget(form.image,{'attr':{'class':'form-control file-upload-info file-upload-browse btn btn-primary', 'placeholder':'Upload'}}) }}
+                    <div class="input-group col-12">
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="gameTrailerUrl">Trailer Url</label>
-                    {{ form_widget(form.trailerUrl,{'attr':{'class':'form-control', 'placeholder':'Trailer'}}) }}
-                    <div class="text-danger">{{ form_errors(form.trailerUrl) }}</div>
-                </div>
-                <div class="form-group">
-                    <label for="gameCategory">Category</label>
-                    {{ form_widget(form.category,{'attr':{'class':'form-control', 'placeholder':'Categoty'}}) }}
-                    <div class="text-danger">{{ form_errors(form.category) }}</div>
-                </div>
+
+
                 <button type="submit" class="btn btn-primary mr-2">Submit</button>
                 <button class="btn btn-dark">Cancel</button>
 
-                {% do form.rating.setRendered() %}
+
                 {{ form_end(form) }}
             </div>
         </div>

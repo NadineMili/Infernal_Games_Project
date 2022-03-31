@@ -1,0 +1,59 @@
+{% extends 'backBase.html.twig' %}
+{% block title %}Ajouter Article{% endblock %}
+{% block body %}
+    {% block username %} {{ app.user.name }} {% endblock %}
+    <div class="main-panel">
+    <div class="content-wrapper">
+    <div class="page-header">
+        <h3 class="page-title">Users</h3>
+    </div>
+    <div class="col-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+
+            {{ form_start(form,{'attr': {'novalidate': 'novalidate'}} ) }}
+            <div class="form-group">
+                <label for="email">email</label>
+                {{ form_widget(form.email,{'attr':{'class':'form-control', 'placeholder':'email'}}) }}
+                <div class="text-danger">{{ form_errors(form.email) }}</div>
+            </div>
+            <div class="form-group">
+                <label for="password"></label>
+                {{ form_widget(form.name,{'attr':{'class':'form-control', 'placeholder':'Name'}}) }}
+                <div class="text-danger">{{ form_errors(form.name) }}</div>
+            </div>
+            <div class="form-group">
+                <label for="password"></label>
+                {{ form_widget(form.lastname,{'attr':{'class':'form-control', 'placeholder':'lastName'}}) }}
+                <div class="text-danger">{{ form_errors(form.lastname) }}</div>
+            </div>
+            <div class="form-group">
+                <label for="password"></label>
+                {{ form_widget(form.plainPassword,{'attr':{'class':'form-control', 'placeholder':'password'}}) }}
+                <div class="text-danger">{{ form_errors(form.plainPassword) }}</div>
+            </div>
+            <div class="form-group">
+                <label for="password"></label>
+                {{ form_widget(form.imageFile,{'attr':{'class':'form-control', 'placeholder':'image'}}) }}
+                <div class="text-danger">{{ form_errors(form.imageFile) }}</div>
+            </div>
+
+
+            <button type="submit" class="btn btn-success">Créer</button>
+
+            {{ form_end(form) }}
+
+
+            <div>
+
+                <td colspan="3">
+                    <button type="submit" class="btn btn-block btn-outline-primary btn-lg">Register</button>
+                </td>
+                </tr>
+                </table>
+                {{ form_end(form) }}
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

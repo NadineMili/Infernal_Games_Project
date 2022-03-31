@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\GameRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -33,6 +35,7 @@ class Game
     /**
      * @ORM\Column(type="float")
      * @Assert\NotBlank(message="Price is required")
+     * @Assert\Positive
      */
     private $price;
 
@@ -52,6 +55,30 @@ class Game
      * @ORM\Column(type="float", nullable=true)
      */
     private $rating;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $picture;
+
+    /**
+     * @ORM\OneToMany(targetEntity=GameComment::class, mappedBy="game")
+     */
+    private $gameComments;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Rating::class, mappedBy="game")
+     */
+    private $ratings;
+
+
+
+
+    public function __construct()
+    {
+        $this->gameComments = new ArrayCollection();
+        $this->ratings = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -129,4 +156,79 @@ class Game
 
         return $this;
     }
+
+    public function getPicture(): ?string
+    {
+        return $this->picture;
+    }
+
+    public function setPicture(string $picture): self
+    {
+        $this->picture = $picture;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|GameComment[]
+     */
+    public function getGameComments(): Collection
+    {
+        return $this->gameComments;
+    }
+
+    public function addGameComment(GameComment $gameComment): self
+    {
+        if (!$this->gameComments->contains($gameComment)) {
+            $this->gameComments[] = $gameComment;
+            $gameComment->setGame($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGameComment(GameComment $gameComment): self
+    {
+        if ($this->gameComments->removeElement($gameComment)) {
+            // set the owning side to null (unless already changed)
+            if ($gameComment->getGame() === $this) {
+                $gameComment->setGame(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Rating>
+     */
+    public function getRatings(): Collection
+    {
+        return $this->ratings;
+    }
+
+    public function addRating(Rating $rating): self
+    {
+        if (!$this->ratings->contains($rating)) {
+            $this->ratings[] = $rating;
+            $rating->setGame($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRating(Rating $rating): self
+    {
+        if ($this->ratings->removeElement($rating)) {
+            // set the owning side to null (unless already changed)
+            if ($rating->getGame() === $this) {
+                $rating->setGame(null);
+            }
+        }
+
+        return $this;
+    }
+
+
+
 }

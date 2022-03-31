@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AdminUsersController extends AbstractController
     /**
-     * @Route("/admin/users")
+     * @Route("/admin/userqs")
      */
 {
     /**
