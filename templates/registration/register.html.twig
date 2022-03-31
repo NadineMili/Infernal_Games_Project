@@ -1,104 +1,81 @@
+{% extends 'base-front.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
 {% block body %}
-    <html lang="zxx">
-    <head>
-        <title>Infernal Games {% block title %}{% endblock %}</title>
-        <meta charset="UTF-8">
 
-        <link rel="stylesheet" href="{{ asset('front/login/css/style.css') }}"/>
-        <link href="{{ asset('img/infernalLogo.ico') }}" rel="shortcut icon"/>
-        <link rel="stylesheet" href="{{ asset ('front/css/style.css ') }}"/>
-        <link rel="stylesheet" href="{{ asset('front/css/font-awesome.min.css') }}"/>
-        <script src="https://kit.fontawesome.com/3bcd2f2179.js" crossorigin="anonymous"></script>
+    <div class="container">
+        <h1>Register</h1>
 
+        <table width="100%">
+    {{ form_start(registrationForm,{'attr': {'novalidate': 'novalidate'}} ) }}
 
+            <tr>
+                <td>
 
-    </head>
-    <body>
+                    {{ form_label(registrationForm.email,"Email : ") }}
+                </td><td>
+                    {{ form_widget(registrationForm.email) }}
+                </td>
+                <td>{{ form_errors(registrationForm.email) }}</td>
+            </tr>
 
-    <!-- Page top section -->
+            <tr>
+                <td>
 
-    <div class="page-info">
-        <img src="img/infernalLogo.ico" width="100" height="100" alt="img"/>
+                    {{ form_label(registrationForm.plainPassword,"Password: ") }}
+                </td><td>
+                    {{ form_widget(registrationForm.plainPassword) }}
+                </td>
+                <td>{{ form_errors(registrationForm.plainPassword) }}</td>
+            </tr>
+            <tr>
+                <td>
+
+                    {{ form_label(registrationForm.name,"Name: ") }}
+                </td><td>
+                    {{ form_widget(registrationForm.name) }}
+                </td>
+                <td>{{ form_errors(registrationForm.name) }}</td>
+            </tr>
+            <tr>
+                <td>
+
+                    {{ form_label(registrationForm.lastname,"lastname: ") }}
+                </td><td>
+                    {{ form_widget(registrationForm.lastname) }}
+                </td>
+                <td>{{ form_errors(registrationForm.lastname) }}</td>
+            </tr>
+
+            <tr>
+                <td>
+
+                    {{ form_label(registrationForm.imageFile,"Image: ") }}
+                </td><td>
+                    {{ form_widget(registrationForm.imageFile) }}
+                </td>
+                <td>{{ form_errors(registrationForm.imageFile) }}</td>
+            </tr>
+            <tr>
+                <td>
+
+                    {{ form_label(registrationForm.agreeTerms,"agreeTerms: ") }}
+                </td><td>
+                    {{ form_widget(registrationForm.agreeTerms) }}
+                </td>
+                <td>{{ form_errors(registrationForm.agreeTerms) }}</td>
+            </tr>
+
+            <tr>
+                <td colspan="3">
+        <button type="submit" class="btn btn-block btn-outline-primary btn-lg">Register</button>
+                </td>
+            </tr>
+        </table>
+    {{ form_end(registrationForm) }}
+    <div class="nk-gap-2 d-none d-lg-block"></div>
+    <div class="nk-gap-2 d-none d-lg-block"></div>
+    <div class="nk-gap-2 d-none d-lg-block"></div>
     </div>
-
-    <div class="site-breadcrumb">
-        <a href="{{ asset('/home') }}"> <i class="fa-solid fa-house-chimney" style='font-size:32px;color:white;position:relative;right:70px;top:30px'></i></a>
-    </div>
-
-    <!-- Page top end-->
-    <section class="games-section">
-        <div >
-            <div >
-                <div class="row w-100 m-0">
-                    <div class="content-wrapper full-page-wrapper d-flex align-items-center auth login-bg">
-                        <div class="card col-lg-4 mx-auto">
-                            <div class="card-body px-5 py-5">
-                                {% for flashError in app.flashes('verify_email_error') %}
-                                    <div class="alert alert-danger" role="alert">{{ flashError }}</div>
-                                {% endfor %}
-                                <h3 class="card-title text-left mb-3">Please sign up</h3>
-
-                                {{ form_start(registrationForm, {'attr':{'novalidate':'novalidate'}}) }}
-                                <div class="form-group">
-                                    <label for="email"></label>
-                                    {{ form_widget(registrationForm.email,{'attr':{'class':'form-control', 'placeholder':'email'}}) }}
-                                    <div class="text-danger">{{ form_errors(registrationForm.email) }}</div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="password"></label>
-                                    {{ form_widget(registrationForm.plainPassword,{'attr':{'class':'form-control', 'placeholder':'password'}}) }}
-                                    <div class="text-danger">{{ form_errors(registrationForm.plainPassword) }}</div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="password"></label>
-                                    {{ form_widget(registrationForm.name,{'attr':{'class':'form-control', 'placeholder':'name'}}) }}
-                                    <div class="text-danger">{{ form_errors(registrationForm.name) }}</div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="password"></label>
-                                    {{ form_widget(registrationForm.lastname,{'attr':{'class':'form-control', 'placeholder':'lastname'}}) }}
-                                    <div class="text-danger">{{ form_errors(registrationForm.lastname) }}</div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="password"></label>
-                                    {{ form_widget(registrationForm.imageFile,{'attr':{'class':'form-control', 'placeholder':'imageFile'}}) }}
-                                    <div class="text-danger">{{ form_errors(registrationForm.imageFile) }}</div>
-                                </div>
-                                <div class="mb-3">
-                                    If you have an account  <a href="{{ path('app_login') }}">    sign in</a>
-                                </div>
-                                {{ form_row(registrationForm.agreeTerms) }}
-                                <button type="submit" class="file-upload-browse btn btn-primary">Register</button>
-                                {{ form_end(registrationForm) }}
-                            </div>
-                        </div>
-                        <!-- content-wrapper ends -->
-                    </div>
-                    <!-- row ends -->
-                </div>
-            </div>
-
-            <!-- page-body-wrapper ends -->
-        </div>
-    </section>
-
-
-    <!-- container-scroller -->
-    <!-- plugins:js -->
-    <script src="{{ asset('vendors/js/vendor.bundle.base.js') }}"></script>
-    <!-- endinject -->
-    <!-- Plugin js for this page -->
-    <!-- End plugin js for this page -->
-    <!-- inject:js -->
-    <script src="{{ asset('front/login/js/off-canvas.js') }}"></script>
-    <script src="{{ asset('front/login/js/hoverable-collapse.js') }}"></script>
-    <script src="{{ asset('front/login/js/misc.js') }}"></script>
-    <script src="{{ asset('front/login/js/settings.js') }}"></script>
-    <script src="{{ asset('front/login/js/todolist.js') }}"></script>
-    <!-- endinject -->
-    </body>
-    </html>
-
 {% endblock %}
-
-

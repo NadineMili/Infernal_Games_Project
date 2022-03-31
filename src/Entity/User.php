@@ -103,7 +103,8 @@ class User implements UserInterface,Serializable
      */
     private $activation_token;
 
-    /**     * @ORM\Column(type="string", length=50, nullable=true)
+    /**
+     * @ORM\Column(type="string", length=50, nullable=true)
      */
     private $reset_token;
 

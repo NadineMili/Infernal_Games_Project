@@ -54,7 +54,7 @@ class RegistrationController extends AbstractController
 
             // do anything else you need here, like send an email
             $message=(new \Swift_Message('Activation de votre compte'))
-                ->setFrom('infernalgames2022@gmail.com')
+                ->setFrom('infernalgames200@gmail.com')
                 ->setTo($user->getEmail())
                 ->setBody(
                     $this->renderView(

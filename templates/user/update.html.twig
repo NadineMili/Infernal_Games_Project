@@ -1,59 +1,75 @@
-{% extends 'backBase.html.twig' %}
-{% block title %}Ajouter Article{% endblock %}
-{% block body %}
+{%extends 'base-back.html.twig' %}
+{% block title %}
+    update prod
+{% endblock %}
+{%block css  %}{% endblock %}
+{%block home%} {% endblock%}
+{% block landing %} {% endblock %}
+{% block tournament%}{% endblock%}
+{% block pro%}{% endblock%}
+{% block blog%}active{% endblock %}
+{% block store%}{% endblock %}
+{% block script %}{% endblock %}
+{% block  body%}
 
-    <div class="main-panel">
-    <div class="content-wrapper">
-    <div class="page-header">
-        <h3 class="page-title">Users</h3>
+    <div class="container">
+        <h1>UPDATE</h1>
+        {{ form_start(f) }}
+        <table>
+            <tr>
+                <td>
+
+                    {{ form_label(f.email,"Email : ") }}
+                </td><td>
+                    {{ form_widget(f.email) }}
+                </td>
+                <td>{{ form_errors(f.email) }}</td>
+            </tr>
+            <tr>
+                <td>
+
+                    {{ form_label(f.name,"Name : ") }}
+                </td><td>
+                    {{ form_widget(f.name) }}
+                </td>
+                <td>{{ form_errors(f.name) }}</td>
+            </tr>
+            <tr>
+                <td>
+
+                    {{ form_label(f.lastname,"LastName : ") }}
+                </td><td>
+                    {{ form_widget(f.lastname) }}
+                </td>
+                <td>{{ form_errors(f.lastname) }}</td>
+            </tr>
+
+            <tr>
+                <td>
+
+                    {{ form_label(f.imageFile,"Image : ") }}
+                </td><td>
+                    {{ form_widget(f.imageFile) }}
+                </td>
+                <td>{{ form_errors(f.imageFile) }}</td>
+            </tr>
+            <tr>
+                <td>
+
+                    {{ form_label(f.roles,"roles : ") }}
+                </td><td>
+                    {{ form_widget(f.roles) }}
+                </td>
+                <td>{{ form_errors(f.roles) }}</td>
+            </tr>
+
+        </table>
+        {{ form_end(f) }}
+        <div class="nk-gap-2 d-none d-lg-block"></div>
+        <div class="nk-gap-2 d-none d-lg-block"></div>
+        <div class="nk-gap-2 d-none d-lg-block"></div>
+        <div class="nk-gap-2 d-none d-lg-block"></div>
+        <div class="nk-gap-2 d-none d-lg-block"></div>
     </div>
-    <div class="col-12 grid-margin stretch-card">
-        <div class="card">
-            <div class="card-body">
 
-                {{ form_start(form,{'attr': {'novalidate': 'novalidate'}} ) }}
-                <div class="form-group">
-                    <label for="email">email</label>
-                    {{ form_widget(form.email,{'attr':{'class':'form-control', 'placeholder':'email'}}) }}
-                    <div class="text-danger">{{ form_errors(form.email) }}</div>
-                </div>
-                <div class="form-group">
-                    <label for="password"></label>
-                    {{ form_widget(form.name,{'attr':{'class':'form-control', 'placeholder':'Name'}}) }}
-                    <div class="text-danger">{{ form_errors(form.name) }}</div>
-                </div>
-                <div class="form-group">
-                    <label for="password"></label>
-                    {{ form_widget(form.lastname,{'attr':{'class':'form-control', 'placeholder':'lastName'}}) }}
-                    <div class="text-danger">{{ form_errors(form.lastname) }}</div>
-                </div>
-                <div class="form-group">
-                    <label for="password"></label>
-                    {{ form_widget(form.plainPassword,{'attr':{'class':'form-control', 'placeholder':'password'}}) }}
-                    <div class="text-danger">{{ form_errors(form.plainPassword) }}</div>
-                </div>
-                <div class="form-group">
-                    <label for="password"></label>
-                    {{ form_widget(form.imageFile,{'attr':{'class':'form-control', 'placeholder':'image'}}) }}
-                    <div class="text-danger">{{ form_errors(form.imageFile) }}</div>
-                </div>
-
-
-                <button type="submit" class="btn btn-success">Créer</button>
-
-                {{ form_end(form) }}
-
-
-                <div>
-
-                    <td colspan="3">
-                        <button type="submit" class="btn btn-block btn-outline-primary btn-lg">Register</button>
-                    </td>
-                </tr>
-                </table>
-                {{ form_end(form) }}
-
-            </div>
-        </div>
-    </div>
 {% endblock %}

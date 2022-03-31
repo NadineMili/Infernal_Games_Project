@@ -25,9 +25,9 @@ class SecurityController extends AbstractController
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-        // if ($this->getUser()) {
-        //     return $this->redirectToRoute('target_path');
-        // }
+         if ($this->getUser()) {
+             return $this->redirectToRoute('backindex');
+        }
 
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
@@ -80,7 +80,7 @@ class SecurityController extends AbstractController
             $url=$this->generateUrl('App_reset_password',['token'=>$token],
             UrlGeneratorInterface::ABSOLUTE_URL);
             $message=(new \Swift_Message('mot de pass oublier'))
-                ->setFrom('infernalgames2022@gmail.com')
+                ->setFrom('infernalgames200@gmail.com')
                 ->setTo($user->getEmail())
                 ->setBody(
                    "<p>Bonjour </p></p>une demande de renitialisation de mot de pass a ete effectuer pour votre compte 

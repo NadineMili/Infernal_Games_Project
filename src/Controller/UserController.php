@@ -89,7 +89,7 @@ class UserController extends AbstractController
             $em->flush();
             return $this->redirectToRoute('afficheuser');
         }
-        return $this->render('user/update.html.twig',['form'=>$form->createView()]);
+        return $this->render('user/update.html.twig',['f'=>$form->createView()]);
     }
     /**
      * @Route ("/testvideo", name="testvideo")

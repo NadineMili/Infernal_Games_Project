@@ -1,4 +1,13 @@
 {
+    "bacon/bacon-qr-code": {
+        "version": "2.0.6"
+    },
+    "beberlei/doctrineextensions": {
+        "version": "v1.3.0"
+    },
+    "dasprid/enum": {
+        "version": "1.0.3"
+    },
     "doctrine/annotations": {
         "version": "1.13",
         "recipe": {
@@ -83,8 +92,23 @@
     "egulias/email-validator": {
         "version": "3.1.2"
     },
+    "endroid/installer": {
+        "version": "1.4.0"
+    },
+    "endroid/qr-code": {
+        "version": "4.4.7"
+    },
+    "endroid/qr-code-bundle": {
+        "version": "4.0.7"
+    },
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.5"
+    },
+    "gregwar/captcha": {
+        "version": "v1.1.9"
+    },
+    "gregwar/captcha-bundle": {
+        "version": "v2.1.5"
     },
     "guzzlehttp/guzzle": {
         "version": "7.4.1"
@@ -97,6 +121,12 @@
     },
     "jms/metadata": {
         "version": "2.6.1"
+    },
+    "knplabs/knp-components": {
+        "version": "v3.4.0"
+    },
+    "knplabs/knp-paginator-bundle": {
+        "version": "v5.8.0"
     },
     "knpuniversity/oauth2-client-bundle": {
         "version": "2.10",
@@ -665,6 +695,9 @@
     },
     "twig/twig": {
         "version": "v3.3.8"
+    },
+    "twilio/sdk": {
+        "version": "6.35.0"
     },
     "vich/uploader-bundle": {
         "version": "1.19",
