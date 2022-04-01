@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Newsletter;
+use App\Entity\Subscription;
 use App\Entity\User;
 use App\Repository\NewsletterRepository;
 use App\Repository\SubscriptionRepository;
@@ -145,7 +146,7 @@ Class NewsletterMobile extends AbstractController
     /**
      * @Route("/deleteNewsletter", name="deleteNewsletter")
      */
-    public function deleteNewsletter(NormalizerInterface $normalizer, EntityManagerInterface $em, Request $request, NewsletterRepository $newsletterRepository){
+    public function deleteNewsletter(EntityManagerInterface $em, Request $request, NewsletterRepository $newsletterRepository){
 
         $newletter= $newsletterRepository->find($request->get("id"));
 
@@ -153,4 +154,58 @@ Class NewsletterMobile extends AbstractController
         $em->flush();
         return new Response();
     }
+
+    /**
+     * @Route("/getAllSubs", name="getAllSubs")
+     */
+    public function getAllSubs(NormalizerInterface $normalizer){
+        $subs= $this->getDoctrine()->getRepository(Subscription::class)->findAll();
+        $jsonData= $normalizer->normalize($subs, 'json', ['groups'=>'sub:read']);
+        $i=0;
+        foreach ($subs as $sub){
+            $jsonData[$i++]['user']= $normalizer->normalize($sub->getUser(), 'json', ['groups'=>'users:read']);
+        }
+        return new Response(json_encode($jsonData));
+    }
+
+    /**
+     * @Route("/subscribeToNewsletter", name="subscribeToNewsletterMobile")
+     */
+    public function subscribeToNewsletter(NormalizerInterface $normalizer, Request $request, EntityManagerInterface $manager){
+        //Might change
+        $currentUser= $this->getDoctrine()->getRepository(User::class)->find($request->get("userId"));
+        if($currentUser){
+            $subscription= $currentUser->getSubscription();
+            if (!$subscription){
+                $subscription = new Subscription();
+                $subscription->setUser($currentUser);
+            }
+            $subscription->setStatus(true);
+            $manager->persist($subscription);
+            $manager->flush();
+        }
+        return new Response();
+    }
+
+    /**
+     * @Route("/unsubscribeToNewsletter", name="unsubscribeToNewsletterMobile")
+     */
+    public function unsubscribeToNewsletter(NormalizerInterface $normalizer, Request $request, EntityManagerInterface $manager){
+
+        $currentUser= $this->getDoctrine()->getRepository(User::class)->find($request->get("userId"));
+
+        if($currentUser){
+            $subscription= $currentUser->getSubscription();
+            if (!$subscription){
+                $subscription = new Subscription();
+                $subscription->setUser($currentUser);
+            }
+            $subscription->setStatus(false);
+            $manager->persist($subscription);
+            $manager->flush();
+        }
+        return new Response();
+    }
+
+
 }

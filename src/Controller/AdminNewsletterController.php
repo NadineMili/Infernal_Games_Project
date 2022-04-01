@@ -58,7 +58,6 @@ class AdminNewsletterController extends AbstractController
                 );
             }
 
-
             $newsletter->setImageF(preg_replace('/\s+/','',$newsImagesNames[0]));
             $newsletter->setImageS(preg_replace('/\s+/','',$newsImagesNames[1]));
             $newsletter->setImageT(preg_replace('/\s+/','',$newsImagesNames[2]));

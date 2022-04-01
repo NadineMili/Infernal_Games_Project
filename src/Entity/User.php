@@ -71,6 +71,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=255)
      * @var string
+     * @Groups("users:read")
      */
     private $image= null ;
 
