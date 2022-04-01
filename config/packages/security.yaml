@@ -20,7 +20,6 @@ security:
             guard:
                 authenticators:
                     - App\Security\GoogleAuthenticator
-                    - App\Security\GamerAuthenticator
                     - App\Security\AppCustomAuthenticator
                 entry_point: App\Security\AppCustomAuthenticator
             logout:

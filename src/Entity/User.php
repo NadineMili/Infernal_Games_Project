@@ -3,11 +3,14 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
+
 use phpDocumentor\Reflection\DocBlock\Serializer;
 use Serializable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -18,39 +21,37 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
 use Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader;
 
-
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
  * @Vich\Uploadable
  */
-class User implements UserInterface,Serializable
+class User implements UserInterface
 {
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
-     * @ORM\Column(type="integer" ,unique=true)
+     * @ORM\Column(type="integer")
      */
     private $id;
 
+
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Assert\NotBlank(message="Email is required")
-     * @Assert\Email(message = "The email '{{ value }}' is not a valid
-    email.")
-     *
      */
-    private $email;
+    //private $username;
 
-
+    /**
+     * @ORM\Column(type="json")
+     */
+    private $roles = [];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
-
-     * @Assert\NotBlank(message="password is required")
      */
     private $password;
+
     /**
      * @var
      * @ORM\Column(type="string")
@@ -63,19 +64,6 @@ class User implements UserInterface,Serializable
      * @Assert\NotBlank(message="lastName is required")
      */
     private $lastName;
-    /**
-     * @ORM\Column(type="json")
-     */
-    private $roles = [];
-
-
-   /* /**
-     * @ORM\OneToOne(targetEntity=Historique::class, cascade={"persist", "remove"})
-     */
-  //  private $Historique;
-
-
-
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -88,41 +76,46 @@ class User implements UserInterface,Serializable
      * @var File
      */
     private $imageFile = null;
-    public function serialize()
-    {
-        $this->image = base64_encode($this->image);
-    }
 
-    public function unserialize($serialized)
-    {
-        $this->image = base64_decode($this->image);
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $email;
 
-    }
+    /**
+     * @ORM\OneToOne(targetEntity=Subscription::class, mappedBy="user", cascade={"persist", "remove"})
+     */
+    private $subscription;
+
+    /**
+     * @ORM\OneToMany(targetEntity=StreamComment::class, mappedBy="user")
+     */
+    private $streamComments;
+
+    /**
+     * @ORM\OneToMany(targetEntity=GameComment::class, mappedBy="user")
+     */
+    private $gameComment;
+
+
+    /**
+     * @ORM\OneToMany(targetEntity=Rating::class, mappedBy="user")
+     */
+    private $ratings;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Commande::class, mappedBy="user")
+     */
+    private $commandes;
+
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
      */
     private $activation_token;
 
-    /**
-     * @ORM\Column(type="string", length=50, nullable=true)
+    /**     * @ORM\Column(type="string", length=50, nullable=true)
      */
     private $reset_token;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     public function setImageFile(File $image = null)
     {
@@ -135,6 +128,37 @@ class User implements UserInterface,Serializable
             // if 'updatedAt' is not defined in your entity, use another property
             $this->updatedAt = new \DateTime('now');
         }
+    }
+
+    public function __construct()
+    {
+        $this->streamComments = new ArrayCollection();
+        $this->gameComment = new ArrayCollection();
+        $this->ratings = new ArrayCollection();
+        $this->commandes = new ArrayCollection();
+        $this->blogs = new ArrayCollection();
+        $this->newsletters = new ArrayCollection();
+    }
+
+
+    /**
+     * @ORM\OneToMany(targetEntity=Blog::class, mappedBy="author")
+     */
+    private $blogs;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Newsletter::class, mappedBy="author")
+     */
+    private $newsletters;
+    public function serialize()
+    {
+        $this->image = base64_encode($this->image);
+    }
+
+    public function unserialize($serialized)
+    {
+        $this->image = base64_decode($this->image);
+
     }
 
     public function getImageFile()
@@ -152,24 +176,10 @@ class User implements UserInterface,Serializable
         return $this->image;
     }
 
-
     public function getId(): ?int
     {
         return $this->id;
     }
-
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
-
-    public function setEmail(string $email): self
-    {
-        $this->email = $email;
-
-        return $this;
-    }
-
 
     /**
      * A visual identifier that represents this user.
@@ -180,7 +190,14 @@ class User implements UserInterface,Serializable
     {
         return (string) $this->email;
     }
+/*
+    public function setUsername(string $username): self
+    {
+        $this->username = $username;
 
+        return $this;
+    }
+*/
     /**
      * @see UserInterface
      */
@@ -203,7 +220,7 @@ class User implements UserInterface,Serializable
     /**
      * @see UserInterface
      */
-    public function getPassword()
+    public function getPassword(): string
     {
         return $this->password;
     }
@@ -246,6 +263,8 @@ class User implements UserInterface,Serializable
     {
         $this->name = $name;
     }
+
+
     /**
      * Returning a salt is only needed, if you are not using a modern
      * hashing algorithm (e.g. bcrypt or sodium) in your security.yaml.
@@ -264,6 +283,18 @@ class User implements UserInterface,Serializable
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
     }
 
     public function getActivationToken(): ?string
@@ -289,4 +320,183 @@ class User implements UserInterface,Serializable
 
         return $this;
     }
+
+    public function getSubscription(): ?Subscription
+    {
+        return $this->subscription;
+    }
+
+    public function setSubscription(?Subscription $subscription): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($subscription === null && $this->subscription !== null) {
+            $this->subscription->setUser(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($subscription !== null && $subscription->getUser() !== $this) {
+            $subscription->setUser($this);
+        }
+
+        $this->subscription = $subscription;
+
+        return $this;
+    }
+
+    public function __toString(){
+        //return $this->username;
+        return $this->name;
+    }
+
+    /**
+     * @return Collection|StreamComment[]
+     */
+    public function getStreamComments(): Collection
+    {
+        return $this->streamComments;
+    }
+
+    public function addStreamComment(StreamComment $streamComment): self
+    {
+        if (!$this->streamComments->contains($streamComment)) {
+            $this->streamComments[] = $streamComment;
+            $streamComment->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStreamComment(StreamComment $streamComment): self
+    {
+        if ($this->streamComments->removeElement($streamComment)) {
+            // set the owning side to null (unless already changed)
+            if ($streamComment->getUser() === $this) {
+                $streamComment->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, GameComment>
+     */
+    public function getGameComment(): Collection
+    {
+        return $this->gameComment;
+    }
+
+    public function addGameComment(GameComment $gameComment): self
+    {
+        if (!$this->gameComment->contains($gameComment)) {
+            $this->gameComment[] = $gameComment;
+            $gameComment->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGameComment(GameComment $gameComment): self
+    {
+        if ($this->gameComment->removeElement($gameComment)) {
+            // set the owning side to null (unless already changed)
+            if ($gameComment->getUser() === $this) {
+                $gameComment->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * @return Collection<int, Rating>
+     */
+    public function getRatings(): Collection
+    {
+        return $this->ratings;
+    }
+
+    public function addRating(Rating $rating): self
+    {
+        if (!$this->ratings->contains($rating)) {
+            $this->ratings[] = $rating;
+            $rating->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRating(Rating $rating): self
+    {
+        if ($this->ratings->removeElement($rating)) {
+            // set the owning side to null (unless already changed)
+            if ($rating->getUser() === $this) {
+                $rating->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Blog>
+     */
+    public function getBlogs(): Collection
+    {
+        return $this->blogs;
+    }
+
+    public function addBlog(Blog $blog): self
+    {
+        if (!$this->blogs->contains($blog)) {
+            $this->blogs[] = $blog;
+            $blog->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBlog(Blog $blog): self
+    {
+        if ($this->blogs->removeElement($blog)) {
+            // set the owning side to null (unless already changed)
+            if ($blog->getAuthor() === $this) {
+                $blog->setAuthor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Newsletter>
+     */
+    public function getNewsletters(): Collection
+    {
+        return $this->newsletters;
+    }
+
+    public function addNewsletter(Newsletter $newsletter): self
+    {
+        if (!$this->newsletters->contains($newsletter)) {
+            $this->newsletters[] = $newsletter;
+            $newsletter->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNewsletter(Newsletter $newsletter): self
+    {
+        if ($this->newsletters->removeElement($newsletter)) {
+            // set the owning side to null (unless already changed)
+            if ($newsletter->getAuthor() === $this) {
+                $newsletter->setAuthor(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

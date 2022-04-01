@@ -1,12 +1,6 @@
 {
-    "bacon/bacon-qr-code": {
-        "version": "2.0.6"
-    },
-    "beberlei/doctrineextensions": {
-        "version": "v1.3.0"
-    },
-    "dasprid/enum": {
-        "version": "1.0.3"
+    "cboden/ratchet": {
+        "version": "v0.4.4"
     },
     "doctrine/annotations": {
         "version": "1.13",
@@ -41,10 +35,12 @@
             "repo": "github.com/symfony/recipes",
             "branch": "master",
             "version": "2.4",
-            "ref": "06a5dfe6c1b12da89276b72ed281be757d24c8a0"
+            "ref": "f98f1affe028f8153a459d15f220ada3826b5aa2"
         },
         "files": [
             "./config/packages/doctrine.yaml",
+            "./config/packages/prod/doctrine.yaml",
+            "./config/packages/test/doctrine.yaml",
             "./src/Entity/.gitignore",
             "./src/Repository/.gitignore"
         ]
@@ -92,23 +88,11 @@
     "egulias/email-validator": {
         "version": "3.1.2"
     },
-    "endroid/installer": {
-        "version": "1.4.0"
-    },
-    "endroid/qr-code": {
-        "version": "4.4.7"
-    },
-    "endroid/qr-code-bundle": {
-        "version": "4.0.7"
+    "evenement/evenement": {
+        "version": "v3.0.1"
     },
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.5"
-    },
-    "gregwar/captcha": {
-        "version": "v1.1.9"
-    },
-    "gregwar/captcha-bundle": {
-        "version": "v2.1.5"
     },
     "guzzlehttp/guzzle": {
         "version": "7.4.1"
@@ -135,10 +119,7 @@
             "branch": "master",
             "version": "1.20",
             "ref": "1ff300d8c030f55c99219cc55050b97a695af3f6"
-        },
-        "files": [
-            "./config/packages/knpu_oauth2_client.yaml"
-        ]
+        }
     },
     "laminas/laminas-code": {
         "version": "4.5.1"
@@ -162,7 +143,7 @@
         "version": "2.0.3"
     },
     "phar-io/version": {
-        "version": "3.1.1"
+        "version": "3.1.0"
     },
     "phenx/php-font-lib": {
         "version": "0.5.4"
@@ -235,6 +216,33 @@
     "ralouphie/getallheaders": {
         "version": "3.0.3"
     },
+    "ratchet/pawl": {
+        "version": "v0.4.1"
+    },
+    "ratchet/rfc6455": {
+        "version": "v0.3.1"
+    },
+    "react/cache": {
+        "version": "v1.1.1"
+    },
+    "react/dns": {
+        "version": "v1.9.0"
+    },
+    "react/event-loop": {
+        "version": "v1.2.0"
+    },
+    "react/promise": {
+        "version": "v2.9.0"
+    },
+    "react/promise-timer": {
+        "version": "v1.8.0"
+    },
+    "react/socket": {
+        "version": "v1.11.0"
+    },
+    "react/stream": {
+        "version": "v1.2.0"
+    },
     "sabberworm/php-css-parser": {
         "version": "8.4.0"
     },
@@ -263,7 +271,7 @@
         "version": "4.0.4"
     },
     "sebastian/global-state": {
-        "version": "5.0.4"
+        "version": "5.0.3"
     },
     "sebastian/lines-of-code": {
         "version": "1.0.3"
@@ -297,6 +305,9 @@
         "files": [
             "./config/packages/sensio_framework_extra.yaml"
         ]
+    },
+    "stripe/stripe-php": {
+        "version": "v7.116.0"
     },
     "swiftmailer/swiftmailer": {
         "version": "v6.3.0"
@@ -504,7 +515,7 @@
         ]
     },
     "symfony/polyfill-intl-grapheme": {
-        "version": "v1.24.0"
+        "version": "v1.25.0"
     },
     "symfony/polyfill-intl-icu": {
         "version": "v1.24.0"
@@ -690,14 +701,20 @@
     "theseer/tokenizer": {
         "version": "1.2.1"
     },
+    "tijsverkoyen/css-to-inline-styles": {
+        "version": "2.2.4"
+    },
+    "twig/cssinliner-extra": {
+        "version": "v3.3.5"
+    },
     "twig/extra-bundle": {
         "version": "v3.3.8"
     },
     "twig/twig": {
         "version": "v3.3.8"
     },
-    "twilio/sdk": {
-        "version": "6.35.0"
+    "vangrg/profanity-bundle": {
+        "version": "v1.1.6"
     },
     "vich/uploader-bundle": {
         "version": "1.19",
@@ -706,10 +723,7 @@
             "branch": "master",
             "version": "1.7",
             "ref": "c4f5755b37fb65b9c6a3cbdae91205c15a137ed4"
-        },
-        "files": [
-            "./config/packages/vich_uploader.yaml"
-        ]
+        }
     },
     "webmozart/assert": {
         "version": "1.10.0"

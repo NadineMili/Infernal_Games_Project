@@ -25,9 +25,9 @@ class SecurityController extends AbstractController
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-         if ($this->getUser()) {
-             return $this->redirectToRoute('backindex');
-        }
+        // if ($this->getUser()) {
+        //     return $this->redirectToRoute('target_path');
+        // }
 
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
@@ -78,14 +78,14 @@ class SecurityController extends AbstractController
                 return $this->redirectToRoute('app_login');
             }
             $url=$this->generateUrl('App_reset_password',['token'=>$token],
-            UrlGeneratorInterface::ABSOLUTE_URL);
+                UrlGeneratorInterface::ABSOLUTE_URL);
             $message=(new \Swift_Message('mot de pass oublier'))
-                ->setFrom('infernalgames200@gmail.com')
+                ->setFrom('infernalgames2022@gmail.com')
                 ->setTo($user->getEmail())
                 ->setBody(
-                   "<p>Bonjour </p></p>une demande de renitialisation de mot de pass a ete effectuer pour votre compte 
+                    "<p>Bonjour </p></p>une demande de renitialisation de mot de pass a ete effectuer pour votre compte 
                    dans ESLORD vouillez  cliquer sur le lien suivant :" .$url. '</p>',
-                   'text/html');
+                    'text/html');
             $mailer->send($message);
             $this->addFlash('message','le mail de renitialsation de mot de passe a ete envoyer');
             return $this->redirectToRoute('app_login');
