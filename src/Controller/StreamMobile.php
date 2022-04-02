@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Stream;
 use App\Entity\StreamCategory;
 use App\Entity\StreamRating;
+use App\Entity\User;
 use App\Repository\StreamCategoryRepository;
 use App\Repository\StreamRatingRepository;
 use App\Repository\StreamRepository;
@@ -68,6 +70,20 @@ class StreamMobile extends AbstractController
         return new Response(json_encode($jsonData));
     }
 
+    /**
+     * @Route("/watch/{id}", name="watchMobile")
+     */
+    public function watchStream($id, Request $req){
+
+
+        $stream= $this->getDoctrine()->getRepository(Stream::class)->find($id);
+        $user= $this->getDoctrine()->getRepository(User::class)->find(9);
+        return $this->render('streams/streamMobile.html.twig', [
+            'stream'=>$stream,
+            "currentUser"=> $user
+        ]);
+
+    }
 
     //Stream Category
     /**

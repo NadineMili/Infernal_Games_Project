@@ -2,11 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\ProductRepository;
+use
+    App\Repository\ProductRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 
 /**
@@ -18,18 +20,21 @@ class Product
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("products:read")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Nom Produit is required")
+     * @Groups("products:read")
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\NotBlank(message="description is required")
+     * @Groups("products:read")
      */
     private $description;
 
@@ -37,12 +42,14 @@ class Product
      * @ORM\Column(type="float")
      * @Assert\NotBlank(message="prix is required")
      * @Assert\Positive(message="Can't be negative")
+     * @Groups("products:read")
      */
     private $price;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\NotBlank(message="brand is required")
+     * @Groups("products:read")
      */
     private $brand;
 
@@ -52,11 +59,13 @@ class Product
      * @ORM\Column(type="integer")
      * @Assert\NotBlank(message="quantity is required")
      * @Assert\Positive(message="Can't be negative")
+     * @Groups("products:read")
      */
     private $quantity;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("products:read")
      */
     private $picture;
 
@@ -68,11 +77,13 @@ class Product
     /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="products")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("products:read")
      */
     private $category;
 
     /**
      * @ORM\Column(type="date")
+     * @Groups("products:read")
      */
     private $date;
 

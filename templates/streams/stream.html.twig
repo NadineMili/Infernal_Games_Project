@@ -195,7 +195,7 @@
                     <div class="game-single-preview">
                         <video id="player" width="600px" height="300px" class="video-js vjs-matrix" controls="true" poster="{{ asset('front/img/promo-bg.jpg') }}">
                             <source
-                                    src="{{ asset('http://127.0.0 .1:8050/hls/'~stream.accessData.streamKey~'/index.m3u8') }}"
+                                    src="{{ asset('http://127.0.0.1:8050/hls/'~stream.accessData.streamKey~'/index.m3u8') }}"
                                     type="application/x-mpegURL">
                         </video>
                         <button class="btn btn-success" onclick="reconnect()">Reconnect</button>

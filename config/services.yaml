@@ -10,6 +10,8 @@ parameters:
     GamesPictures: '%kernel.project_dir%/public/Games'
     PicturesProducts: '%kernel.project_dir%/public/Products'
     app.path.product_images: /uploads/images/products
+    images_directory: '%kernel.project_dir%/public/uploads/images'
+    upload_directory: '%kernel.project_dir%/public/uploads'
 
 services:
     # default configuration for services in *this* file
