@@ -64,7 +64,6 @@ Class NewsletterMobile extends AbstractController
 
         $date= new \DateTime('now');
         $newsletter->setDate($date);
-        $s=
 
             $newsletter->setSent(0);
             $newsletter->setSent(1);
