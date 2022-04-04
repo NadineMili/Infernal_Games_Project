@@ -40,7 +40,7 @@ class ProductMobile extends AbstractController
         $jsonData= $normalizer->normalize($products, 'json', ['groups'=>'products:read']);
         $i=0;
         foreach ($products as $product)
-            $jsonData[$i++]['category']= $normalizer->normalize($product->getCategory(), 'json', ['groups'=>'productsCat:read']);
+            $jsonData[$i++]['category']= $normalizer->normalize($product->getCategory()->getLabel() , 'json', ['groups'=>'productsCat:read']);
         return new JsonResponse ($jsonData);
     }
       /**
@@ -71,7 +71,7 @@ class ProductMobile extends AbstractController
    $em->flush();
 
         $jsonData= $normalizer->normalize($product, 'json', ['groups'=>'products:read']);
-        $jsonData['category']= $normalizer->normalize($product->getCategory(), 'json', ['groups'=>'productsCat:read']);
+        $jsonData['category']= $normalizer->normalize($product->getCategory()->getLabel(), 'json', ['groups'=>'productsCat:read']);
 
         return new JsonResponse ($jsonData);
 
@@ -117,7 +117,7 @@ public function modifierProductAction(Request $request, NormalizerInterface $nor
     $em->persist ($product);
     $em->flush();
     $jsonData= $normalizer->normalize($product, 'json', ['groups'=>'products:read']);
-    $jsonData['category']= $normalizer->normalize($product->getCategory(), 'json', ['groups'=>'productsCat:read']);
+    $jsonData['category']= $normalizer->normalize($product->getCategory()->getLabel(), 'json', ['groups'=>'productsCat:read']);
     return new JsonResponse("Produit a ete modifiee avec success.");
 }
 

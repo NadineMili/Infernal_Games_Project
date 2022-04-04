@@ -64,8 +64,12 @@ Class NewsletterMobile extends AbstractController
 
         $date= new \DateTime('now');
         $newsletter->setDate($date);
-        $newsletter->setSent( $request->get("sent") );
+        $s=
+
+            $newsletter->setSent(0);
+            $newsletter->setSent(1);
         $newsletter->setAuthor( $this->getDoctrine()->getRepository(User::class)->find($request->get("author")) );
+
 
         $entityManager->persist($newsletter);
         $entityManager->flush();
@@ -107,7 +111,8 @@ Class NewsletterMobile extends AbstractController
 
         $date= new \DateTime('now');
         $newsletter->setDate($date);
-        $newsletter->setSent( $request->get("sent") );
+
+        $newsletter->setSent( $request->get("sent"));
         $newsletter->setAuthor( $this->getDoctrine()->getRepository(User::class)->find($request->get("author")) );
 
         $entityManager->persist($newsletter);
