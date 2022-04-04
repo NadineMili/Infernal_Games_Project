@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\NewsletterRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=NewsletterRepository::class)
@@ -15,6 +16,7 @@ class Newsletter
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("newsletters:read")
      */
     private $id;
 
@@ -22,6 +24,7 @@ class Newsletter
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Can't leave title blank")
      * @Assert\Length(min="5",minMessage="Title too short. It should be at least 5")
+     * @Groups("newsletters:read")
      */
     private $titleF;
 
@@ -29,22 +32,26 @@ class Newsletter
      * @ORM\Column(type="text")
      * @Assert\NotBlank(message="Can't leave content blank")
      * @Assert\Length(min="50",minMessage="Not enough content. It should be at least 50")
+     * @Groups("newsletters:read")
      */
     private $contentF;
 
 
     /**
      * @ORM\Column(type="date")
+     * @Groups("newsletters:read")
      */
     private $date;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups("newsletters:read")
      */
     private $sent;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("newsletters:read")
      */
     private $imageF;
 
@@ -52,6 +59,7 @@ class Newsletter
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Can't leave title blank")
      * @Assert\Length(min="5",minMessage="Title too short. It should be at least 5")
+     * @Groups("newsletters:read")
      */
     private $titleS;
 
@@ -59,12 +67,14 @@ class Newsletter
      * @ORM\Column(type="text")
      * @Assert\NotBlank(message="Can't leave content blank")
      * @Assert\Length(min="50",minMessage="Not enough content. It should be at least 50")
+     * @Groups("newsletters:read")
 
      */
     private $contentS;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("newsletters:read")
      */
     private $imageS;
 
@@ -72,6 +82,7 @@ class Newsletter
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Can't leave title blank")
      * @Assert\Length(min="5",minMessage="Title too short. It should be at least 5")
+     * @Groups("newsletters:read")
      */
     private $titleT;
 
@@ -79,11 +90,13 @@ class Newsletter
      * @ORM\Column(type="text")
      * @Assert\NotBlank(message="Can't leave content blank")
      * @Assert\Length(min="50",minMessage="Not enough content. It should be at least 50")
+     * @Groups("newsletters:read")
      */
     private $contentT;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("newsletters:read")
      */
     private $imageT;
 
@@ -91,6 +104,7 @@ class Newsletter
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Can't leave title blank")
      * @Assert\Length(min="5",minMessage="Title too short. It should be at least 5")
+     * @Groups("newsletters:read")
      */
     private $titleIntro;
 
@@ -98,11 +112,13 @@ class Newsletter
      * @ORM\Column(type="text")
      * @Assert\NotBlank(message="Can't leave content blank")
      * @Assert\Length(min="20",minMessage="Not enough content. It should be at least 20")
+     * @Groups("newsletters:read")
      */
     private $contentIntro;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="newsletters")
+     * @Groups("newsletters:read")
      */
     private $author;
     

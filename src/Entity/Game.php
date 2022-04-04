@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=GameRepository::class)
@@ -17,18 +18,21 @@ class Game
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("games:read")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Name is required")
+     * @Groups("games:read")
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Description is required")
+     * @Groups("games:read")
      */
     private $description;
 
@@ -36,28 +40,33 @@ class Game
      * @ORM\Column(type="float")
      * @Assert\NotBlank(message="Price is required")
      * @Assert\Positive
+     * @Groups("games:read")
      */
     private $price;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\NotBlank(message="Trailer Url is required")
+     * @Groups("games:read")
      */
     private $trailerUrl;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Category is required")
+     * @Groups("games:read")
      */
     private $category;
 
     /**
      * @ORM\Column(type="float", nullable=true)
+     * @Groups("games:read")
      */
     private $rating;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("games:read")
      */
     private $picture;
 

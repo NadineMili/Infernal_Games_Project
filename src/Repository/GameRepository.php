@@ -28,6 +28,17 @@ class GameRepository extends ServiceEntityRepository
         return $query->getResult();
 
     }
+
+
+    public function findByFirstLetter($letter){
+        $query = $this->createQueryBuilder('g')
+            ->where('g.name LIKE :letter')
+            ->setParameter('letter', $letter.'%')
+            ->getQuery();
+
+        return $query->getResult();
+    }
+
     // /**
     //  * @return Game[] Returns an array of Game objects
     //  */

@@ -204,4 +204,5 @@ class StreamsController extends AbstractController
         $em->flush();
         return $this->redirectToRoute('streams');
     }
+
 }

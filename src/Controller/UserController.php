@@ -170,8 +170,8 @@ class UserController extends AbstractController
      */
     public function new(Request $request,
                         UserPasswordEncoderInterface $passwordEncoder
-    //                    ,GuardAuthenticatorHandler $guardHandler,
-    //                    AppcAuthenticator $authenticator
+        //                    ,GuardAuthenticatorHandler $guardHandler,
+        //                    AppcAuthenticator $authenticator
     ) : Response
     {
         $user = new User();

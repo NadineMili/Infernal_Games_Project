@@ -8,6 +8,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
+use Symfony\Component\Serializer\Annotation\Groups;
+
 /**
  * @ORM\Entity(repositoryClass=StreamRatingRepository::class)
  */
@@ -17,12 +19,14 @@ class StreamRating
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("streamRating:read")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=40)
      * @Assert\NotBlank(message="Please give the maturity rating a label")
+     * @Groups("streamRating:read")
      */
     private $label;
 

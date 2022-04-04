@@ -24,14 +24,13 @@
                     <div class="form-group">
                         <label>Your total is {{ total }} DT</label><br>
 
-                        <label for="productName">Name Client</label>
-                        {{ form_widget(form.user,{'attr':{'class':'form-control', 'placeholder':'Name'}}) }}
-                        <div class="text-danger">{{ form_errors(form.user) }}</div>
+                        <label for="productName">Client name: {{ app.user.name }}</label><br>
 
                         <label for="productDescription">Payment Method</label>
                         {{ form_widget(form.paymentMethod,{'attr':{'class':'form-control'}}) }}
                         <div class="text-danger">{{ form_errors(form.paymentMethod) }}</div>
                         {% do form.total.setRendered() %}
+                        {% do form.user.setRendered() %}
                     </div>
                     <div>
                         <a class="btn btn-success" href="{{ path("stripe") }}">Payment</a>

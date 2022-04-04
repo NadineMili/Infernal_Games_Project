@@ -6,7 +6,9 @@ use App\Repository\StreamDataRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
+use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass=StreamDataRepository::class)
  */
@@ -16,17 +18,20 @@ class StreamData
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("streamData:read")
      */
     private $id;
 
     /**
      * @ORM\OneToOne(targetEntity=User::class, cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("streamData:read")
      */
     private $streamer;
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Groups("streamData:read")
      */
     private $streamKey;
 
